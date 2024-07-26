@@ -1,5 +1,5 @@
 name: puppycode
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
@@ -7,7 +7,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
