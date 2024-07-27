@@ -6,7 +6,7 @@ class TextButtonColor extends WidgetStateColor {
   static const int _defaultColor = 0xFFF000;
   static const int _pressedColor = 0xdeadbeef;
 
-  // 왜 적용이 아될까?
+// 왜 적용이 아될까?
   @override
   Color resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.pressed)) {
@@ -17,9 +17,9 @@ class TextButtonColor extends WidgetStateColor {
 }
 
 class TextButtonStyle extends ButtonStyle {
-  static ButtonStyle getStyle() {
+  static ButtonStyle getStyle({bool? disabled}) {
     return TextButton.styleFrom(
-      backgroundColor: const TextButtonColor(),
+      backgroundColor: disabled == false ? Colors.red : const TextButtonColor(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
     );
   }
@@ -30,12 +30,13 @@ class DefaultTextButton extends TextButton {
     super.key,
     required String text,
     required VoidCallback onPressed,
+    bool? disabled,
   }) : super(
     onPressed: onPressed,
-    style: defaultStyle,
+    style: getStyle(disabled: disabled),
     child: Text(text, style: textStyle,),
   );
 
-  static final ButtonStyle defaultStyle = TextButtonStyle.getStyle();
+  static const getStyle = TextButtonStyle.getStyle;
   static const TextStyle textStyle = TextStyle(color: Colors.black);
 }
