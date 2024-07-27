@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/styles/button.dart';
 //import 'package:get/get.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -27,9 +28,17 @@ class OnboardingPage extends StatelessWidget {
       bottomSheet: Container(
         margin: const EdgeInsets.fromLTRB(0,0,0,50),
         child: Row(
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(child: Text('안할래요'), onPressed: () => {},),
-            TextButton(child: Text('등록하기'), onPressed: () => {},)
+            Expanded(
+              flex: 1,
+              child: TextButton(child: const Text('안할래요'),
+              onPressed: () => {},
+              style:  const ButtonStyle(backgroundColor: ButtonColor()))
+              ),
+            Expanded(
+              flex: 3,
+              child: TextButton(child: const Text('등록하기'), onPressed: () => {},)),
           ],
         ),
       ),
@@ -45,7 +54,7 @@ class NameGuide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 64),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 64),
       child: const Column(
         children: [
           Text(
