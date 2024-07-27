@@ -8,6 +8,7 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical:  30),
@@ -26,19 +27,23 @@ class OnboardingPage extends StatelessWidget {
         ),
       ),
       bottomSheet: Container(
+        color: Colors.white,
         margin: const EdgeInsets.fromLTRB(0,0,0,50),
         child: Row(
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               flex: 1,
-              child: TextButton(child: const Text('안할래요'),
-              onPressed: () => {},
-              style:  const ButtonStyle(backgroundColor: ButtonColor()))
+              child: DefaultTextButton(
+                text: '안할래요',
+                onPressed: () => {},
               ),
+            ),
             Expanded(
-              flex: 3,
-              child: TextButton(child: const Text('등록하기'), onPressed: () => {},)),
+              flex: 2,
+              child: DefaultTextButton(
+                text: '등록하기',
+                onPressed: () => {},)),
           ],
         ),
       ),

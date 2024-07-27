@@ -5,7 +5,7 @@ import 'package:puppycode/pages/setting.dart';
 
 class AppRoutes {
   static final routes = [
-    GetPage(name: '/', page: () => HomePage()),
+    GetPage(name: '/', page: () => const HomePage()),
     GetPage(name: '/settings', page: () => SettingPage()),
     GetPage(name: '/onboarding/name', page: () => const OnboardingPage()),
   ];
