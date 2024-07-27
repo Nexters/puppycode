@@ -28,8 +28,8 @@ class _SettingPageState extends State<SettingPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             children: [
-              ListWidget(lists: [
-                SettingLists(
+              SettingList(lists: [
+                SettingListItem(
                   title: '내 정보',
                   icon: Icons.info_outline,
                   widget: GestureDetector(
@@ -42,12 +42,12 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                   ),
                 ),
-                const SettingLists(
+                const SettingListItem(
                   title: '내 초대링크',
                   icon: Icons.link,
                   widget: null,
                 ),
-                SettingLists(
+                SettingListItem(
                   title: '친구리스트',
                   icon: Icons.person,
                   widget: GestureDetector(
@@ -61,8 +61,8 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
               ], title: '내 정보'),
-              ListWidget(lists: [
-                SettingLists(
+              SettingList(lists: [
+                SettingListItem(
                   title: '알림',
                   icon: Icons.notifications,
                   widget: CupertinoSwitch(
@@ -70,7 +70,7 @@ class _SettingPageState extends State<SettingPage> {
                     onChanged: onSwitchPressed,
                   ),
                 ),
-                const SettingLists(
+                const SettingListItem(
                   title: '시간설정',
                   icon: Icons.timer,
                   widget: Text(
@@ -79,8 +79,8 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
               ], title: '알림'),
-              const ListWidget(lists: [
-                SettingLists(
+              const SettingList(lists: [
+                SettingListItem(
                   title: '앱 정보',
                   icon: Icons.info_rounded,
                   widget: Text(
@@ -88,17 +88,17 @@ class _SettingPageState extends State<SettingPage> {
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
                   ),
                 ),
-                SettingLists(
+                SettingListItem(
                   title: '이용약관',
                   icon: Icons.link,
                   widget: null,
                 ),
-                SettingLists(
+                SettingListItem(
                   title: '개인정보 처리방침',
                   icon: Icons.person,
                   widget: null,
                 ),
-                SettingLists(
+                SettingListItem(
                   title: '계정관리',
                   icon: Icons.person,
                   widget: null,
@@ -112,11 +112,11 @@ class _SettingPageState extends State<SettingPage> {
   }
 }
 
-class ListWidget extends StatelessWidget {
-  final List<SettingLists> lists;
+class SettingList extends StatelessWidget {
+  final List<SettingListItem> lists;
   final String title;
 
-  const ListWidget({
+  const SettingList({
     super.key,
     required this.lists,
     required this.title,
@@ -157,12 +157,12 @@ class ListWidget extends StatelessWidget {
   }
 }
 
-class SettingLists extends StatelessWidget {
+class SettingListItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final Widget? widget;
 
-  const SettingLists({
+  const SettingListItem({
     super.key,
     required this.title,
     required this.icon,
