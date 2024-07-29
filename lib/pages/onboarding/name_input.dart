@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class _NameInputPageState extends State<NameInputPage> {
 
   validateName() {
     setState(() {
-      isValidName = name.length > 5;
+      isValidName = name.length > 2;
     });
   }
 
@@ -118,7 +119,7 @@ class _NameConfirmButtonState extends State<NameConfirmButton> {
         flex: 2,
         child: DefaultTextButton(
           text: '등록하기',
-          onPressed: () => {},
+          onPressed: () => {Get.to(() => const StartPage())},
           disabled: !widget.isActive,
         ));
   }

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:puppycode/pages/setting.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({ super.key });
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('My Home'),
       ),
       body: Center(
           child: TextButton(
-        child: const Text('go to setting'),
+        child: const Text('마이홈입니당'),
         onPressed: () {
           Get.to(() => const SettingPage());
         },

@@ -34,7 +34,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.info_outline,
                   widget: GestureDetector(
                     onTap: () {
-                      Get.to(() => HomePage());
+                      Get.to(() => const HomePage());
                     },
                     child: const Icon(
                       Icons.arrow_forward_ios,
@@ -52,7 +52,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.person,
                   widget: GestureDetector(
                     onTap: () {
-                      Get.to(() => HomePage());
+                      Get.to(() => const HomePage());
                     },
                     child: const Icon(
                       Icons.arrow_forward_ios,
