@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/pages/home.dart';
-import 'package:puppycode/pages/setting/user_info.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
