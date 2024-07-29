@@ -9,7 +9,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Landing Page'),
+        title: const Text('어서오시오'),
       ),
       body: Center(
           child: TextButton(
@@ -24,9 +24,9 @@ class LandingPage extends StatelessWidget {
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SignupButton(text: '카카오로 시작하기'),
+            SignupButton(text: '카카오로 시작하기', type: SignupType.kakao),
             SizedBox(height: 12),
-            SignupButton(text: 'Continue with Apple')
+            SignupButton(text: 'Continue with Apple', type: SignupType.apple)
           ],
         ),
       ),
@@ -34,27 +34,34 @@ class LandingPage extends StatelessWidget {
   }
 }
 
+enum SignupType { kakao, apple }
+
 class SignupButton extends StatelessWidget {
   const SignupButton({
     required this.text,
+    required this.type,
     super.key,
   });
 
   final String text;
+  final SignupType type;
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      //height: 45,
       child: TextButton(
         onPressed: () => {},
         style: TextButton.styleFrom(
-            backgroundColor: Colors.yellow,
+            backgroundColor:
+                type == SignupType.kakao ? Colors.yellow : Colors.black,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)))),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 14.5, color: Colors.black),
+          style: TextStyle(
+            fontSize: 14.5,
+            color: type == SignupType.kakao ? Colors.black : Colors.white,
+          ),
         ),
       ),
     );
