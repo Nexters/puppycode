@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/home.dart';
+import 'package:puppycode/pages/setting/user_info.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -28,36 +29,29 @@ class _SettingPageState extends State<SettingPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             children: [
-              SettingList(lists: [
+              const SettingList(lists: [
                 SettingListItem(
                   title: '내 정보',
                   icon: Icons.info_outline,
-                  widget: GestureDetector(
-                    onTap: () {
-                      Get.to(() => HomePage());
-                    },
-                    child: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
+                  destination: '/settings/userInfo',
+                  widget: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
                   ),
                 ),
-                const SettingListItem(
+                SettingListItem(
                   title: '내 초대링크',
                   icon: Icons.link,
                   widget: null,
+                  destination: '',
                 ),
                 SettingListItem(
                   title: '친구리스트',
                   icon: Icons.person,
-                  widget: GestureDetector(
-                    onTap: () {
-                      Get.to(() => HomePage());
-                    },
-                    child: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
+                  destination: '/settings/userInfo',
+                  widget: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
                   ),
                 ),
               ], title: '내 정보'),
@@ -65,6 +59,7 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '알림',
                   icon: Icons.notifications,
+                  destination: '',
                   widget: CupertinoSwitch(
                     value: switchValue,
                     onChanged: onSwitchPressed,
@@ -73,6 +68,7 @@ class _SettingPageState extends State<SettingPage> {
                 const SettingListItem(
                   title: '시간설정',
                   icon: Icons.timer,
+                  destination: '',
                   widget: Text(
                     '00:00',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -83,6 +79,7 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '앱 정보',
                   icon: Icons.info_rounded,
+                  destination: '',
                   widget: Text(
                     '현재 버전 1.0.0',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
@@ -91,16 +88,19 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '이용약관',
                   icon: Icons.link,
+                  destination: '',
                   widget: null,
                 ),
                 SettingListItem(
                   title: '개인정보 처리방침',
                   icon: Icons.person,
+                  destination: '',
                   widget: null,
                 ),
                 SettingListItem(
                   title: '계정관리',
                   icon: Icons.person,
+                  destination: '',
                   widget: null,
                 ),
               ], title: '도움말'),
@@ -160,6 +160,7 @@ class SettingList extends StatelessWidget {
 class SettingListItem extends StatelessWidget {
   final String title;
   final IconData icon;
+  final String? destination;
   final Widget? widget;
 
   const SettingListItem({
@@ -167,34 +168,41 @@ class SettingListItem extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.widget,
+    required this.destination,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(icon),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          destination != '' ? Get.toNamed(destination!) : '';
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(icon),
+                const SizedBox(
+                  width: 8,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            child: widget,
-          )
-        ],
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              child: widget,
+            )
+          ],
+        ),
       ),
     );
   }
