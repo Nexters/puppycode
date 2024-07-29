@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
 
 class TextButtonColor extends WidgetStateColor {
-  const TextButtonColor() : super(_defaultColor);
+  TextButtonColor(this.defaultValue) : super(0x111111);
 
-  static const int _defaultColor = 0xFFF000;
-  static const int _pressedColor = 0xdeadbeef;
+  int defaultValue = 0xA0A8AE;
+  Color defaultColor = Colors.yellow;
+  Color pressedColor = Colors.yellowAccent;
 
 // 왜 적용이 아될까?
   @override
   Color resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.pressed)) {
-      return const Color(TextButtonColor._pressedColor);
+      return pressedColor;
     }
-    return const Color(TextButtonColor._defaultColor);
+    return defaultColor;
   }
 }
 
 class TextButtonStyle extends ButtonStyle {
   static ButtonStyle getStyle({bool? disabled}) {
     return TextButton.styleFrom(
-      backgroundColor: disabled == false ? Colors.red : const TextButtonColor(),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
-    );
+        fixedSize: const Size.fromHeight(56),
+        backgroundColor: disabled == true ? Colors.grey : Colors.black,
+        //backgroundColor: disabled == false ? Colors.grey : TextButtonColor(123),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));
   }
 }
 
 class DefaultTextButton extends TextButton {
-   DefaultTextButton({
+  DefaultTextButton({
     super.key,
     required String text,
     required VoidCallback onPressed,
     bool? disabled,
   }) : super(
-    onPressed: onPressed,
-    style: getStyle(disabled: disabled),
-    child: Text(text, style: textStyle,),
-  );
+          onPressed: onPressed,
+          style: getStyle(disabled: disabled),
+          child: Text(
+            text,
+            style: textStyle,
+          ),
+        );
 
   static const getStyle = TextButtonStyle.getStyle;
-  static const TextStyle textStyle = TextStyle(color: Colors.black);
+  static const TextStyle textStyle = TextStyle(color: Colors.white);
 }

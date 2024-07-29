@@ -53,6 +53,7 @@ class _NameInputPageState extends State<NameInputPage> {
       bottomSheet: Container(
         color: Colors.white,
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,6 +64,7 @@ class _NameInputPageState extends State<NameInputPage> {
                 onPressed: () => Get.back(),
               ),
             ),
+            const SizedBox(width: 17),
             NameConfirmButton(isActive: isValidName),
           ],
         ),
@@ -117,7 +119,7 @@ class _NameConfirmButtonState extends State<NameConfirmButton> {
         child: DefaultTextButton(
           text: '등록하기',
           onPressed: () => {},
-          disabled: widget.isActive,
+          disabled: !widget.isActive,
         ));
   }
 }
