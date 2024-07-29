@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({super.key});
@@ -8,6 +9,8 @@ class UserInfoPage extends StatefulWidget {
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
+  String code = 'agn35gk94';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,17 +51,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                 ),
                 TextButton(
-                  onPressed: () => {},
+                  onPressed: () => {Share.share(code)},
                   style: ButtonStyle(
                       backgroundColor:
                           WidgetStateProperty.all<Color>(Colors.grey)),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        '@유저네임고유코드',
+                        '@$code',
                       ),
-                      Icon(Icons.share_rounded)
+                      const Icon(Icons.share_rounded)
                     ],
                   ),
                 ),
