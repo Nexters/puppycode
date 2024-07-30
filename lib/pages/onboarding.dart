@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puppycode/pages/setting.dart';
+import 'package:puppycode/pages/setting/setting.dart';
 import 'package:get/get.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class OnboardingPage extends StatelessWidget {
           child: TextButton(
         child: const Text('go to setting'),
         onPressed: () {
-          Get.to(() => SettingPage());
+          Get.to(() => const SettingPage());
         },
       )),
     );
