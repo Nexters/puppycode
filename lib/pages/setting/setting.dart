@@ -21,7 +21,10 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -176,7 +179,7 @@ class SettingListItem extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          destination != '' ? Get.toNamed(destination!) : '';
+          if (destination != '') Get.toNamed(destination!);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
