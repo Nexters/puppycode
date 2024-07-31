@@ -12,7 +12,6 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   bool switchValue = true;
-  //String time = "${DateTime.now().hour}:${DateTime.now().minute}";
   String time = DateFormat.jm().format(DateTime.now());
 
   void onSwitchPressed(value) {
@@ -112,7 +111,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.timer,
                   destination: '',
                   widget: TextButton(
-                    onPressed: onSetTime,
+                    onPressed: switchValue == false ? null : onSetTime,
                     style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
