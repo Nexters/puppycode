@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:puppycode/pages/setting/setting.dart';
 import 'package:share/share.dart';
 
 class UserInfoPage extends StatefulWidget {
@@ -9,7 +11,22 @@ class UserInfoPage extends StatefulWidget {
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
-  String code = 'agn35gk94';
+  String code = 'S89DF1';
+  String userName = '개떡이';
+  bool _isEditing = false;
+  bool _isValidName = false;
+
+  void _toggleEditing() {
+    setState(() {
+      _isEditing = !_isEditing;
+    });
+  }
+
+  void validateName() {
+    setState(() {
+      _isValidName = userName.length > 2;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,66 +35,108 @@ class _UserInfoPageState extends State<UserInfoPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text(
-          '내 정보',
+          '내 프로필',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-        ), // 왼쪽 정렬이 완벽하게 안됨 어케함쇼
-        centerTitle: false,
-      ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 12,
-          ),
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  height: 128,
-                  width: 128,
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(100)),
-                ),
-                Transform.translate(
-                  offset: const Offset(40, -35),
-                  child: FloatingActionButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100)),
-                    onPressed: () => {},
-                    mini: true,
-                    child: const Icon(Icons.add),
-                  ),
-                ),
-                const Text(
-                  '앙꼬',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-                ),
-                TextButton(
-                  onPressed: () => {Share.share(code)},
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all<Color>(Colors.grey)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '@$code',
-                      ),
-                      const Icon(Icons.share_rounded)
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  height: 8,
-                  decoration: const BoxDecoration(color: Colors.grey),
-                )
-              ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: _toggleEditing,
+            child: Text(
+              _isEditing ? '저장' : '편집',
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ),
-          ),
+          )
         ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 12,
+            ),
+            Center(
+              child: Column(
+                children: [
+                  Container(
+                    height: 128,
+                    width: 128,
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  TextFormField(
+                    initialValue: userName,
+                    readOnly: !_isEditing,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: _isEditing ? '이름 입력해주쇼' : ''),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.center,
+                    onChanged: (value) {
+                      setState(() {
+                        userName = value;
+                        validateName();
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextButton(
+                    onPressed: () => {Share.share(code)},
+                    style: ButtonStyle(
+                        backgroundColor:
+                            WidgetStateProperty.all<Color>(Colors.grey)),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '@$code ',
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        const Icon(
+                          Icons.link,
+                          color: Color.fromARGB(255, 221, 221, 221),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 19,
+                  ),
+                  const SettingList(lists: [
+                    SettingListItem(
+                        title: '산책일지',
+                        icon: Icons.notes,
+                        widget: Icon(
+                          color: Color.fromRGBO(128, 128, 128, 0.55),
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                        ),
+                        destination: ''),
+                    SettingListItem(
+                        title: '산책 캘린더',
+                        icon: Icons.calendar_month_outlined,
+                        widget: Icon(
+                          color: Color.fromRGBO(128, 128, 128, 0.55),
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                        ),
+                        destination: '')
+                  ], title: ''),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

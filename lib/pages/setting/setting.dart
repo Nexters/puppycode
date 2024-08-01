@@ -72,10 +72,11 @@ class _SettingPageState extends State<SettingPage> {
             children: [
               const SettingList(lists: [
                 SettingListItem(
-                  title: '내 정보',
+                  title: '내 프로필',
                   icon: Icons.info_outline,
                   destination: '/settings/userInfo',
                   widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
@@ -91,6 +92,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.person,
                   destination: '/settings/userInfo',
                   widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
@@ -107,7 +109,7 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 SettingListItem(
-                  title: '시간설정',
+                  title: '알람시간 설정',
                   icon: Icons.timer,
                   destination: '',
                   widget: TextButton(
@@ -139,6 +141,12 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 SettingListItem(
+                  title: '계정정보',
+                  icon: Icons.person,
+                  destination: '',
+                  widget: null,
+                ),
+                SettingListItem(
                   title: '이용약관',
                   icon: Icons.link,
                   destination: '',
@@ -146,12 +154,6 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 SettingListItem(
                   title: '개인정보 처리방침',
-                  icon: Icons.person,
-                  destination: '',
-                  widget: null,
-                ),
-                SettingListItem(
-                  title: '계정관리',
                   icon: Icons.person,
                   destination: '',
                   widget: null,
