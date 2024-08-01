@@ -11,12 +11,12 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool switchValue = true;
+  bool hasSelectedTime = true;
   String time = DateFormat.jm().format(DateTime.now());
 
   void onSwitchPressed(value) {
     setState(() {
-      switchValue = value;
+      hasSelectedTime = value;
     });
   }
 
@@ -102,7 +102,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.notifications,
                   destination: '',
                   widget: CupertinoSwitch(
-                    value: switchValue,
+                    value: hasSelectedTime,
                     onChanged: onSwitchPressed,
                   ),
                 ),
@@ -111,7 +111,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.timer,
                   destination: '',
                   widget: TextButton(
-                    onPressed: switchValue == false ? null : onSetTime,
+                    onPressed: hasSelectedTime == false ? null : onSetTime,
                     style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
