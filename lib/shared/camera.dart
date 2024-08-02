@@ -15,7 +15,6 @@ class CameraScreenState extends State<CameraScreen>
   CameraController? _controller;
   bool _isCameraInitialized = false;
   late final List<CameraDescription> _cameras;
-  late CameraDescription backCamera, frontCamera;
 
   get camera => CameraDescription;
 
@@ -28,15 +27,6 @@ class CameraScreenState extends State<CameraScreen>
 
   Future<void> initCamera() async {
     _cameras = await availableCameras();
-    for (var i = 0; i < _cameras.length; i++) {
-      var camera = _cameras[i];
-      if (camera.lensDirection == CameraLensDirection.back) {
-        backCamera = camera;
-      }
-      if (camera.lensDirection == CameraLensDirection.front) {
-        frontCamera = camera;
-      }
-    }
     await onNewCameraSelected(_cameras.first);
   }
 
@@ -64,6 +54,9 @@ class CameraScreenState extends State<CameraScreen>
 
   Future<void> onNewCameraSelected(CameraDescription description) async {
     final previousCameraController = _controller;
+    setState(() {
+      _isCameraInitialized = false;
+    });
 
     final CameraController cameraController = CameraController(
       description,
@@ -96,7 +89,7 @@ class CameraScreenState extends State<CameraScreen>
     //final navigator = Navigator.of(context);
     final xFile = await capturePhoto();
     if (xFile != null) {
-      print(xFile.toString());
+      //print(xFile.toString());
       //if (xFile.path.isNotEmpty) {
       //  navigator.push(
       //    MaterialPageRoute(
@@ -110,14 +103,10 @@ class CameraScreenState extends State<CameraScreen>
   }
 
   void _flipCameraDirection() {
-    print(backCamera);
-    print(frontCamera);
-
-    setState(() {
-      final isFront =
-          _controller!.description.lensDirection == CameraLensDirection.front;
-      onNewCameraSelected(isFront ? backCamera : frontCamera);
-    });
+    var isFront =
+        _controller!.description.lensDirection == CameraLensDirection.front;
+    var cameraIndex = isFront ? 0 : 1;
+    onNewCameraSelected(_cameras[cameraIndex]);
   }
 
   @override
@@ -187,6 +176,7 @@ class CameraScreenState extends State<CameraScreen>
                     icon: const Icon(Icons.cameraswitch,
                         color: Colors.white, size: 30),
                     onPressed: () {
+                      // FIXME flip resume될 때만 되는 이슈
                       _flipCameraDirection();
                     },
                   ),
