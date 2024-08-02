@@ -15,6 +15,7 @@ class CameraScreenState extends State<CameraScreen>
   CameraController? _controller;
   bool _isCameraInitialized = false;
   late final List<CameraDescription> _cameras;
+  late CameraDescription backCamera, frontCamera;
 
   get camera => CameraDescription;
 
@@ -27,6 +28,15 @@ class CameraScreenState extends State<CameraScreen>
 
   Future<void> initCamera() async {
     _cameras = await availableCameras();
+    for (var i = 0; i < _cameras.length; i++) {
+      var camera = _cameras[i];
+      if (camera.lensDirection == CameraLensDirection.back) {
+        backCamera = camera;
+      }
+      if (camera.lensDirection == CameraLensDirection.front) {
+        frontCamera = camera;
+      }
+    }
     await onNewCameraSelected(_cameras.first);
   }
 
@@ -62,28 +72,19 @@ class CameraScreenState extends State<CameraScreen>
       enableAudio: false,
     );
 
-    // Initialize controller
     try {
       await cameraController.initialize();
     } on CameraException catch (e) {
       debugPrint('Error initializing camera: $e');
     }
-    // Dispose the previous controller
     await previousCameraController?.dispose();
 
-    // Replace with the new controller
     if (mounted) {
       setState(() {
         _controller = cameraController;
       });
     }
 
-    // Update UI if controller updated
-    cameraController.addListener(() {
-      if (mounted) setState(() {});
-    });
-
-    // Update the Boolean
     if (mounted) {
       setState(() {
         _isCameraInitialized = _controller!.value.isInitialized;
@@ -91,7 +92,7 @@ class CameraScreenState extends State<CameraScreen>
     }
   }
 
-  void _onTakePhotoPressed() async {
+  void _takePhoto() async {
     //final navigator = Navigator.of(context);
     final xFile = await capturePhoto();
     if (xFile != null) {
@@ -106,6 +107,17 @@ class CameraScreenState extends State<CameraScreen>
       //  );
       //}
     }
+  }
+
+  void _flipCameraDirection() {
+    print(backCamera);
+    print(frontCamera);
+
+    setState(() {
+      final isFront =
+          _controller!.description.lensDirection == CameraLensDirection.front;
+      onNewCameraSelected(isFront ? backCamera : frontCamera);
+    });
   }
 
   @override
@@ -160,7 +172,7 @@ class CameraScreenState extends State<CameraScreen>
                   const SizedBox(width: 80),
                   GestureDetector(
                     onTap: () {
-                      _onTakePhotoPressed();
+                      _takePhoto();
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),
@@ -175,7 +187,7 @@ class CameraScreenState extends State<CameraScreen>
                     icon: const Icon(Icons.cameraswitch,
                         color: Colors.white, size: 30),
                     onPressed: () {
-                      // 카메라 전환 기능 추가
+                      _flipCameraDirection();
                     },
                   ),
                 ],
