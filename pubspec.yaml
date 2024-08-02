@@ -15,6 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get:
+  camera:
 
 dev_dependencies:
   flutter_test:
