@@ -10,7 +10,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white)
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+        bottomSheetTheme:
+            const BottomSheetThemeData(backgroundColor: Colors.white),
       ),
       initialRoute: '/',
       getPages: AppRoutes.routes,
