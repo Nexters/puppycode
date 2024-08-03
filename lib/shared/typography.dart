@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
 
-class Body1 extends StatelessWidget {
-  const Body1({super.key, required this.value});
+const _kDefaultTextColor = Color(0xFF1E2022);
 
+class Body1 extends StatelessWidget {
+  const Body1({super.key, required this.value, this.color});
+
+  final Color? color;
   final String value;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         letterSpacing: -1,
-        color: Color(0xFF1E2022),
+        color: color ?? _kDefaultTextColor,
+        height: 22 / 16,
+      ),
+    );
+  }
+}
+
+class Body3 extends StatelessWidget {
+  const Body3({super.key, required this.value, this.color, this.bold = false});
+
+  final String value;
+  final Color? color;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      style: TextStyle(
+        fontSize: 14,
+        fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
+        letterSpacing: -1,
+        color: color ?? _kDefaultTextColor,
+        height: 18 / 14,
       ),
     );
   }
