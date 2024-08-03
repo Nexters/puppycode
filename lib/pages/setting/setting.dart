@@ -35,20 +35,24 @@ class _SettingPageState extends State<SettingPage> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              height: 213,
-              width: 198,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13), color: Colors.white),
-              child: CupertinoDatePicker(
-                //use24hFormat: true,
-                mode: CupertinoDatePickerMode.time,
-                initialDateTime: _parseTime(time),
-                onDateTimeChanged: (DateTime date) {
-                  setState(() {
-                    time = DateFormat.jm().format(date);
-                  });
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 213,
+                width: 198,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    color: Colors.white),
+                child: CupertinoDatePicker(
+                  //use24hFormat: true,
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: _parseTime(time),
+                  onDateTimeChanged: (DateTime date) {
+                    setState(() {
+                      time = DateFormat.jm().format(date);
+                    });
+                  },
+                ),
               ),
             ),
           ],
@@ -80,12 +84,6 @@ class _SettingPageState extends State<SettingPage> {
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
-                ),
-                SettingListItem(
-                  title: '내 초대링크',
-                  icon: Icons.link,
-                  widget: null,
-                  destination: '',
                 ),
                 SettingListItem(
                   title: '친구리스트',
