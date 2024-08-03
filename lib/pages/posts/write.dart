@@ -4,8 +4,64 @@ import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography.dart';
 
-class PostWritePage extends StatelessWidget {
+class PostWritePage extends StatefulWidget {
   const PostWritePage({super.key});
+
+  @override
+  State<PostWritePage> createState() => _PostWritePageState();
+}
+
+const _kInitialTime = 20;
+const _kInitialGap = 20;
+
+class _PostWritePageState extends State<PostWritePage> {
+  String? selectedTime;
+  List<String> options = [];
+
+  @override
+  void initState() {
+    super.initState();
+    var options = [];
+    for (int i = 0; i < 3; i++) {
+      if (i == 0) {
+        options.add('$_kInitialTime분 미만');
+      } else {
+        options.add('$_kInitialTime분~${_kInitialTime + _kInitialGap}');
+      }
+    }
+  }
+
+  List<Widget> _optionButtons() {
+    List<Widget> widgets = [];
+    for (int i = 0; i < 3; i++) {
+      String value = '';
+      if (i == 0) {
+        value = '$_kInitialTime분 미만';
+      } else {
+        value =
+            '${_kInitialTime + (i - 1) * _kInitialTime}분~${_kInitialTime + _kInitialGap}분';
+      }
+
+      widgets.add(OptionButton(
+          label: value,
+          isSelected: selectedTime == value,
+          onPressed: () => {_onTimeButtonPressd(value)}));
+
+      if (i != 2) {
+        widgets.add(const SizedBox(
+          width: 12,
+        ));
+      }
+    }
+
+    return widgets;
+  }
+
+  void _onTimeButtonPressd(String value) {
+    setState(() {
+      selectedTime = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,29 +80,10 @@ class PostWritePage extends StatelessWidget {
                     const Body1(value: '산책한 시간'),
                     Container(
                         margin: const EdgeInsets.only(top: 8),
-                        child: const SingleChildScrollView(
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: [
-                              OptionButton(
-                                label: '20분 내외',
-                                isSelected: false,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              OptionButton(
-                                label: '20분~40분',
-                                isSelected: true,
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              OptionButton(
-                                label: '40분~1시간',
-                                isSelected: false,
-                              )
-                            ],
+                            children: _optionButtons(),
                           ),
                         ))
                   ],
@@ -68,12 +105,13 @@ class PostWritePage extends StatelessWidget {
 }
 
 class OptionButton extends StatelessWidget {
-  const OptionButton({
-    super.key,
-    required this.isSelected,
-    required this.label,
-  });
+  const OptionButton(
+      {super.key,
+      required this.isSelected,
+      required this.label,
+      required this.onPressed});
 
+  final VoidCallback onPressed;
   final String label;
   final bool isSelected;
   static const _borderColor = Color(0xFFE4EAEE);
@@ -89,7 +127,7 @@ class OptionButton extends StatelessWidget {
               BorderSide(color: isSelected ? _selectBorderColor : _borderColor),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)))),
-      onPressed: () => {},
+      onPressed: onPressed,
       child: Body3(
         value: label,
         bold: isSelected,
