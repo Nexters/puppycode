@@ -22,8 +22,8 @@ class TextButtonStyle extends ButtonStyle {
     return TextButton.styleFrom(
         fixedSize: const Size.fromHeight(56),
         backgroundColor: disabled == true ? Colors.grey : Colors.black,
-        //backgroundColor: disabled == false ? Colors.grey : TextButtonColor(123),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));
+        //backgroundColor: disabled == false ? Colors.grey : TextBduttonColor(123),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)));
   }
 }
 
