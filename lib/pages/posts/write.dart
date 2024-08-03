@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:get/get.dart';
 import 'package:puppycode/shared/photo_item.dart';
+import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography.dart';
 
 class PostWritePage extends StatelessWidget {
@@ -33,9 +34,14 @@ class PostWritePage extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: TextButton(
-          onPressed: () => {},
-          child: Text('오늘도 산책 완료!'),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: DefaultTextButton(
+              onPressed: () => {},
+              text: '오늘도 산책완료!',
+            ),
+          ),
         ));
   }
 }

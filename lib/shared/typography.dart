@@ -13,6 +13,7 @@ class Body1 extends StatelessWidget {
         fontSize: 16,
         fontWeight: FontWeight.w600,
         letterSpacing: -1,
+        color: Color(0xFF1E2022),
       ),
     );
   }
