@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/camera.dart';
+import 'package:puppycode/shared/styles/button.dart';
+import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/head.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -11,7 +14,107 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My Home'),
       ),
-      bottomNavigationBar: const HomeNavigationBar(),
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Column(
+          children: [
+            const HomeTitle(),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.only(top: 24, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 40, bottom: 20),
+              color: Colors.grey,
+              height: 400,
+              child: const HomeContent(),
+            ),
+            const CalendarButton(),
+          ],
+        ),
+      ),
+      //bottomNavigationBar: const HomeNavigationBar(),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  const HomeContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Stack(
+        children: [
+          Align(alignment: Alignment.topCenter, child: Head1(value: '07:52')),
+          Positioned(
+              width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
+              height: 56,
+              bottom: 0,
+              child: DefaultTextButton(
+                  text: '오늘 산책도 무사히 완료!', onPressed: () => {}))
+        ],
+      ),
+    );
+  }
+}
+
+class CalendarButton extends StatelessWidget {
+  const CalendarButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 20,
+              offset: const Offset(2, 2), // changes position of shadow
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 24,
+              height: 24,
+              child: Container(
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Body1(value: '이번달 산책 캘린더'),
+            const SizedBox(width: 4),
+            const Body2(value: '4')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeTitle extends StatelessWidget {
+  const HomeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Head1(value: '개떡이 발바닥 주의'),
+        SizedBox(height: 9),
+        Body2(value: '31℃')
+      ],
     );
   }
 }
