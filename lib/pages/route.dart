@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:puppycode/pages/friends_list.dart';
 import 'package:puppycode/pages/home.dart';
 import 'package:puppycode/pages/onboarding.dart';
 import 'package:puppycode/pages/setting/setting.dart';
@@ -10,5 +11,6 @@ class AppRoutes {
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/onboarding/name', page: () => const OnboardingPage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
+    GetPage(name: '/settings/friendsList', page: () => const FriendsListPage())
   ];
 }
