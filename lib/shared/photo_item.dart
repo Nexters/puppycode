@@ -18,10 +18,16 @@ class PhotoItem extends StatelessWidget {
           Positioned.fill(
             child: Align(
                 alignment: Alignment.centerRight,
-                child: TextField(
-                  decoration:
-                      const InputDecoration(hintText: '개떡아 오늘 산책은 어땠어?'),
-                  style: HeadTextStyle.getH3Style(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    decoration:
+                        const InputDecoration(
+                        hintText: '개떡아 오늘 산책은 어땠어?',
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.4))),
+                    style: HeadTextStyle.getH3Style(color: Colors.white),
+                  ),
                 )),
           ),
         ],
