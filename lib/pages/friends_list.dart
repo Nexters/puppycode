@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:badges/badges.dart' as badges;
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -183,12 +184,31 @@ class FriendsList extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                height: 48,
-                width: 48,
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(20)),
+              badges.Badge(
+                position: badges.BadgePosition.bottomEnd(
+                  bottom: 0,
+                  end: 0,
+                ),
+                badgeContent: const Icon(
+                  Icons.person,
+                  size: 12,
+                  color: Color.fromRGBO(54, 219, 191, 1.0),
+                ),
+                badgeStyle: const badges.BadgeStyle(
+                  badgeColor: Color.fromRGBO(239, 242, 245, 1),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(239, 242, 245, 1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  height: 48,
+                  width: 48,
+                ),
               ),
               const SizedBox(
                 width: 10,
