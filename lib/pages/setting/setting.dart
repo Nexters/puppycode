@@ -11,12 +11,12 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool hasSelectedTime = true;
+  bool isAlarmEnabled = true;
   String time = DateFormat.jm().format(DateTime.now());
 
   void onSwitchPressed(value) {
     setState(() {
-      hasSelectedTime = value;
+      isAlarmEnabled = value;
     });
   }
 
@@ -88,7 +88,7 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '친구리스트',
                   icon: Icons.person,
-                  destination: '/settings/userInfo',
+                  destination: '/settings/friendsList',
                   widget: Icon(
                     color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,
@@ -102,7 +102,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.notifications,
                   destination: '',
                   widget: CupertinoSwitch(
-                    value: hasSelectedTime,
+                    value: isAlarmEnabled,
                     onChanged: onSwitchPressed,
                   ),
                 ),
@@ -111,7 +111,7 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.timer,
                   destination: '',
                   widget: TextButton(
-                    onPressed: hasSelectedTime == false ? null : onSetTime,
+                    onPressed: isAlarmEnabled == false ? null : onSetTime,
                     style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
