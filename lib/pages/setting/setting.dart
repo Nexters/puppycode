@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -10,12 +11,55 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool switchValue = true;
+  bool isAlarmEnabled = true;
+  String time = DateFormat.jm().format(DateTime.now());
 
   void onSwitchPressed(value) {
     setState(() {
-      switchValue = value;
+      isAlarmEnabled = value;
     });
+  }
+
+  DateTime _parseTime(String time) {
+    final now = DateTime.now();
+    final format = DateFormat.jm();
+    final DateTime date = format.parse(time);
+
+    return DateTime(now.year, now.month, now.day, date.hour, date.minute);
+  }
+
+  void onSetTime() {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 213,
+                width: 198,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    color: Colors.white),
+                child: CupertinoDatePicker(
+                  //use24hFormat: true,
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: _parseTime(time),
+                  onDateTimeChanged: (DateTime date) {
+                    setState(() {
+                      time = DateFormat.jm().format(date);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+      barrierDismissible: true,
+    );
   }
 
   @override
@@ -32,25 +76,21 @@ class _SettingPageState extends State<SettingPage> {
             children: [
               const SettingList(lists: [
                 SettingListItem(
-                  title: '내 정보',
+                  title: '내 프로필',
                   icon: Icons.info_outline,
                   destination: '/settings/userInfo',
                   widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
                 ),
                 SettingListItem(
-                  title: '내 초대링크',
-                  icon: Icons.link,
-                  widget: null,
-                  destination: '',
-                ),
-                SettingListItem(
                   title: '친구리스트',
                   icon: Icons.person,
-                  destination: '/settings/userInfo',
+                  destination: '/settings/friendsList',
                   widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
@@ -62,17 +102,29 @@ class _SettingPageState extends State<SettingPage> {
                   icon: Icons.notifications,
                   destination: '',
                   widget: CupertinoSwitch(
-                    value: switchValue,
+                    value: isAlarmEnabled,
                     onChanged: onSwitchPressed,
                   ),
                 ),
-                const SettingListItem(
-                  title: '시간설정',
+                SettingListItem(
+                  title: '알람시간 설정',
                   icon: Icons.timer,
                   destination: '',
-                  widget: Text(
-                    '00:00',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  widget: TextButton(
+                    onPressed: isAlarmEnabled == false ? null : onSetTime,
+                    style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        backgroundColor:
+                            const Color.fromRGBO(120, 120, 128, 0.12)),
+                    child: Text(
+                      time,
+                      style: const TextStyle(
+                          color: Colors.blue,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ], title: '알림'),
@@ -87,6 +139,12 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ),
                 SettingListItem(
+                  title: '계정정보',
+                  icon: Icons.person,
+                  destination: '',
+                  widget: null,
+                ),
+                SettingListItem(
                   title: '이용약관',
                   icon: Icons.link,
                   destination: '',
@@ -94,12 +152,6 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 SettingListItem(
                   title: '개인정보 처리방침',
-                  icon: Icons.person,
-                  destination: '',
-                  widget: null,
-                ),
-                SettingListItem(
-                  title: '계정관리',
                   icon: Icons.person,
                   destination: '',
                   widget: null,
