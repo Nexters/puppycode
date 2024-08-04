@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:puppycode/pages/setting.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -45,7 +44,9 @@ class FeedCreateSuccessPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Expanded(child: DefaultCloseButton(onPressed: () => {})),
+              Expanded(
+                  child: DefaultCloseButton(
+                      onPressed: () => {Get.toNamed('/home')})),
               const SizedBox(width: 8),
               Expanded(
                   child: DefaultTextButton(
