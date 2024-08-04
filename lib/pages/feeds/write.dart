@@ -3,18 +3,18 @@ import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography.dart';
 
-class PostWritePage extends StatefulWidget {
-  const PostWritePage({super.key});
+class FeedWritePage extends StatefulWidget {
+  const FeedWritePage({super.key});
 
   @override
-  State<PostWritePage> createState() => _PostWritePageState();
+  State<FeedWritePage> createState() => _FeedWritePageState();
 }
 
 const _kInitialTime = 20;
 const _kInitialGap = 20;
 const _kOptionCount = 3;
 
-class _PostWritePageState extends State<PostWritePage> {
+class _FeedWritePageState extends State<FeedWritePage> {
   String? selectedTime;
   List<String> options = [];
 
