@@ -36,7 +36,7 @@ class DefaultTextButton extends TextButton {
   }) : super(
           onPressed: onPressed,
           style: getStyle(disabled: disabled),
-          child: const Body1(value: '오늘도 산책 완료!'),
+          child: Body1(value: text),
         );
 
   static const getStyle = TextButtonStyle.getStyle;
@@ -51,7 +51,7 @@ class DefaultElevatedButton extends ElevatedButton {
   }) : super(
           onPressed: onPressed,
           style: getStyle(disabled: disabled),
-          child: const Body1(value: '오늘도 산책 완료!'),
+          child: Body1(value: text),
         );
 
   static const getStyle = TextButtonStyle.getStyle;
