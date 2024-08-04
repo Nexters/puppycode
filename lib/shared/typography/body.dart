@@ -23,6 +23,27 @@ class Body1 extends StatelessWidget {
   }
 }
 
+class Body2 extends StatelessWidget {
+  const Body2({super.key, required this.value, this.color});
+
+  final Color? color;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      style: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -1,
+        color: color ?? _kDefaultTextColor,
+        height: 22 / 15,
+      ),
+    );
+  }
+}
+
 class Body3 extends StatelessWidget {
   const Body3({super.key, required this.value, this.color, this.bold = false});
 
