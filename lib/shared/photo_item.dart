@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/typography/head.dart';
 
 class PhotoItem extends StatelessWidget {
   const PhotoItem({
@@ -12,6 +13,19 @@ class PhotoItem extends StatelessWidget {
       height: (MediaQuery.of(context).size.width - 40) * 1.33,
       decoration: BoxDecoration(
           color: Colors.grey, borderRadius: BorderRadius.circular(20)),
+      child: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: TextField(
+                  decoration:
+                      const InputDecoration(hintText: '개떡아 오늘 산책은 어땠어?'),
+                  style: HeadTextStyle.getH3Style(color: Colors.white),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -41,3 +41,18 @@ class DefaultTextButton extends TextButton {
 
   static const getStyle = TextButtonStyle.getStyle;
 }
+
+class DefaultElevatedButton extends ElevatedButton {
+  DefaultElevatedButton({
+    super.key,
+    required String text,
+    required VoidCallback onPressed,
+    bool? disabled,
+  }) : super(
+          onPressed: onPressed,
+          style: getStyle(disabled: disabled),
+          child: const Body1(value: '오늘도 산책 완료!'),
+        );
+
+  static const getStyle = TextButtonStyle.getStyle;
+}

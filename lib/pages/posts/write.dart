@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography.dart';
@@ -94,8 +93,11 @@ class _PostWritePageState extends State<PostWritePage> {
         ),
         bottomNavigationBar: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: DefaultTextButton(
+            padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+            child: DefaultElevatedButton(
               onPressed: () => {},
               text: '오늘도 산책완료!',
             ),
