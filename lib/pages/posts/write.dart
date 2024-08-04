@@ -12,6 +12,7 @@ class PostWritePage extends StatefulWidget {
 
 const _kInitialTime = 20;
 const _kInitialGap = 20;
+const _kOptionCount = 3;
 
 class _PostWritePageState extends State<PostWritePage> {
   String? selectedTime;
@@ -21,7 +22,7 @@ class _PostWritePageState extends State<PostWritePage> {
   void initState() {
     super.initState();
     var options = [];
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < _kOptionCount; i++) {
       if (i == 0) {
         options.add('$_kInitialTime분 미만');
       } else {
