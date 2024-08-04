@@ -67,7 +67,7 @@ class HomeButtonRow extends StatelessWidget {
           onPressed: () => {
             showModalBottomSheet(
                 context: context,
-                builder: (context) => createPostContainer(context))
+                builder: (context) => createFeedContainer(context))
           },
           icon: const Icon(Icons.create),
           iconSize: 24,
@@ -85,7 +85,7 @@ class HomeButtonRow extends StatelessWidget {
     );
   }
 
-  Widget createPostContainer(BuildContext context) {
+  Widget createFeedContainer(BuildContext context) {
     var bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return BottomSheet(
