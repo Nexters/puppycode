@@ -95,6 +95,7 @@ class CalendarButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(16),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               width: 24,
