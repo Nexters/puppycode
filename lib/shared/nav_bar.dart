@@ -41,6 +41,17 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     });
   }
 
+  BottomNavigationBarItem _createBottomNavigationBarItem(String assetName) {
+    return BottomNavigationBarItem(
+        activeIcon: SvgPicture.asset('assets/icons/$assetName.svg'),
+        icon: SvgPicture.asset(
+          'assets/icons/$assetName.svg',
+          colorFilter:
+              const ColorFilter.mode(Color(0xFFBFC9D0), BlendMode.srcIn),
+        ),
+        label: assetName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,14 +64,16 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
             border:
                 Border(top: BorderSide(color: Color(0xFFEFF2F5), width: 1))),
         child: BottomNavigationBar(
-            currentIndex: _allowedRoutes.indexOf(_currentTab),
-            onTap: (index) => _changeTab(index),
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'feed'),
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: '나의산책'),
-            ],
-            showUnselectedLabels: false),
+          currentIndex: _allowedRoutes.indexOf(_currentTab),
+          onTap: (index) => _changeTab(index),
+          items: [
+            _createBottomNavigationBarItem('feed'),
+            _createBottomNavigationBarItem('home'),
+            _createBottomNavigationBarItem('my_feed'),
+          ],
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+        ),
       ),
     );
   }
