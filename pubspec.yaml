@@ -16,6 +16,7 @@ dependencies:
     sdk: flutter
   get:
   camera:
+  flutter_svg: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +33,7 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/icons/
 
   fonts:
     - family: Pretendard
