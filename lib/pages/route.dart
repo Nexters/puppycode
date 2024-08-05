@@ -11,6 +11,6 @@ class AppRoutes {
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/onboarding/name', page: () => const OnboardingPage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
-    GetPage(name: '/settings/friendsList', page: () => const FriendsListPage())
+    GetPage(name: '/settings/friends', page: () => const FriendsListPage())
   ];
 }

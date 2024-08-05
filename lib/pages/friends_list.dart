@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:badges/badges.dart' as badges;
 
 class FriendsListPage extends StatefulWidget {
@@ -110,15 +108,6 @@ class _FriendsListPageState extends State<FriendsListPage> {
 }
 
 class FriendsList extends StatelessWidget {
-  //   final List<SettingListItem> lists;
-  // final String title;
-
-  // const SettingList({
-  //   super.key,
-  //   required this.lists,
-  //   required this.title,
-  // });
-
   final String userName;
 
   const FriendsList({
@@ -136,10 +125,10 @@ class FriendsList extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    isDestructiveAction: true,
                     child: const Text(
                       '신고하기',
                       style: TextStyle(
-                        color: Colors.red,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -148,10 +137,10 @@ class FriendsList extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
+                    isDestructiveAction: true,
                     child: const Text(
                       '친구끊기',
                       style: TextStyle(
-                        color: Colors.red,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
