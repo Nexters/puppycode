@@ -78,7 +78,7 @@ class FeedUserStatus extends StatelessWidget {
                       decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.white.withOpacity(0.13),
+                              color: Colors.black.withOpacity(0.13),
                               blurRadius: 9,
                               offset: const Offset(0, 1.13),
                             )

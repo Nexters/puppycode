@@ -133,7 +133,7 @@ class OptionButton extends StatelessWidget {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)))),
       onPressed: onPressed,
-      child: Body3(
+      child: Body4(
         value: label,
         bold: isSelected,
         color: isSelected ? null : _textColor,

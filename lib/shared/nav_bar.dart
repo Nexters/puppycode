@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
 import 'package:puppycode/pages/home/my_home.dart';
@@ -45,6 +46,8 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     return Scaffold(
       appBar: AppBar(),
       body: _pages[_currentTab],
+      floatingActionButton:
+          _currentTab == 'feed' ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
             border:
@@ -58,6 +61,41 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
               BottomNavigationBarItem(icon: Icon(Icons.home), label: '나의산책'),
             ],
             showUnselectedLabels: false),
+      ),
+    );
+  }
+}
+
+class WriteFloatingButton extends StatelessWidget {
+  const WriteFloatingButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 65,
+      height: 65,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.13),
+            blurRadius: 30,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        elevation: 0,
+        onPressed: () => {Get.toNamed('/create')},
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: SvgPicture.asset(
+          'assets/icons/write.svg',
+          width: 32,
+        ),
       ),
     );
   }
