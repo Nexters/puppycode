@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/typography.dart';
 
 class TextButtonColor extends WidgetStateColor {
-  TextButtonColor(this.defaultValue) : super(0x111111);
+  TextButtonColor() : super(defaultColor.value);
 
-  int defaultValue = 0xA0A8AE;
-  Color defaultColor = Colors.yellow;
-  Color pressedColor = Colors.yellowAccent;
+  static Color defaultColor = const Color(0xFF36DBBF);
+  static Color pressedColor = const Color.fromARGB(255, 45, 170, 149); // 임시값
 
-// 왜 적용이 아될까?
   @override
   Color resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.pressed)) {
@@ -20,10 +19,11 @@ class TextButtonColor extends WidgetStateColor {
 class TextButtonStyle extends ButtonStyle {
   static ButtonStyle getStyle({bool? disabled}) {
     return TextButton.styleFrom(
-        fixedSize: const Size.fromHeight(56),
-        backgroundColor: disabled == true ? Colors.grey : Colors.black,
-        //backgroundColor: disabled == false ? Colors.grey : TextButtonColor(123),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));
+      fixedSize: const Size.fromHeight(56),
+      backgroundColor: disabled == true ? Colors.grey : TextButtonColor(),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+    );
   }
 }
 
@@ -36,12 +36,8 @@ class DefaultTextButton extends TextButton {
   }) : super(
           onPressed: onPressed,
           style: getStyle(disabled: disabled),
-          child: Text(
-            text,
-            style: textStyle,
-          ),
+          child: const Body1(value: '오늘도 산책 완료!'),
         );
 
   static const getStyle = TextButtonStyle.getStyle;
-  static const TextStyle textStyle = TextStyle(color: Colors.white);
 }
