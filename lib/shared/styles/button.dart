@@ -1,16 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/typography.dart';
 
-class ButtonColor extends WidgetStateColor {
-  const ButtonColor() : super(_defaultColor);
+class TextButtonColor extends WidgetStateColor {
+  TextButtonColor() : super(defaultColor.value);
 
-  static const int _defaultColor = 0xA0A8AE;
-  static const int _pressedColor = 0xdeadbeef;
+  static Color defaultColor = const Color(0xFF36DBBF);
+  static Color pressedColor = const Color.fromARGB(255, 45, 170, 149); // 임시값
 
   @override
   Color resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.pressed)) {
-      return const Color(_pressedColor);
+      return pressedColor;
     }
-    return const Color(_defaultColor);
+    return defaultColor;
   }
+}
+
+class TextButtonStyle extends ButtonStyle {
+  static ButtonStyle getStyle({bool? disabled}) {
+    return TextButton.styleFrom(
+      fixedSize: const Size.fromHeight(56),
+      backgroundColor: disabled == true ? Colors.grey : TextButtonColor(),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+    );
+  }
+}
+
+class DefaultTextButton extends TextButton {
+  DefaultTextButton({
+    super.key,
+    required String text,
+    required VoidCallback onPressed,
+    bool? disabled,
+  }) : super(
+          onPressed: onPressed,
+          style: getStyle(disabled: disabled),
+          child: const Body1(value: '오늘도 산책 완료!'),
+        );
+
+  static const getStyle = TextButtonStyle.getStyle;
 }

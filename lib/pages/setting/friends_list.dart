@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/widgets.dart';
+import 'package:puppycode/shared/typography.dart';
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -10,6 +12,8 @@ class FriendsListPage extends StatefulWidget {
 }
 
 class _FriendsListPageState extends State<FriendsListPage> {
+  bool hasFriends = true; // 임시 bool, api 연결 후에 리팩
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,83 +28,99 @@ class _FriendsListPageState extends State<FriendsListPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 14,
-          ),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      20,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 14,
+        ),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    20,
+                  ),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 20,
                     ),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
-                        blurRadius: 20,
+                  ]),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                child: const Padding(
+                  padding: EdgeInsets.all(
+                    12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.qr_code_2,
+                            size: 48,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Body2(
+                                value: '친구 코드 입력하기',
+                                bold: true,
+                              ),
+                              Body4(value: '함께 산책 공유할 친구를 추가해 보세요'),
+                            ],
+                          ),
+                        ],
                       ),
-                    ]),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: const Padding(
-                    padding: EdgeInsets.all(
-                      12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.qr_code_2,
-                              size: 48,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '친구 코드 입력하기',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  '함께 산책 공유할 친구를 추가해 보세요',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Icon(Icons.arrow_forward_ios),
-                      ],
-                    ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 27,
-              ),
-              const FriendsList(
-                userName: '푸름이',
-              ),
-              const FriendsList(
-                userName: '똥개',
-              )
-              // Todo: 친구 리스트 컴포 빼기
-            ],
-          ),
+            ),
+            hasFriends
+                ? const Column(
+                    children: [
+                      SizedBox(
+                        height: 27,
+                      ),
+                      FriendsList(
+                        userName: '푸름이',
+                      ),
+                      FriendsList(
+                        userName: '똥개',
+                      ),
+                    ],
+                  )
+                : Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 162, 162, 162),
+                            ),
+                            height: 128,
+                            width: 128,
+                            child: const Center(
+                              child: Text('graphic'),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Body4(value: '우리집 강아지 친구 찾으러 갈까요?', bold: true)
+                        ],
+                      ),
+                    ),
+                  )
+          ],
         ),
       ),
     );
