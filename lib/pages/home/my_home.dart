@@ -10,32 +10,26 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Home'),
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Column(
-          children: [
-            const HomeTitle(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 24, bottom: 20),
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 40, bottom: 20),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(228, 234, 238, 0.6),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              height: 400,
-              child: const HomeContent(),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        children: [
+          const HomeTitle(),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(top: 24, bottom: 20),
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 20),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(228, 234, 238, 0.6),
+              borderRadius: BorderRadius.circular(20),
             ),
-            const CalendarButton(),
-          ],
-        ),
+            height: 400,
+            child: const HomeContent(),
+          ),
+          const CalendarButton(),
+        ],
       ),
-      //bottomNavigationBar: const HomeNavigationBar(),
     );
   }
 }
@@ -47,28 +41,26 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        children: [
-          Align(
-              alignment: Alignment.topCenter,
-              child: Text(
-                '07:52',
-                style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -1.2,
-                    height: 38 / 32,
-                    color: Colors.black.withOpacity(0.6)),
-              )),
-          Positioned(
-              width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
-              height: 56,
-              bottom: 0,
-              child: DefaultTextButton(
-                  text: '오늘 산책도 무사히 완료!', onPressed: () => {}))
-        ],
-      ),
+    return Stack(
+      children: [
+        Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              '07:52',
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -1.2,
+                  height: 38 / 32,
+                  color: Colors.black.withOpacity(0.6)),
+            )),
+        Positioned(
+            width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
+            height: 56,
+            bottom: 0,
+            child:
+                DefaultTextButton(text: '오늘 산책도 무사히 완료!', onPressed: () => {}))
+      ],
     );
   }
 }
