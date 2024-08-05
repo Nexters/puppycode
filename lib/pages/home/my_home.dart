@@ -24,7 +24,10 @@ class MyHomePage extends StatelessWidget {
               margin: const EdgeInsets.only(top: 24, bottom: 20),
               padding: const EdgeInsets.only(
                   left: 16, right: 16, top: 40, bottom: 20),
-              color: Colors.grey,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(228, 234, 238, 0.6),
+                borderRadius: BorderRadius.circular(20),
+              ),
               height: 400,
               child: const HomeContent(),
             ),
@@ -47,7 +50,17 @@ class HomeContent extends StatelessWidget {
     return Expanded(
       child: Stack(
         children: [
-          Align(alignment: Alignment.topCenter, child: Head1(value: '07:52')),
+          Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                '07:52',
+                style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -1.2,
+                    height: 38 / 32,
+                    color: Colors.black.withOpacity(0.6)),
+              )),
           Positioned(
               width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
               height: 56,
