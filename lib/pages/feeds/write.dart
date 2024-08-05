@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
-import 'package:puppycode/shared/typography.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class FeedWritePage extends StatefulWidget {
   const FeedWritePage({super.key});
@@ -99,7 +101,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 right: 20,
                 bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
-              onPressed: () => {},
+              onPressed: () => {Get.to(() => const FeedCreateSuccessPage())},
               text: '오늘도 산책완료!',
             ),
           ),
