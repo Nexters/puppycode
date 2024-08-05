@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:puppycode/shared/camera.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -163,7 +164,7 @@ class TimeOptionList extends StatelessWidget {
   // ignore: non_constant_identifier_names
   Widget SelectButton() {
     return TextButton(
-        onPressed: () => {},
+        onPressed: () => {Get.to(() => const CameraScreen())},
         style: TextButton.styleFrom(
           backgroundColor: Colors.black,
           fixedSize: const Size.fromHeight(56),
