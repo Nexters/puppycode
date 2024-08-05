@@ -3,7 +3,7 @@ import 'package:puppycode/pages/home.dart';
 import 'package:puppycode/pages/home/my_home.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/landing.dart';
-import 'package:puppycode/pages/posts/write.dart';
+import 'package:puppycode/pages/feeds/write.dart';
 import 'package:puppycode/pages/setting.dart';
 
 class AppRoutes {
@@ -13,6 +13,6 @@ class AppRoutes {
     GetPage(name: '/onboarding', page: () => const LandingPage()),
     GetPage(name: '/onboarding/name', page: () => const OnboardingPage()),
     GetPage(name: '/home', page: () => const MyHomePage()),
-    GetPage(name: '/create', page: () => const PostWritePage()),
+    GetPage(name: '/create', page: () => const FeedWritePage()),
   ];
 }

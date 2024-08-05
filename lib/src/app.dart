@@ -14,8 +14,15 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         bottomSheetTheme:
             const BottomSheetThemeData(backgroundColor: Colors.white),
+          inputDecorationTheme: const InputDecorationTheme(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+          )
       ),
-      initialRoute: '/',
+      initialRoute: '/create',
       getPages: AppRoutes.routes,
     );
   }
