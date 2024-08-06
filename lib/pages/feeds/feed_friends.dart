@@ -18,6 +18,7 @@ class FeedFriends extends StatelessWidget {
               FeedUserStatus(
                 name: '포포',
                 hasWalked: true,
+                isMine: true,
               ),
               FeedUserStatus(
                 name: '푸름이',
@@ -76,12 +77,15 @@ class FeedUserStatus extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
-                    'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg',
+                    isMine
+                        ? 'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg'
+                        : 'https://image.fnnews.com/resource/media/image/2024/05/31/202405310911189673_l.jpg',
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              Positioned.fill(
+              if (isMine)
+                Positioned.fill(
                 child: Align(
                     alignment: Alignment.center,
                     child: Body4(
@@ -93,7 +97,7 @@ class FeedUserStatus extends StatelessWidget {
                         color: Colors.black.withOpacity(0.3),
                       ),
                     )),
-              ),
+                ),
               Positioned(
                   bottom: 0,
                   right: 0,

@@ -71,10 +71,17 @@ class _FeedItemState extends State<FeedItem> {
                 gradient: LinearGradient(
                   begin: FractionalOffset.topCenter,
                   end: FractionalOffset.bottomCenter,
+                    // TODO: gradient 이해하고 수정하기...
                   colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0),
+                      Colors.black.withOpacity(0.5),
+                      Colors.white.withOpacity(0),
+                      Colors.white.withOpacity(0.1),
                   ],
+                    stops: const [
+                      0,
+                      0.4,
+                      1
+                    ]
                 )),
           ),
           NameLabel(name: name),
