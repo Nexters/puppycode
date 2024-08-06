@@ -43,7 +43,8 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     });
   }
 
-  BottomNavigationBarItem _createBottomNavigationBarItem(String assetName) {
+  BottomNavigationBarItem _createBottomNavigationBarItem(
+      String assetName, String label) {
     return BottomNavigationBarItem(
         activeIcon: SvgPicture.asset('assets/icons/$assetName.svg'),
         icon: SvgPicture.asset(
@@ -51,7 +52,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
           colorFilter:
               const ColorFilter.mode(Color(0xFFBFC9D0), BlendMode.srcIn),
         ),
-        label: assetName);
+        label: label);
   }
 
   @override
@@ -68,13 +69,21 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
         child: BottomNavigationBar(
           currentIndex: _allowedRoutes.indexOf(_currentTab),
           onTap: (index) => _changeTab(index),
+          selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 10,
+              letterSpacing: -1,
+              color: Color(0xFF1F1F20)),
+          unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 10,
+              letterSpacing: -1,
+              color: Color(0xFF8D959A)),
           items: [
-            _createBottomNavigationBarItem('feed'),
-            _createBottomNavigationBarItem('home'),
-            _createBottomNavigationBarItem('my_feed'),
+            _createBottomNavigationBarItem('feed', '피드'),
+            _createBottomNavigationBarItem('home', '홈'),
+            _createBottomNavigationBarItem('calendar', '산책일지'),
           ],
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
         ),
       ),
     );
