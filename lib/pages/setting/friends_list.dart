@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/typography.dart';
 
 class FriendsListPage extends StatefulWidget {
@@ -49,6 +50,9 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   ]),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Get.toNamed('/friends/code');
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(
                     12,

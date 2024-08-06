@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/home.dart';
 import 'package:puppycode/pages/home/my_home.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
     GetPage(name: '/home', page: () => const MyHomePage()),
     GetPage(name: '/create', page: () => const PostWritePage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
-    GetPage(name: '/settings/friends', page: () => const FriendsListPage())
+    GetPage(name: '/friends', page: () => const FriendsListPage()),
+    GetPage(name: '/friends/code', page: () => const FriendsCodePage()),
   ];
 }
