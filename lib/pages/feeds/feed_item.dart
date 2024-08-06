@@ -72,8 +72,8 @@ class _FeedItemState extends State<FeedItem> {
                   begin: FractionalOffset.topCenter,
                   end: FractionalOffset.bottomCenter,
                   colors: [
-                    Colors.black,
-                    Colors.black.withOpacity(0.4),
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0),
                   ],
                 )),
           ),
