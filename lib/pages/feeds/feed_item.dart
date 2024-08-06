@@ -52,7 +52,8 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   Widget build(BuildContext context) {
-    var height = (MediaQuery.of(context).size.width - 40) * 1.33;
+    var width = (MediaQuery.of(context).size.width - 40);
+    var height = width * 1.33;
     final name = widget.item.name;
 
     return Container(
@@ -62,6 +63,20 @@ class _FeedItemState extends State<FeedItem> {
           color: overlayColor, borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: <Widget>[
+          const FeedPhoto(),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: FractionalOffset.topCenter,
+                  end: FractionalOffset.bottomCenter,
+                  colors: [
+                    Colors.black,
+                    Colors.black.withOpacity(0.4),
+                  ],
+                )),
+          ),
           NameLabel(name: name),
           const Positioned(
               top: 58,
@@ -71,6 +86,28 @@ class _FeedItemState extends State<FeedItem> {
                 color: Colors.white,
               )),
         ],
+      ),
+    );
+  }
+}
+
+class FeedPhoto extends StatelessWidget {
+  const FeedPhoto({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var width = (MediaQuery.of(context).size.width - 40);
+    var height = width * 1.33;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Image.network(
+        'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png',
+        fit: BoxFit.cover,
+        width: width,
+        height: height,
       ),
     );
   }
@@ -96,6 +133,7 @@ class NameLabel extends StatelessWidget {
               borderRadius: BorderRadius.circular(20)),
           child: Body4(
             value: name,
+            bold: true,
             color: Colors.white,
           ),
         ));
