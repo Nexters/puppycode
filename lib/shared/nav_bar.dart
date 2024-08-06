@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -84,8 +86,17 @@ class WriteFloatingButton extends StatelessWidget {
     super.key,
   });
 
+  _onButtonClick(bool hasWritten) {
+    if (hasWritten) return;
+    Get.toNamed('/create');
+  }
+
   @override
   Widget build(BuildContext context) {
+    var hasWritten = true;
+    var floatingButtonColor =
+        Theme.of(context).floatingActionButtonTheme.backgroundColor;
+
     return Container(
       width: 65,
       height: 65,
@@ -101,12 +112,16 @@ class WriteFloatingButton extends StatelessWidget {
       ),
       child: FloatingActionButton(
         elevation: 0,
-        onPressed: () => {Get.toNamed('/create')},
+        onPressed: () => {_onButtonClick(hasWritten)},
+        backgroundColor: hasWritten ? Colors.white : floatingButtonColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
         child: SvgPicture.asset(
           'assets/icons/write.svg',
+          colorFilter: hasWritten
+              ? ColorFilter.mode(floatingButtonColor!, BlendMode.srcIn)
+              : null,
           width: 32,
         ),
       ),
