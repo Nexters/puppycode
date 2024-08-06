@@ -13,15 +13,17 @@ class ScreenWithNavBar extends StatefulWidget {
   State<ScreenWithNavBar> createState() => _ScreenWithNavBarState();
 }
 
+enum Tab { feed, home, my }
+
 class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     with WidgetsBindingObserver {
-  String _currentTab = 'home';
-  static const List<String> _allowedRoutes = ['feed', 'home', 'my'];
+  Tab _currentTab = Tab.feed;
+  static const List<Tab> _allowedRoutes = [Tab.feed, Tab.home, Tab.my];
 
-  final Map<String, Widget> _pages = {
-    'feed': const FeedPage(),
-    'home': const MyHomePage(),
-    'my': const MyHomePage(),
+  final Map<Tab, Widget> _pages = {
+    Tab.feed: const FeedPage(),
+    Tab.home: const MyHomePage(),
+    Tab.my: const MyHomePage(),
   };
 
   @override
@@ -61,7 +63,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       appBar: AppBar(),
       body: _pages[_currentTab],
       floatingActionButton:
-          _currentTab == 'feed' ? const WriteFloatingButton() : null,
+          _currentTab == Tab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
             border:
