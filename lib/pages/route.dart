@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
+import 'package:puppycode/pages/setting/setting.dart';
+import 'package:puppycode/pages/setting/user_info.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/landing.dart';
 import 'package:puppycode/pages/feeds/write.dart';
 import 'package:puppycode/shared/nav_bar.dart';
-import 'package:puppycode/pages/setting/setting.dart';
-import 'package:puppycode/pages/setting/user_info.dart';
 
 class AppRoutes {
   static final routes = [
