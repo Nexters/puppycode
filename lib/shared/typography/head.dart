@@ -15,6 +15,21 @@ class Head1 extends StatelessWidget {
   }
 }
 
+class Head2 extends StatelessWidget {
+  const Head2({super.key, required this.value, this.color});
+
+  final String value;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      style: HeadTextStyle.getH2Style(color: color),
+    );
+  }
+}
+
 class Head3 extends StatelessWidget {
   const Head3({super.key, required this.value, this.color});
 
@@ -39,7 +54,17 @@ class HeadTextStyle {
       fontWeight: FontWeight.w700,
       letterSpacing: -1.2,
       color: color ?? _kDefaultTextColor,
-      height: 32 / 24,
+      height: 33 / 24,
+    );
+  }
+
+  static getH2Style({Color? color}) {
+    return TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -1.2,
+      color: color ?? _kDefaultTextColor,
+      height: 31 / 22,
     );
   }
 

@@ -2,48 +2,6 @@ import 'package:flutter/material.dart';
 
 const _kDefaultTextColor = Color(0xFF1E2022);
 
-class H1 extends StatelessWidget {
-  const H1({super.key, required this.value, this.color});
-
-  final Color? color;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value,
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -1.2,
-        color: color ?? _kDefaultTextColor,
-        height: 33 / 24,
-      ),
-    );
-  }
-}
-
-class H2 extends StatelessWidget {
-  const H2({super.key, required this.value, this.color});
-
-  final Color? color;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value,
-      style: TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -1,
-        color: color ?? _kDefaultTextColor,
-        height: 31 / 22,
-      ),
-    );
-  }
-}
-
 class Body1 extends StatelessWidget {
   const Body1({super.key, required this.value, this.color, this.bold = false});
 
@@ -111,10 +69,16 @@ class Body3 extends StatelessWidget {
 }
 
 class Body4 extends StatelessWidget {
-  const Body4({super.key, required this.value, this.color, this.bold = false});
+  const Body4(
+      {super.key,
+      required this.value,
+      this.color,
+      this.bold = false,
+      this.textShadow});
 
   final String value;
   final Color? color;
+  final Shadow? textShadow;
   final bool bold;
 
   @override
@@ -127,6 +91,7 @@ class Body4 extends StatelessWidget {
         letterSpacing: -1,
         color: color ?? _kDefaultTextColor,
         height: 18 / 14,
+        shadows: textShadow != null ? <Shadow>[textShadow!] : null,
       ),
     );
   }

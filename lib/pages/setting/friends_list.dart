@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/shared/typography.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});

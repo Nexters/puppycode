@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/shared/typography.dart';
+import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/head.dart';
 
 class FriendsCodePage extends StatefulWidget {
   const FriendsCodePage({super.key});
@@ -33,7 +34,7 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const H2(value: '친구의 코드를 입력하면\n피드 친구를 맺을 수 있어요.'),
+            const Head2(value: '친구의 코드를 입력하면\n피드 친구를 맺을 수 있어요.'),
             const SizedBox(height: 8),
             const Body2(value: '맨 첫 칸을 꾹 눌러 코드 붙여넣기가 가능해요.'),
             const SizedBox(height: 120),
