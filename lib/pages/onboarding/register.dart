@@ -28,6 +28,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
           children: [
             const GuideText(),
             TextInput(
+              onChanged: (value) => {setState(() {})},
               controller: _nameController,
               hintText: '강아지 이름',
               maxLength: 10,

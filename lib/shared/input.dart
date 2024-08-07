@@ -6,6 +6,7 @@ import 'package:puppycode/shared/typography/body.dart';
 class TextInput extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final ValueChanged<String>? onChanged;
   final bool? showClearIcon;
   final int? maxLength;
 
@@ -13,6 +14,7 @@ class TextInput extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
+    this.onChanged,
     this.showClearIcon = true,
     this.maxLength,
   });
@@ -28,6 +30,7 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (value) => {if (onChanged != null) onChanged!(value)},
       maxLength: maxLength,
       controller: controller,
       decoration: InputDecoration(
@@ -40,7 +43,10 @@ class TextInput extends StatelessWidget {
           hintStyle: BodyTextStyle.getBody1Style(color: ThemeColor.gray4),
           suffixIcon: controller.text.isNotEmpty && showClearIcon == true
               ? GestureDetector(
-                  onTap: () => {controller.clear()},
+                  onTap: () => {
+                    controller.clear(),
+                    if (onChanged != null) onChanged!('')
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: SvgPicture.asset(

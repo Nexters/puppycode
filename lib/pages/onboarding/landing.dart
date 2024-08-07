@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puppycode/pages/onboarding/name_input.dart';
+import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
 
 class LandingPage extends StatelessWidget {
