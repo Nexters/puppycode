@@ -6,13 +6,15 @@ import 'package:puppycode/shared/typography/body.dart';
 class TextInput extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  final bool? showClearIcon; // icon asset path
+  final bool? showClearIcon;
+  final int? maxLength;
 
   const TextInput({
     super.key,
     required this.controller,
     required this.hintText,
     this.showClearIcon = true,
+    this.maxLength,
   });
 
   static _getInputBorderStyle(bool focus) {
@@ -26,8 +28,10 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLength: maxLength,
       controller: controller,
       decoration: InputDecoration(
+          counterText: '',
           hintText: hintText,
           focusedBorder: _getInputBorderStyle(true),
           enabledBorder: _getInputBorderStyle(false),

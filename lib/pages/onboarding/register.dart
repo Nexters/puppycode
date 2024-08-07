@@ -30,6 +30,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             TextInput(
               controller: _nameController,
               hintText: '강아지 이름',
+              maxLength: 10,
             ),
             const SizedBox(height: 12),
             // 지역 INPUT
