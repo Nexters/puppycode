@@ -44,8 +44,8 @@ class Body2 extends StatelessWidget {
   }
 }
 
-class Body3 extends StatelessWidget {
-  const Body3({super.key, required this.value, this.color, this.bold = false});
+class Body4 extends StatelessWidget {
+  const Body4({super.key, required this.value, this.color, this.bold = false});
 
   final String value;
   final Color? color;

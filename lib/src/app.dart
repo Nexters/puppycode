@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
           bottomNavigationBarTheme:
               const BottomNavigationBarThemeData(backgroundColor: Colors.white),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Color(0xFF36DBBF)),
         bottomSheetTheme:
             const BottomSheetThemeData(backgroundColor: Colors.white),
           inputDecorationTheme: const InputDecorationTheme(
