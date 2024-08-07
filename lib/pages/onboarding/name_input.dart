@@ -32,7 +32,7 @@ class _NameInputPageState extends State<NameInputPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const NameGuide(),
+            const GuideText(),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -76,8 +76,8 @@ class _NameInputPageState extends State<NameInputPage> {
   }
 }
 
-class NameGuide extends StatelessWidget {
-  const NameGuide({
+class GuideText extends StatelessWidget {
+  const GuideText({
     super.key,
   });
 
@@ -92,8 +92,7 @@ class NameGuide extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Body2(
-                value: '키우는 강아지가 없어도 괜찮아요',
-                color: Colors.black.withOpacity(0.6)),
+                value: '키우는 강아지가 없어도 괜찮아요.', color: Color(0xFF50555C)),
           )
         ],
       ),
