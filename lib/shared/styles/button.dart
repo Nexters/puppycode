@@ -1,16 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
-class ButtonColor extends WidgetStateColor {
-  const ButtonColor() : super(_defaultColor);
+class TextButtonColor extends WidgetStateColor {
+  TextButtonColor() : super(defaultColor.value);
 
-  static const int _defaultColor = 0xA0A8AE;
-  static const int _pressedColor = 0xdeadbeef;
+  static Color defaultColor = const Color(0xFF36DBBF);
+  static Color pressedColor = const Color.fromARGB(255, 45, 170, 149); // 임시값
 
   @override
   Color resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.pressed)) {
-      return const Color(_pressedColor);
+      return pressedColor;
     }
-    return const Color(_defaultColor);
+    return defaultColor;
   }
+}
+
+class TextButtonStyle extends ButtonStyle {
+  static ButtonStyle getStyle({bool? disabled, Color? backgroundColor}) {
+    return TextButton.styleFrom(
+      fixedSize: const Size.fromHeight(56),
+      backgroundColor:
+          disabled == true ? Colors.grey : backgroundColor ?? TextButtonColor(),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+    );
+  }
+}
+
+class DefaultTextButton extends TextButton {
+  DefaultTextButton({
+    super.key,
+    required String text,
+    required VoidCallback onPressed,
+    bool? disabled,
+    ButtonStyle? style,
+    Widget? child,
+  }) : super(
+          onPressed: onPressed,
+          style: style ?? getStyle(disabled: disabled),
+          child: child ?? Body1(value: text),
+        );
+
+  static const getStyle = TextButtonStyle.getStyle;
+}
+
+class DefaultCloseButton extends DefaultTextButton {
+  DefaultCloseButton({
+    super.key,
+    required super.onPressed,
+  }) : super(
+            text: '닫기',
+            style: TextButtonStyle.getStyle(
+                backgroundColor: const Color(0xFFE4EAEE)),
+            child: const Body1(
+              value: '닫기',
+              color: Color(0xFF72757A),
+            ));
+}
+
+class DefaultElevatedButton extends ElevatedButton {
+  DefaultElevatedButton({
+    super.key,
+    required String text,
+    required VoidCallback onPressed,
+    bool? disabled,
+  }) : super(
+          onPressed: onPressed,
+          style: getStyle(disabled: disabled),
+          child: Body1(value: text),
+        );
+
+  static const getStyle = TextButtonStyle.getStyle;
 }
