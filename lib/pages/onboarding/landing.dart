@@ -15,7 +15,7 @@ class LandingPage extends StatelessWidget {
           child: TextButton(
         child: const Text('register'),
         onPressed: () {
-          Get.to(() => const NameInputPage());
+          Get.to(() => const RegistrationPage());
         },
       )),
       bottomSheet: Container(

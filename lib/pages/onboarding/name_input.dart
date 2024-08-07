@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
-class NameInputPage extends StatefulWidget {
-  const NameInputPage({ super.key });
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
   @override
-  State<NameInputPage> createState() => _NameInputPageState();
+  State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _NameInputPageState extends State<NameInputPage> {
+class _RegistrationPageState extends State<RegistrationPage> {
   String name = '';
   bool isValidName = false;
 
@@ -22,8 +23,17 @@ class _NameInputPageState extends State<NameInputPage> {
     });
   }
 
+  _getInputBorderStyle(bool focus) {
+    return OutlineInputBorder(
+      borderSide:
+          BorderSide(color: focus ? ThemeColor.primary : ThemeColor.gray2),
+      borderRadius: BorderRadius.circular(20),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(),
@@ -40,14 +50,13 @@ class _NameInputPageState extends State<NameInputPage> {
                   validateName();
                 });
               },
-              decoration: const InputDecoration(
-                hintText: '개떡이',
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
+              decoration: InputDecoration(
+                hintText: '강아지 이름',
+                focusedBorder: _getInputBorderStyle(true),
+                enabledBorder: _getInputBorderStyle(false),
+                contentPadding: const EdgeInsets.all(16),
+                labelStyle: BodyTextStyle.getBody1Style(bold: true),
+                hintStyle: BodyTextStyle.getBody1Style(color: ThemeColor.gray4),
               ),
             ),
           ],
@@ -85,14 +94,13 @@ class GuideText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 64),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Head2(value: '우리 집 강아지의 이름과\n사는 곳을 설정해 볼까요?'),
+          Head2(value: '우리 집 강아지의 이름과\n사는 곳을 설정해 볼까요?'),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Body2(
-                value: '키우는 강아지가 없어도 괜찮아요.', color: Color(0xFF50555C)),
+            padding: EdgeInsets.only(top: 8),
+            child: Body2(value: '키우는 강아지가 없어도 괜찮아요.', color: Color(0xFF50555C)),
           )
         ],
       ),

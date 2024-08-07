@@ -7,7 +7,7 @@ class OnboardingPage extends StatelessWidget {
   // TODO: 추후 페이지 구현 다 하면 수정함
   @override
   Widget build(BuildContext context) {
-    return const NameInputPage();
+    return const RegistrationPage();
   }
 }
 
