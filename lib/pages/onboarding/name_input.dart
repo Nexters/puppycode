@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
+import 'package:puppycode/shared/input.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
@@ -14,26 +14,10 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  String name = '';
-  bool isValidName = false;
-
-  validateName() {
-    setState(() {
-      isValidName = name.length > 2;
-    });
-  }
-
-  _getInputBorderStyle(bool focus) {
-    return OutlineInputBorder(
-      borderSide:
-          BorderSide(color: focus ? ThemeColor.primary : ThemeColor.gray2),
-      borderRadius: BorderRadius.circular(20),
-    );
-  }
+  final _nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(),
@@ -43,22 +27,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const GuideText(),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  name = value;
-                  validateName();
-                });
-              },
-              decoration: InputDecoration(
-                hintText: '강아지 이름',
-                focusedBorder: _getInputBorderStyle(true),
-                enabledBorder: _getInputBorderStyle(false),
-                contentPadding: const EdgeInsets.all(16),
-                labelStyle: BodyTextStyle.getBody1Style(bold: true),
-                hintStyle: BodyTextStyle.getBody1Style(color: ThemeColor.gray4),
-              ),
+            TextInput(
+              controller: _nameController,
+              hintText: '강아지 이름',
             ),
+            const SizedBox(height: 12),
+            // 지역 INPUT
           ],
         ),
       ),
@@ -67,17 +41,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              flex: 1,
-              child: DefaultTextButton(
-                text: '안할래요',
-                onPressed: () => Get.back(),
-              ),
-            ),
-            const SizedBox(width: 17),
-            NameConfirmButton(isActive: isValidName),
+                child: DefaultTextButton(
+              text: '등록하기',
+              onPressed: () => {Get.to(() => const StartPage())},
+            )),
           ],
         ),
       ),
@@ -105,30 +74,5 @@ class GuideText extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class NameConfirmButton extends StatefulWidget {
-  final bool isActive;
-
-  const NameConfirmButton({
-    required this.isActive,
-    super.key,
-  });
-
-  @override
-  State<NameConfirmButton> createState() => _NameConfirmButtonState();
-}
-
-class _NameConfirmButtonState extends State<NameConfirmButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        flex: 2,
-        child: DefaultTextButton(
-          text: '등록하기',
-          onPressed: () => {Get.to(() => const StartPage())},
-          disabled: !widget.isActive,
-        ));
   }
 }
