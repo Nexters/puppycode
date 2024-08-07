@@ -45,10 +45,16 @@ class Body2 extends StatelessWidget {
 }
 
 class Body4 extends StatelessWidget {
-  const Body4({super.key, required this.value, this.color, this.bold = false});
+  const Body4(
+      {super.key,
+      required this.value,
+      this.color,
+      this.bold = false,
+      this.textShadow});
 
   final String value;
   final Color? color;
+  final Shadow? textShadow;
   final bool bold;
 
   @override
@@ -61,6 +67,7 @@ class Body4 extends StatelessWidget {
         letterSpacing: -1,
         color: color ?? _kDefaultTextColor,
         height: 18 / 14,
+        shadows: textShadow != null ? <Shadow>[textShadow!] : null,
       ),
     );
   }
