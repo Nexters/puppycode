@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
-import 'package:puppycode/shared/typography.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
-class PostWritePage extends StatefulWidget {
-  const PostWritePage({super.key});
+class FeedWritePage extends StatefulWidget {
+  const FeedWritePage({super.key});
 
   @override
-  State<PostWritePage> createState() => _PostWritePageState();
+  State<FeedWritePage> createState() => _FeedWritePageState();
 }
 
 const _kInitialTime = 20;
 const _kInitialGap = 20;
+const _kOptionCount = 3;
 
-class _PostWritePageState extends State<PostWritePage> {
+class _FeedWritePageState extends State<FeedWritePage> {
   String? selectedTime;
   List<String> options = [];
 
@@ -22,7 +24,7 @@ class _PostWritePageState extends State<PostWritePage> {
   void initState() {
     super.initState();
     var options = [];
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < _kOptionCount; i++) {
       if (i == 0) {
         options.add('$_kInitialTime분 미만');
       } else {
@@ -94,9 +96,12 @@ class _PostWritePageState extends State<PostWritePage> {
         ),
         bottomNavigationBar: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: DefaultTextButton(
-              onPressed: () => {},
+            padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+            child: DefaultElevatedButton(
+              onPressed: () => {Get.to(() => const FeedCreateSuccessPage())},
               text: '오늘도 산책완료!',
             ),
           ),
@@ -128,7 +133,7 @@ class OptionButton extends StatelessWidget {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)))),
       onPressed: onPressed,
-      child: Body3(
+      child: Body4(
         value: label,
         bold: isSelected,
         color: isSelected ? null : _textColor,

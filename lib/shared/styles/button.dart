@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puppycode/shared/typography.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class TextButtonColor extends WidgetStateColor {
   TextButtonColor() : super(defaultColor.value);
@@ -17,10 +17,11 @@ class TextButtonColor extends WidgetStateColor {
 }
 
 class TextButtonStyle extends ButtonStyle {
-  static ButtonStyle getStyle({bool? disabled}) {
+  static ButtonStyle getStyle({bool? disabled, Color? backgroundColor}) {
     return TextButton.styleFrom(
       fixedSize: const Size.fromHeight(56),
-      backgroundColor: disabled == true ? Colors.grey : TextButtonColor(),
+      backgroundColor:
+          disabled == true ? Colors.grey : backgroundColor ?? TextButtonColor(),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),
     );
@@ -33,10 +34,41 @@ class DefaultTextButton extends TextButton {
     required String text,
     required VoidCallback onPressed,
     bool? disabled,
+    ButtonStyle? style,
+    Widget? child,
+  }) : super(
+          onPressed: onPressed,
+          style: style ?? getStyle(disabled: disabled),
+          child: child ?? Body1(value: text),
+        );
+
+  static const getStyle = TextButtonStyle.getStyle;
+}
+
+class DefaultCloseButton extends DefaultTextButton {
+  DefaultCloseButton({
+    super.key,
+    required super.onPressed,
+  }) : super(
+            text: '닫기',
+            style: TextButtonStyle.getStyle(
+                backgroundColor: const Color(0xFFE4EAEE)),
+            child: const Body1(
+              value: '닫기',
+              color: Color(0xFF72757A),
+            ));
+}
+
+class DefaultElevatedButton extends ElevatedButton {
+  DefaultElevatedButton({
+    super.key,
+    required String text,
+    required VoidCallback onPressed,
+    bool? disabled,
   }) : super(
           onPressed: onPressed,
           style: getStyle(disabled: disabled),
-          child: const Body1(value: '오늘도 산책 완료!'),
+          child: Body1(value: text),
         );
 
   static const getStyle = TextButtonStyle.getStyle;

@@ -16,6 +16,7 @@ dependencies:
     sdk: flutter
   get:
   camera:
+  flutter_svg: ^2.0.1
   share:
   intl: ^0.19.0
   badges: ^3.1.2
@@ -35,6 +36,7 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/icons/
 
   fonts:
     - family: Pretendard

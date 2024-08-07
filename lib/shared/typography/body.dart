@@ -104,7 +104,7 @@ class Body3 extends StatelessWidget {
         fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
         letterSpacing: -1,
         color: color ?? _kDefaultTextColor,
-        height: 18 / 15,
+        height: 23 / 15,
       ),
     );
   }

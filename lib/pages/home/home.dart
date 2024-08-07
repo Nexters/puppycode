@@ -1,17 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/camera.dart';
+import 'package:puppycode/shared/styles/button.dart';
+import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/head.dart';
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Home'),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        children: [
+          const HomeTitle(),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(top: 24, bottom: 20),
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 20),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(228, 234, 238, 0.6),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            height: 400,
+            child: const HomeContent(),
+          ),
+          const CalendarButton(),
+        ],
       ),
-      bottomNavigationBar: const HomeNavigationBar(),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  const HomeContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              '07:52',
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -1.2,
+                  height: 38 / 32,
+                  color: Colors.black.withOpacity(0.6)),
+            )),
+        Positioned(
+            width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
+            height: 56,
+            bottom: 0,
+            child:
+                DefaultTextButton(text: '오늘 산책도 무사히 완료!', onPressed: () => {}))
+      ],
+    );
+  }
+}
+
+class CalendarButton extends StatelessWidget {
+  const CalendarButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 20,
+              offset: const Offset(2, 2), // changes position of shadow
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 24,
+              height: 24,
+              child: Container(
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Body1(value: '이번달 산책 캘린더'),
+            const SizedBox(width: 4),
+            const Body2(value: '4')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeTitle extends StatelessWidget {
+  const HomeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Head1(value: '개떡이 발바닥 주의'),
+        SizedBox(height: 9),
+        Body2(value: '31℃')
+      ],
     );
   }
 }
@@ -67,7 +176,7 @@ class HomeButtonRow extends StatelessWidget {
           onPressed: () => {
             showModalBottomSheet(
                 context: context,
-                builder: (context) => createPostContainer(context))
+                builder: (context) => createFeedContainer(context))
           },
           icon: const Icon(Icons.create),
           iconSize: 24,
@@ -85,7 +194,7 @@ class HomeButtonRow extends StatelessWidget {
     );
   }
 
-  Widget createPostContainer(BuildContext context) {
+  Widget createFeedContainer(BuildContext context) {
     var bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return BottomSheet(
