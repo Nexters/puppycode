@@ -12,6 +12,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Pretendard',
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+          bottomNavigationBarTheme:
+              const BottomNavigationBarThemeData(backgroundColor: Colors.white),
         bottomSheetTheme:
             const BottomSheetThemeData(backgroundColor: Colors.white),
           inputDecorationTheme: const InputDecorationTheme(
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
             disabledBorder: InputBorder.none,
           )
       ),
-      initialRoute: '/home',
+      initialRoute: '/',
       getPages: AppRoutes.routes,
     );
   }
