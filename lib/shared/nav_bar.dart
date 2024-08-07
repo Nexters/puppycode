@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
-import 'package:puppycode/pages/home/my_home.dart';
+import 'package:puppycode/pages/home/home.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});
@@ -22,8 +22,8 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
 
   final Map<Tab, Widget> _pages = {
     Tab.feed: const FeedPage(),
-    Tab.home: const MyHomePage(),
-    Tab.my: const MyHomePage(),
+    Tab.home: const HomePage(),
+    Tab.my: const HomePage(),
   };
 
   @override
