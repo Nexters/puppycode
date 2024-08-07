@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/head.dart';
 
 class NameInputPage extends StatefulWidget {
   const NameInputPage({ super.key });
@@ -83,17 +85,16 @@ class NameGuide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 64),
-      child: const Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '우리집 강아지 이름을\n설정해볼까요?',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          ),
-          Text('키우는 강아지가 없어도 괜찮아요',
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey,
-                  fontSize: 16))
+          const Head2(value: '우리 집 강아지의 이름과\n사는 곳을 설정해 볼까요?'),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Body2(
+                value: '키우는 강아지가 없어도 괜찮아요',
+                color: Colors.black.withOpacity(0.6)),
+          )
         ],
       ),
     );
