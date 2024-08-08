@@ -1,7 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -10,10 +12,13 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => CameraScreenState();
 }
 
+enum CameraRatio { square, rectangle }
+
 class CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   CameraController? _controller;
   bool _isCameraInitialized = false;
+  CameraRatio _cameraRatio = CameraRatio.rectangle;
   late final List<CameraDescription> _cameras;
 
   get camera => CameraDescription;
@@ -85,6 +90,14 @@ class CameraScreenState extends State<CameraScreen>
     }
   }
 
+  void _changeCameraRatio() {
+    setState(() {
+      _cameraRatio = _cameraRatio == CameraRatio.rectangle
+          ? CameraRatio.square
+          : CameraRatio.rectangle;
+    });
+  }
+
   void _takePhoto() async {
     //final navigator = Navigator.of(context);
     final xFile = await capturePhoto();
@@ -112,79 +125,107 @@ class CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     if (_isCameraInitialized) {
-      return Container(
-        color: Colors.black,
-        child: Stack(children: [
-          Container(
-            margin: const EdgeInsets.only(top: 120),
-            child: AspectRatio(
-              aspectRatio: 0.75,
-              child: ClipRect(
-                  child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: SizedBox(
-                  width: _controller!.value.previewSize!.height,
-                  height: _controller!.value.previewSize!.width,
-                  child: CameraPreview(_controller!),
-                ),
-              )),
-            ),
-          ),
-          Positioned(
-            top: 55,
-            left: 20,
-            child: IconButton(
-              icon: const Icon(Icons.flash_off, color: Colors.white, size: 25),
-              onPressed: () {
-                // 플래시 토글 기능 추가
-              },
-            ),
-          ),
-          Positioned(
-            bottom: 70,
-            left: 0,
-            right: 0,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    child: const Text(
-                      '취소',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    onPressed: () {
-                      dispose();
-                      Get.back();
-                    },
-                  ),
-                  const SizedBox(width: 80),
-                  GestureDetector(
-                    onTap: () {
-                      _takePhoto();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 4),
+      return SafeArea(
+        child: Container(
+          color: Colors.black,
+          child: Stack(alignment: Alignment.center, children: [
+            Container(
+              margin: EdgeInsets.only(
+                  bottom: _cameraRatio == CameraRatio.rectangle ? 48 : 126),
+              child: AspectRatio(
+                aspectRatio: _cameraRatio == CameraRatio.rectangle ? 0.75 : 1,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: SizedBox(
+                        width: _controller?.value.previewSize!.height,
+                        height: _controller?.value.previewSize!.width,
+                        child: _controller != null
+                            ? CameraPreview(_controller!)
+                            : null,
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 80),
-                  IconButton(
-                    icon: const Icon(Icons.cameraswitch,
-                        color: Colors.white, size: 30),
-                    onPressed: () {
-                      // FIXME flip resume될 때만 되는 이슈
-                      _flipCameraDirection();
-                    },
-                  ),
-                ],
+                    )),
               ),
             ),
-          ),
-        ]),
+            Positioned(
+              top: 15,
+              left: 20,
+              child: GestureDetector(
+                onTap: () {
+                  dispose();
+                  Get.back();
+                },
+                child: IconButton(
+                  icon: SvgPicture.asset('assets/icons/close.svg'),
+                  onPressed: () {
+                    // 플래시 토글 기능 추가
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              top: 88 + 458,
+              child: GestureDetector(
+                onTap: () => {_changeCameraRatio()},
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: ThemeColor.white.withOpacity(0.15)),
+                  child: Text(
+                    _cameraRatio == CameraRatio.rectangle ? '3:4' : '1:1',
+                    style: TextStyle(
+                      decoration: TextDecoration.none,
+                      color: ThemeColor.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
+                      height: 22 / 17,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Container(
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _takePhoto();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        child:
+                            SvgPicture.asset('assets/icons/camera_button.svg'),
+                      ),
+                    ),
+                    GestureDetector(
+                      child: SvgPicture.asset('assets/icons/camera_flip.svg'),
+                      onTap: () {
+                        // FIXME flip resume될 때만 되는 이슈
+                        _flipCameraDirection();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        ),
       );
     } else {
       return const Center(
