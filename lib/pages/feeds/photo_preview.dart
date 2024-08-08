@@ -59,6 +59,7 @@ class PhotoPreviewPage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
+                    onTap: () => {Get.toNamed('/create')},
                     child: SvgPicture.asset('assets/icons/camera_complete.svg'),
                   ),
                   const SizedBox(

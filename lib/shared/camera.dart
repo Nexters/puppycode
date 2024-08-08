@@ -150,12 +150,7 @@ class CameraScreenState extends State<CameraScreen>
                   dispose();
                   Get.back();
                 },
-                child: IconButton(
-                  icon: SvgPicture.asset('assets/icons/close.svg'),
-                  onPressed: () {
-                    // 플래시 토글 기능 추가
-                  },
-                ),
+                child: SvgPicture.asset('assets/icons/close.svg'),
               ),
             ),
             Positioned(
