@@ -99,12 +99,12 @@ class WriteFloatingButton extends StatelessWidget {
 
   _onButtonClick(bool hasWritten) {
     if (hasWritten) return;
-    Get.toNamed('/create');
+    Get.toNamed('/camera');
   }
 
   @override
   Widget build(BuildContext context) {
-    var hasWritten = true;
+    var hasWritten = false;
     var floatingButtonColor =
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
