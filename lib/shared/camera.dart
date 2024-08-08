@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/pages/feeds/photo_preview.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -99,19 +101,11 @@ class CameraScreenState extends State<CameraScreen>
   }
 
   void _takePhoto() async {
-    //final navigator = Navigator.of(context);
     final xFile = await capturePhoto();
     if (xFile != null) {
-      //print(xFile.toString());
-      //if (xFile.path.isNotEmpty) {
-      //  navigator.push(
-      //    MaterialPageRoute(
-      //      builder: (context) => PreviewPage(
-      //        imagePath: xFile.path,
-      //      ),
-      //    ),
-      //  );
-      //}
+      if (xFile.path.isNotEmpty) {
+        Get.to(() => PhotoPreviewPage(imagePath: xFile.path));
+      }
     }
   }
 
@@ -174,15 +168,11 @@ class CameraScreenState extends State<CameraScreen>
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: ThemeColor.white.withOpacity(0.15)),
-                  child: Text(
-                    _cameraRatio == CameraRatio.rectangle ? '3:4' : '1:1',
-                    style: TextStyle(
-                      decoration: TextDecoration.none,
-                      color: ThemeColor.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w400,
-                      height: 22 / 17,
-                    ),
+                  child: Body1(
+                    value:
+                        _cameraRatio == CameraRatio.rectangle ? '3:4' : '1:1',
+                    bold: true,
+                    color: ThemeColor.white,
                   ),
                 ),
               ),
@@ -207,11 +197,7 @@ class CameraScreenState extends State<CameraScreen>
                       onTap: () {
                         _takePhoto();
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        child:
-                            SvgPicture.asset('assets/icons/camera_button.svg'),
-                      ),
+                      child: SvgPicture.asset('assets/icons/camera_button.svg'),
                     ),
                     GestureDetector(
                       child: SvgPicture.asset('assets/icons/camera_flip.svg'),
