@@ -12,7 +12,7 @@ class AppRoutes {
     GetPage(name: '/', page: () => const ScreenWithNavBar()),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/onboarding', page: () => const LandingPage()),
-    GetPage(name: '/onboarding/name', page: () => const OnboardingPage()),
+    GetPage(name: '/onboarding/info', page: () => const OnboardingPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
     GetPage(name: '/settings/friends', page: () => const FriendsListPage())

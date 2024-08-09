@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
 class FeedFriends extends StatelessWidget {
@@ -70,7 +71,7 @@ class FeedUserStatus extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFFEFF2F5),
                   border: isFocused
-                      ? Border.all(color: const Color(0xFF36DBBF), width: 2)
+                      ? Border.all(color: ThemeColor.primary, width: 2)
                       : null,
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -141,7 +142,7 @@ class FeedFriendIcon extends StatelessWidget {
             )
           ],
           shape: BoxShape.circle,
-          color: hasWalked ? const Color(0xFF36DBBF) : Colors.white),
+          color: hasWalked ? ThemeColor.primary : ThemeColor.white),
       child: SvgPicture.asset(
         hasWalked ? 'assets/icons/paw_small.svg' : 'assets/icons/push.svg',
       ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
 class TextButtonColor extends WidgetStateColor {
   TextButtonColor() : super(defaultColor.value);
 
-  static Color defaultColor = const Color(0xFF36DBBF);
-  static Color pressedColor = const Color.fromARGB(255, 45, 170, 149); // 임시값
+  static Color defaultColor = ThemeColor.primary;
+  static Color pressedColor = ThemeColor.primaryPressed; // 임시값
 
   @override
   Color resolve(Set<WidgetState> states) {
