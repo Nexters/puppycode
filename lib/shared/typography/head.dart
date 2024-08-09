@@ -68,16 +68,6 @@ class HeadTextStyle {
     );
   }
 
-  static getH2Style({Color? color}) {
-    return TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w700,
-      letterSpacing: -1.2,
-      color: color ?? _kDefaultTextColor,
-      height: 31 / 22,
-    );
-  }
-
   static getH3Style({Color? color}) {
     return TextStyle(
       fontSize: 20,
