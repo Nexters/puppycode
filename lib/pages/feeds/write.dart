@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
 class FeedWritePage extends StatefulWidget {
@@ -121,7 +122,6 @@ class OptionButton extends StatelessWidget {
   final bool isSelected;
   static const _borderColor = Color(0xFFE4EAEE);
   static const _textColor = Color(0xFF72757A);
-  static const _selectBorderColor = Color(0xFF36DBBF);
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class OptionButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 26),
           side:
-              BorderSide(color: isSelected ? _selectBorderColor : _borderColor),
+              BorderSide(color: isSelected ? ThemeColor.primary : _borderColor),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16)))),
       onPressed: onPressed,

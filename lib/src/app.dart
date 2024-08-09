@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/route.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,14 +11,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         fontFamily: 'Pretendard',
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+          scaffoldBackgroundColor: ThemeColor.white,
+          appBarTheme: AppBarTheme(backgroundColor: ThemeColor.white),
           bottomNavigationBarTheme:
-              const BottomNavigationBarThemeData(backgroundColor: Colors.white),
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Color(0xFF36DBBF)),
+              BottomNavigationBarThemeData(backgroundColor: ThemeColor.white),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: ThemeColor.primary),
         bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.white),
+              BottomSheetThemeData(backgroundColor: ThemeColor.white),
           inputDecorationTheme: const InputDecorationTheme(
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             disabledBorder: InputBorder.none,
           )
       ),
-      initialRoute: '/',
+      initialRoute: '/onboarding/info',
       getPages: AppRoutes.routes,
     );
   }

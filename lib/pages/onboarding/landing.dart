@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puppycode/pages/onboarding/name_input.dart';
+import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
 
 class LandingPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class LandingPage extends StatelessWidget {
           child: TextButton(
         child: const Text('register'),
         onPressed: () {
-          Get.to(() => const NameInputPage());
+          Get.to(() => const RegistrationPage());
         },
       )),
       bottomSheet: Container(

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
-const _kDefaultTextColor = Color(0xFF1E2022);
+Color _kDefaultTextColor = ThemeColor.gray6;
 
 class Body1 extends StatelessWidget {
-  const Body1({super.key, required this.value, this.color, this.bold = false});
+  const Body1({
+    super.key,
+    required this.value,
+    this.color,
+    this.bold = false,
+  });
+
 
   final Color? color;
   final String value;
@@ -13,19 +20,18 @@ class Body1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: TextStyle(
-        fontSize: 17,
-        fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
-        letterSpacing: -1,
-        color: color ?? _kDefaultTextColor,
-        height: 24 / 17,
-      ),
+      style: BodyTextStyle.getBody1Style(color: color, bold: bold),
     );
   }
 }
 
 class Body2 extends StatelessWidget {
-  const Body2({super.key, required this.value, this.color, this.bold = false});
+  const Body2({
+    super.key,
+    required this.value,
+    this.color,
+    this.bold = false,
+  });
 
   final Color? color;
   final String value;
@@ -35,35 +41,7 @@ class Body2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
-        letterSpacing: -1,
-        color: color ?? _kDefaultTextColor,
-        height: 24 / 16,
-      ),
-    );
-  }
-}
-
-class Body3 extends StatelessWidget {
-  const Body3({super.key, required this.value, this.color, this.bold = false});
-
-  final String value;
-  final Color? color;
-  final bool bold;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value,
-      style: TextStyle(
-        fontSize: 15,
-        fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
-        letterSpacing: -1,
-        color: color ?? _kDefaultTextColor,
-        height: 23 / 15,
-      ),
+      style: BodyTextStyle.getBody2Style(color: color, bold: bold),
     );
   }
 }
@@ -85,14 +63,41 @@ class Body4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: TextStyle(
-        fontSize: 14,
-        fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
-        letterSpacing: -1,
-        color: color ?? _kDefaultTextColor,
-        height: 18 / 14,
-        shadows: textShadow != null ? <Shadow>[textShadow!] : null,
-      ),
+      style: BodyTextStyle.getBody4Style(
+          color: color, bold: bold, textShadow: textShadow),
+    );
+  }
+}
+
+class BodyTextStyle {
+  static getBody1Style({Color? color, bool? bold}) {
+    return TextStyle(
+      fontSize: 16,
+      fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
+      letterSpacing: -1,
+      color: color ?? _kDefaultTextColor,
+      height: 22 / 16,
+    );
+  }
+
+  static getBody2Style({Color? color, bool? bold}) {
+    return TextStyle(
+      fontSize: 15,
+      fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
+      letterSpacing: -1,
+      color: color ?? _kDefaultTextColor,
+      height: 22 / 15,
+    );
+  }
+
+  static getBody4Style({Color? color, bool? bold, Shadow? textShadow}) {
+    return TextStyle(
+      fontSize: 14,
+      fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
+      letterSpacing: -1,
+      color: color ?? _kDefaultTextColor,
+      height: 18 / 14,
+      shadows: textShadow != null ? <Shadow>[textShadow] : null,
     );
   }
 }
