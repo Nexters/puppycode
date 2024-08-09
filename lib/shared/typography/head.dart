@@ -54,7 +54,7 @@ class HeadTextStyle {
       fontWeight: FontWeight.w700,
       letterSpacing: -1.2,
       color: color ?? _kDefaultTextColor,
-      height: 32 / 24,
+      height: 33 / 24,
     );
   }
 
