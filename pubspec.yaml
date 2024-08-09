@@ -15,11 +15,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get:
-  share:
-  intl: ^0.19.0
-  badges: ^3.1.2
   camera:
   flutter_svg: ^2.0.1
+  share:
+  badges: ^3.1.2
+  intl: ^0.19.0
   infinite_scroll_pagination: ^4.0.0
 
 dev_dependencies:

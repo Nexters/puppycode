@@ -11,6 +11,7 @@ class Body1 extends StatelessWidget {
     this.bold = false,
   });
 
+
   final Color? color;
   final String value;
   final bool bold;
