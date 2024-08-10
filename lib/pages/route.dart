@@ -25,6 +25,6 @@ class AppRoutes {
     GetPage(name: '/friends', page: () => const FriendsListPage()),
     GetPage(name: '/friends/code', page: () => const FriendsCodePage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
-    GetPage(name: '/myfeed', page: () => const MyFeedPage())
+    GetPage(name: '/myfeed', page: () => const MyFeedPage()),
   ];
 }
