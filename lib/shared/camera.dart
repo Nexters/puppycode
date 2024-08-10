@@ -1,7 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/pages/feeds/photo_preview.dart';
+import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -86,19 +90,11 @@ class CameraScreenState extends State<CameraScreen>
   }
 
   void _takePhoto() async {
-    //final navigator = Navigator.of(context);
     final xFile = await capturePhoto();
     if (xFile != null) {
-      //print(xFile.toString());
-      //if (xFile.path.isNotEmpty) {
-      //  navigator.push(
-      //    MaterialPageRoute(
-      //      builder: (context) => PreviewPage(
-      //        imagePath: xFile.path,
-      //      ),
-      //    ),
-      //  );
-      //}
+      if (xFile.path.isNotEmpty) {
+        Get.to(() => PhotoPreviewPage(imagePath: xFile.path));
+      }
     }
   }
 
@@ -112,79 +108,74 @@ class CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     if (_isCameraInitialized) {
-      return Container(
-        color: Colors.black,
-        child: Stack(children: [
-          Container(
-            margin: const EdgeInsets.only(top: 120),
-            child: AspectRatio(
-              aspectRatio: 0.75,
-              child: ClipRect(
-                  child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: SizedBox(
-                  width: _controller!.value.previewSize!.height,
-                  height: _controller!.value.previewSize!.width,
-                  child: CameraPreview(_controller!),
-                ),
-              )),
-            ),
-          ),
-          Positioned(
-            top: 55,
-            left: 20,
-            child: IconButton(
-              icon: const Icon(Icons.flash_off, color: Colors.white, size: 25),
-              onPressed: () {
-                // 플래시 토글 기능 추가
-              },
-            ),
-          ),
-          Positioned(
-            bottom: 70,
-            left: 0,
-            right: 0,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    child: const Text(
-                      '취소',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    onPressed: () {
-                      dispose();
-                      Get.back();
-                    },
-                  ),
-                  const SizedBox(width: 80),
-                  GestureDetector(
-                    onTap: () {
-                      _takePhoto();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 4),
+      return SafeArea(
+        child: Container(
+          color: Colors.black,
+          child: Stack(alignment: Alignment.center, children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 48),
+              child: AspectRatio(
+                aspectRatio: 0.75,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: SizedBox(
+                        width: _controller?.value.previewSize!.height,
+                        height: _controller?.value.previewSize!.width,
+                        child: _controller != null
+                            ? CameraPreview(_controller!)
+                            : null,
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 80),
-                  IconButton(
-                    icon: const Icon(Icons.cameraswitch,
-                        color: Colors.white, size: 30),
-                    onPressed: () {
-                      // FIXME flip resume될 때만 되는 이슈
-                      _flipCameraDirection();
-                    },
-                  ),
-                ],
+                    )),
               ),
             ),
-          ),
-        ]),
+            Positioned(
+              top: 15,
+              left: 20,
+              child: GestureDetector(
+                onTap: () {
+                  dispose();
+                  Get.back();
+                },
+                child: SvgPicture.asset('assets/icons/close.svg'),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Container(
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _takePhoto();
+                      },
+                      child: SvgPicture.asset('assets/icons/camera_button.svg'),
+                    ),
+                    GestureDetector(
+                      child: SvgPicture.asset('assets/icons/camera_flip.svg'),
+                      onTap: () {
+                        // FIXME flip resume될 때만 되는 이슈
+                        _flipCameraDirection();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        ),
       );
     } else {
       return const Center(
