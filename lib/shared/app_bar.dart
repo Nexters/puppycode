@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -8,18 +9,20 @@ import 'package:puppycode/shared/typography/head.dart';
 enum LeftIconType { CLOSE, BACK, LOGO }
 
 Map<LeftIconType, String> leftIconAsset = {
-  LeftIconType.BACK: 'assets/icons/close.svg',
   LeftIconType.CLOSE: 'assets/icons/close.svg',
+  LeftIconType.BACK: 'assets/icons/chevron_left.svg',
   LeftIconType.LOGO: 'assets/icons/logo.svg',
 };
 
 class AppBarLeft {
   final String? label;
   final LeftIconType? iconType;
+  final VoidCallback? onTap;
 
   AppBarLeft({
     this.label,
     this.iconType = LeftIconType.BACK,
+    this.onTap,
   });
 }
 
@@ -72,10 +75,13 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
       left: 0,
       child: leftOptions!.label != null
           ? Head2(value: leftOptions!.label!)
-          : SvgPicture.asset(iconAsset,
+          : GestureDetector(
+              onTap: leftOptions?.onTap ?? () => {Get.back()},
+              child: SvgPicture.asset(iconAsset,
               colorFilter: leftOptions?.iconType == LeftIconType.LOGO
                   ? null
-                  : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
+                      : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
+            ),
     );
   }
 

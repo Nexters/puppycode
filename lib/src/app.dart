@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             disabledBorder: InputBorder.none,
           )
       ),
-      initialRoute: '/',
+      initialRoute: '/create',
       getPages: AppRoutes.routes,
     );
   }
