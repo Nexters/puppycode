@@ -11,7 +11,6 @@ class Body1 extends StatelessWidget {
     this.bold = false,
   });
 
-
   final Color? color;
   final String value;
   final bool bold;
@@ -46,6 +45,27 @@ class Body2 extends StatelessWidget {
   }
 }
 
+class Body3 extends StatelessWidget {
+  const Body3({
+    super.key,
+    required this.value,
+    this.color,
+    this.bold = false,
+  });
+
+  final Color? color;
+  final String value;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      style: BodyTextStyle.getBody3Style(color: color, bold: bold),
+    );
+  }
+}
+
 class Body4 extends StatelessWidget {
   const Body4(
       {super.key,
@@ -72,22 +92,32 @@ class Body4 extends StatelessWidget {
 class BodyTextStyle {
   static getBody1Style({Color? color, bool? bold}) {
     return TextStyle(
-      fontSize: 16,
+      fontSize: 17,
       fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
       letterSpacing: -1,
       color: color ?? _kDefaultTextColor,
-      height: 22 / 16,
+      height: 24 / 17,
       decoration: TextDecoration.none,
     );
   }
 
   static getBody2Style({Color? color, bool? bold}) {
     return TextStyle(
+      fontSize: 16,
+      fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
+      letterSpacing: -1,
+      color: color ?? _kDefaultTextColor,
+      height: 24 / 16,
+    );
+  }
+
+  static getBody3Style({Color? color, bool? bold}) {
+    return TextStyle(
       fontSize: 15,
       fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
       letterSpacing: -1,
       color: color ?? _kDefaultTextColor,
-      height: 22 / 15,
+      height: 23 / 15,
     );
   }
 

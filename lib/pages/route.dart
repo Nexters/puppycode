@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:puppycode/pages/myfeeds/feed.dart';
 import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/setting/setting.dart';
@@ -6,7 +7,6 @@ import 'package:puppycode/pages/setting/user_info.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/landing.dart';
 import 'package:puppycode/pages/feeds/write.dart';
-import 'package:puppycode/pages/setting.dart';
 import 'package:puppycode/shared/camera.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 
@@ -20,9 +20,11 @@ class AppRoutes {
         name: '/camera',
         page: () => const CameraScreen(),
         transition: Transition.downToUp),
+    GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
     GetPage(name: '/friends', page: () => const FriendsListPage()),
     GetPage(name: '/friends/code', page: () => const FriendsCodePage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
+    GetPage(name: '/myfeed', page: () => const MyFeedPage()),
   ];
 }
