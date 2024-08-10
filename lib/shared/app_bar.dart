@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 // ignore: constant_identifier_names
@@ -23,8 +24,21 @@ class AppBarLeft {
 }
 
 class AppBarCenter {
-  final String? label = '';
-  final String? subLabel = '';
+  final String label;
+
+  AppBarCenter({
+    required this.label,
+  });
+}
+
+class AppBarRight {
+  final String? label;
+  final List<String>? iconAssets;
+
+  AppBarRight({
+    this.label,
+    this.iconAssets,
+  });
 }
 
 class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -32,6 +46,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final AppBarLeft? leftOptions;
   final AppBarCenter? centerOptions;
+  final AppBarRight? rightOptions;
 
   const SharedAppBar({
     super.key,
@@ -39,6 +54,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leftOptions,
     this.centerOptions,
+    this.rightOptions,
   });
 
   // ignore: non_constant_identifier_names
@@ -46,7 +62,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     String iconAsset = leftOptions?.iconType != null
         ? leftIconAsset[leftOptions?.iconType]!
         : '';
-    return Container(
+    return Positioned(
+      left: 0,
       child: leftOptions!.label != null
           ? Head2(value: leftOptions!.label!)
           : SvgPicture.asset(iconAsset,
@@ -56,16 +73,53 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
+  Widget? CenterPart(BuildContext context) {
+    return Positioned(
+      child: Container(
+        height: kToolbarHeight + (bottom?.preferredSize.height ?? 0.0),
+        child: Center(
+            child: Body1(
+          value: centerOptions!.label,
+          bold: true,
+        )),
+      ),
+      //child: Center(),
+    );
+  }
+
+// ignore: non_constant_identifier_names
+  Widget? Right(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: rightOptions!.label != null
+          ? Head2(value: rightOptions!.label!)
+          : Wrap(
+              spacing: 16,
+              children: rightOptions!.iconAssets!
+                  .map((asset) => SvgPicture.asset(
+                        'assets/icons/$asset.svg',
+                        width: 24,
+                        colorFilter:
+                            ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                      ))
+                  .toList(),
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
     if (leftOptions != null) children.add(Left(context)!);
+    if (centerOptions != null) children.add(CenterPart(context)!);
+    if (rightOptions != null) children.add(Right(context)!);
 
     return SafeArea(
         child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       height: 56,
-      child: Row(
+      child: Stack(
         children: children,
       ),
     ));

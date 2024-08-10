@@ -70,6 +70,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     return Scaffold(
       appBar: SharedAppBar(
         leftOptions: _getAppBarLeft(),
+        rightOptions: AppBarRight(iconAssets: ['calendar', 'menu']),
       ),
       body: _pages[_currentTab],
       floatingActionButton:
