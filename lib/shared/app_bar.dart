@@ -31,13 +31,19 @@ class AppBarCenter {
   });
 }
 
+class RightIcon {
+  RightIcon({required this.name, required this.onTap});
+  final String name;
+  final VoidCallback onTap;
+}
+
 class AppBarRight {
   final String? label;
-  final List<String>? iconAssets;
+  final List<RightIcon>? icons;
 
   AppBarRight({
     this.label,
-    this.iconAssets,
+    this.icons,
   });
 }
 
@@ -96,12 +102,15 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? Head2(value: rightOptions!.label!)
           : Wrap(
               spacing: 16,
-              children: rightOptions!.iconAssets!
-                  .map((asset) => SvgPicture.asset(
-                        'assets/icons/$asset.svg',
+              children: rightOptions!.icons!
+                  .map((asset) => GestureDetector(
+                        onTap: asset.onTap,
+                        child: SvgPicture.asset(
+                          'assets/icons/${asset.name}.svg',
                         width: 24,
                         colorFilter:
                             ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                        ),
                       ))
                   .toList(),
             ),
