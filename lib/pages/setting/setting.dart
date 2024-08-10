@@ -88,7 +88,7 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '친구리스트',
                   icon: Icons.person,
-                  destination: '/settings/friends',
+                  destination: '/friends',
                   widget: Icon(
                     color: Color.fromRGBO(128, 128, 128, 0.55),
                     Icons.arrow_forward_ios,

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:puppycode/pages/friends_list.dart';
+import 'package:puppycode/pages/setting/friends_code.dart';
+import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/pages/setting/user_info.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
@@ -20,6 +21,8 @@ class AppRoutes {
         page: () => const CameraScreen(),
         transition: Transition.downToUp),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
-    GetPage(name: '/settings/friends', page: () => const FriendsListPage())
+    GetPage(name: '/friends', page: () => const FriendsListPage()),
+    GetPage(name: '/friends/code', page: () => const FriendsCodePage()),
+    GetPage(name: '/create', page: () => const FeedWritePage()),
   ];
 }
