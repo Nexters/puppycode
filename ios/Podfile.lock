@@ -2,7 +2,7 @@ PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-    - share (0.0.1):
+  - share (0.0.1):
     - Flutter
 
 DEPENDENCIES:
