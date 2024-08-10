@@ -14,13 +14,10 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => CameraScreenState();
 }
 
-enum CameraRatio { square, rectangle }
-
 class CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   CameraController? _controller;
   bool _isCameraInitialized = false;
-  CameraRatio _cameraRatio = CameraRatio.rectangle;
   late final List<CameraDescription> _cameras;
 
   get camera => CameraDescription;
@@ -92,14 +89,6 @@ class CameraScreenState extends State<CameraScreen>
     }
   }
 
-  void _changeCameraRatio() {
-    setState(() {
-      _cameraRatio = _cameraRatio == CameraRatio.rectangle
-          ? CameraRatio.square
-          : CameraRatio.rectangle;
-    });
-  }
-
   void _takePhoto() async {
     final xFile = await capturePhoto();
     if (xFile != null) {
@@ -124,10 +113,9 @@ class CameraScreenState extends State<CameraScreen>
           color: Colors.black,
           child: Stack(alignment: Alignment.center, children: [
             Container(
-              margin: EdgeInsets.only(
-                  bottom: _cameraRatio == CameraRatio.rectangle ? 48 : 126),
+              margin: const EdgeInsets.only(bottom: 48),
               child: AspectRatio(
-                aspectRatio: _cameraRatio == CameraRatio.rectangle ? 0.75 : 1,
+                aspectRatio: 0.75,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: FittedBox(
@@ -151,25 +139,6 @@ class CameraScreenState extends State<CameraScreen>
                   Get.back();
                 },
                 child: SvgPicture.asset('assets/icons/close.svg'),
-              ),
-            ),
-            Positioned(
-              top: 88 + 458,
-              child: GestureDetector(
-                onTap: () => {_changeCameraRatio()},
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: ThemeColor.white.withOpacity(0.15)),
-                  child: Body1(
-                    value:
-                        _cameraRatio == CameraRatio.rectangle ? '3:4' : '1:1',
-                    bold: true,
-                    color: ThemeColor.white,
-                  ),
-                ),
               ),
             ),
             Positioned(
