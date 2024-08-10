@@ -97,6 +97,7 @@ class BodyTextStyle {
       letterSpacing: -1,
       color: color ?? _kDefaultTextColor,
       height: 24 / 17,
+      decoration: TextDecoration.none,
     );
   }
 

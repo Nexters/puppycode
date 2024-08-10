@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -45,9 +43,8 @@ class _MyFeedPageState extends State<MyFeedPage> {
               const SizedBox(height: 12),
               const Row(
                 children: [
-                  // Comment말고 더 좋은 이름 어디 엄나 🧐
-                  Comment(icon: Icons.emoji_emotions, count: 3),
-                  Comment(icon: Icons.comment, count: 3),
+                  FeedReactionButton(icon: Icons.emoji_emotions, count: 3),
+                  FeedReactionButton(icon: Icons.comment, count: 3),
                 ],
               ),
               const SizedBox(height: 20),
@@ -64,6 +61,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
                       value: '20분~40분 산책', color: ThemeColor.primaryPressed),
                 ),
               ),
+              const SizedBox(height: 8),
               const Head3(value: '자다가 산책 가자니까 벌떡 일어나는  거 봐'),
               const SizedBox(height: 16),
               Container(
@@ -99,11 +97,11 @@ class _MyFeedPageState extends State<MyFeedPage> {
   }
 }
 
-class Comment extends StatelessWidget {
+class FeedReactionButton extends StatelessWidget {
   final IconData icon;
   final int count;
 
-  const Comment({
+  const FeedReactionButton({
     required this.icon,
     required this.count,
     super.key,
@@ -113,8 +111,8 @@ class Comment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 16),
-      child: ElevatedButton(
-        onPressed: () {
+      child: GestureDetector(
+        onTap: () {
           showModalBottomSheet(
             context: context,
             shape: const RoundedRectangleBorder(
@@ -122,14 +120,12 @@ class Comment extends StatelessWidget {
             builder: (BuildContext context) {
               return Container(
                 height: 480,
+                width: 390, // width 수정 예정
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(20),
                   ),
-                ),
-                child: const Body1(
-                  value: 'ddd',
                 ),
               );
             },

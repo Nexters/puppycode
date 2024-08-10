@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
 import 'package:puppycode/pages/home/home.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});
@@ -65,22 +66,23 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       floatingActionButton:
           _currentTab == Tab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.only(top: 7),
+        decoration: BoxDecoration(
             border:
-                Border(top: BorderSide(color: Color(0xFFEFF2F5), width: 1))),
+                Border(top: BorderSide(color: ThemeColor.gray2, width: 1))),
         child: BottomNavigationBar(
           currentIndex: _allowedRoutes.indexOf(_currentTab),
           onTap: (index) => _changeTab(index),
+          selectedItemColor: ThemeColor.black,
           selectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 10,
-              letterSpacing: -1,
-              color: Color(0xFF1F1F20)),
+            letterSpacing: -1),
+          unselectedItemColor: ThemeColor.gray4,
           unselectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 10,
-              letterSpacing: -1,
-              color: Color(0xFF8D959A)),
+              letterSpacing: -1),
           items: [
             _createBottomNavigationBarItem('feed', '피드'),
             _createBottomNavigationBarItem('home', '홈'),
@@ -99,12 +101,12 @@ class WriteFloatingButton extends StatelessWidget {
 
   _onButtonClick(bool hasWritten) {
     if (hasWritten) return;
-    Get.toNamed('/create');
+    Get.toNamed('/camera');
   }
 
   @override
   Widget build(BuildContext context) {
-    var hasWritten = true;
+    var hasWritten = false;
     var floatingButtonColor =
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
