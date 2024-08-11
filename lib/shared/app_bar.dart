@@ -119,7 +119,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                           'assets/icons/${asset.name}.svg',
                         width: 24,
                         colorFilter:
-                            ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                            ColorFilter.mode(
+                              ThemeColor.gray5, BlendMode.srcIn),
                         ),
                       ))
                   .toList(),
