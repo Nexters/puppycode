@@ -119,23 +119,7 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          showModalBottomSheet(
-            context: context,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-            builder: (BuildContext context) {
-              return Container(
-                height: 480,
-                width: 390, // width 수정 예정
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-              );
-            },
-          );
+          _showModalBottomSheet(context);
         },
         child: Row(
           children: [
@@ -147,6 +131,119 @@ class FeedReactionButton extends StatelessWidget {
             Body4(value: '$count', color: ThemeColor.gray3),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<dynamic> _showModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return Container(
+          height: 480,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              children: [
+                Container(
+                  height: 5,
+                  width: 63,
+                  decoration: BoxDecoration(
+                      color: ThemeColor.gray3,
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 440,
+                  child: const ReactionTabBar(),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ReactionTabBar extends StatelessWidget {
+  const ReactionTabBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 3),
+            indicatorColor: ThemeColor.primary,
+            indicatorSize: TabBarIndicatorSize.tab,
+            unselectedLabelColor: ThemeColor.gray3,
+            unselectedLabelStyle: BodyTextStyle.getBody3Style(
+                bold: true, color: ThemeColor.gray3),
+            labelStyle: BodyTextStyle.getBody3Style(
+                bold: true, color: ThemeColor.gray5),
+            tabs: [
+              Tab(
+                child: SizedBox(
+                  width: 72,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/emoji.svg',
+                        colorFilter: ColorFilter.mode(
+                          ThemeColor.primary,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Text('이모지'),
+                    ],
+                  ),
+                ),
+              ),
+              const Tab(
+                child: SizedBox(
+                  width: 72,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 4),
+                      Text('댓글'),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
+        body: const TabBarView(children: [
+          Center(
+            child: Body2(
+              value: '이모지',
+            ),
+          ),
+          Center(
+            child: Body2(
+              value: '이모지',
+            ),
+          ),
+        ]),
       ),
     );
   }
