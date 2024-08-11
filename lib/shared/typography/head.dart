@@ -52,7 +52,7 @@ class HeadTextStyle {
     return TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.w700,
-      letterSpacing: -1.2,
+      letterSpacing: 24 * -0.012,
       color: color ?? _kDefaultTextColor,
       height: 33 / 24,
     );
@@ -62,7 +62,7 @@ class HeadTextStyle {
     return TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w700,
-      letterSpacing: -1.2,
+      letterSpacing: 22 * -0.012,
       color: color ?? _kDefaultTextColor,
       height: 31 / 22,
     );
@@ -72,7 +72,7 @@ class HeadTextStyle {
     return TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w700,
-      letterSpacing: -1.2,
+      letterSpacing: 20 * -0.012,
       color: color ?? _kDefaultTextColor,
       height: 28 / 20,
     );

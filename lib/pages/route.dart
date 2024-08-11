@@ -16,6 +16,7 @@ class AppRoutes {
     GetPage(name: '/onboarding', page: () => const LandingPage()),
     GetPage(name: '/onboarding/info', page: () => const OnboardingPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
+    GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(
         name: '/camera',
         page: () => const CameraScreen(),
