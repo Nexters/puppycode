@@ -135,7 +135,7 @@ class OptionButton extends StatelessWidget {
       onPressed: onPressed,
       child: Body4(
         value: label,
-        bold: isSelected,
+        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
         color: isSelected ? null : _textColor,
       ),
     );

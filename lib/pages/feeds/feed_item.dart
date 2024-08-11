@@ -144,7 +144,7 @@ class NameLabel extends StatelessWidget {
               borderRadius: BorderRadius.circular(20)),
           child: Body4(
             value: name,
-            bold: true,
+            fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
         ));
