@@ -71,20 +71,20 @@ class Body4 extends StatelessWidget {
       {super.key,
       required this.value,
       this.color,
-      this.bold = false,
+      this.fontWeight,
       this.textShadow});
 
   final String value;
   final Color? color;
   final Shadow? textShadow;
-  final bool bold;
+  final FontWeight? fontWeight;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       value,
       style: BodyTextStyle.getBody4Style(
-          color: color, bold: bold, textShadow: textShadow),
+          color: color, fontWeight: fontWeight, textShadow: textShadow),
     );
   }
 }
@@ -94,7 +94,7 @@ class BodyTextStyle {
     return TextStyle(
       fontSize: 17,
       fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
-      letterSpacing: -1,
+      letterSpacing: -0.01 * 17,
       color: color ?? _kDefaultTextColor,
       height: 24 / 17,
       decoration: TextDecoration.none,
@@ -105,7 +105,7 @@ class BodyTextStyle {
     return TextStyle(
       fontSize: 16,
       fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
-      letterSpacing: -1,
+      letterSpacing: -0.01 * 16,
       color: color ?? _kDefaultTextColor,
       height: 24 / 16,
     );
@@ -115,17 +115,20 @@ class BodyTextStyle {
     return TextStyle(
       fontSize: 15,
       fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
-      letterSpacing: -1,
+      letterSpacing: -0.01 * 15,
       color: color ?? _kDefaultTextColor,
       height: 23 / 15,
     );
   }
 
-  static getBody4Style({Color? color, bool? bold, Shadow? textShadow}) {
+// medium 추가
+  static getBody4Style(
+      {Color? color, FontWeight? fontWeight, Shadow? textShadow}) {
     return TextStyle(
       fontSize: 14,
-      fontWeight: bold == true ? FontWeight.w600 : FontWeight.w400,
-      letterSpacing: -1,
+      fontWeight:
+          fontWeight, // semibold, medium, regular 세가지 (FontWeight.w600, w500, w400)
+      letterSpacing: -0.01 * 14,
       color: color ?? _kDefaultTextColor,
       height: 18 / 14,
       shadows: textShadow != null ? <Shadow>[textShadow] : null,

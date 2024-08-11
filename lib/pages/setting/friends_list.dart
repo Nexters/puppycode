@@ -118,7 +118,9 @@ class _FriendsListPageState extends State<FriendsListPage> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const Body4(value: '우리집 강아지 친구 찾으러 갈까요?', bold: true)
+                          const Body4(
+                              value: '우리집 강아지 친구 찾으러 갈까요?',
+                              fontWeight: FontWeight.w600)
                         ],
                       ),
                     ),
