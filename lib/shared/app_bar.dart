@@ -73,7 +73,10 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
         : '';
     return Positioned(
       left: 0,
-      child: leftOptions!.label != null
+      height: 26,
+      child: Align(
+        alignment: Alignment.center,
+        child: leftOptions!.label != null
           ? Head2(value: leftOptions!.label!)
           : GestureDetector(
               onTap: leftOptions?.onTap ?? () => {Get.back()},
@@ -81,7 +84,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
               colorFilter: leftOptions?.iconType == LeftIconType.LOGO
                   ? null
                       : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
-            ),
+              ),
+      ),
     );
   }
 
