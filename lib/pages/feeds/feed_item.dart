@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
@@ -56,41 +57,46 @@ class _FeedItemState extends State<FeedItem> {
     var height = width * 1.33;
     final name = widget.item.name;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      height: height,
-      decoration: BoxDecoration(
-          color: overlayColor, borderRadius: BorderRadius.circular(20)),
-      child: Stack(
-        children: <Widget>[
-          const FeedPhoto(),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  begin: FractionalOffset.topCenter,
-                  end: FractionalOffset.bottomCenter,
-                    // TODO: gradient 이해하고 수정하기...
-                  colors: [
-                      Colors.black.withOpacity(0.3),
-                      Colors.black.withOpacity(0),
-                  ],
-                    stops: const [
-                      0,
-                      0.4
-                    ]
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed('/myfeed');
+      },
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        height: height,
+        decoration: BoxDecoration(
+            color: overlayColor, borderRadius: BorderRadius.circular(20)),
+        child: Stack(
+          children: <Widget>[
+            const FeedPhoto(),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                      begin: FractionalOffset.topCenter,
+                      end: FractionalOffset.bottomCenter,
+                      // TODO: gradient 이해하고 수정하기...
+                      colors: [
+                        Colors.black.withOpacity(0.3),
+                        Colors.black.withOpacity(0),
+                      ],
+                      stops: const [
+                        0,
+                        0.4
+                      ])),
+            ),
+            NameLabel(name: name),
+            const Positioned(
+                top: 58,
+                left: 16,
+                child: Head3(
+                  value: '자다가 산책가자니까 벌떡 일어나는거봐',
+                  color: Colors.white,
                 )),
-          ),
-          NameLabel(name: name),
-          const Positioned(
-              top: 58,
-              left: 16,
-              child: Head3(
-                value: '자다가 산책가자니까 벌떡 일어나는거봐',
-                color: Colors.white,
-              )),
-        ],
+          ],
+        ),
       ),
     );
   }
