@@ -73,10 +73,10 @@ class FeedUserStatus extends StatelessWidget {
                   border: isFocused
                       ? Border.all(color: ThemeColor.primary, width: 2)
                       : null,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.network(
                     isMine
                         ? 'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg'
