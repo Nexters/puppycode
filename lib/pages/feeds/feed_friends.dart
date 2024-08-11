@@ -87,17 +87,17 @@ class FeedUserStatus extends StatelessWidget {
               ),
               if (isMine)
                 Positioned.fill(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Body4(
-                      value: '나',
-                      color: Colors.white,
-                      bold: true,
-                      textShadow: Shadow(
-                        blurRadius: 5,
-                        color: Colors.black.withOpacity(0.3),
-                      ),
-                    )),
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Body4(
+                        value: '나',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        textShadow: Shadow(
+                          blurRadius: 5,
+                          color: Colors.black.withOpacity(0.3),
+                        ),
+                      )),
                 ),
               Positioned(
                   bottom: 0,

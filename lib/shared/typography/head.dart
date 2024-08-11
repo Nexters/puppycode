@@ -45,6 +45,21 @@ class Head3 extends StatelessWidget {
   }
 }
 
+class Head4 extends StatelessWidget {
+  const Head4({super.key, required this.value, this.color});
+
+  final Color? color;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      value,
+      style: HeadTextStyle.getH4Style(color: color),
+    );
+  }
+}
+
 const _kDefaultTextColor = Color(0xFF1E2022);
 
 class HeadTextStyle {
@@ -75,6 +90,16 @@ class HeadTextStyle {
       letterSpacing: 20 * -0.012,
       color: color ?? _kDefaultTextColor,
       height: 28 / 20,
+    );
+  }
+
+  static getH4Style({Color? color}) {
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600, // semibold
+      letterSpacing: -0.012 * 18,
+      color: color ?? _kDefaultTextColor,
+      height: 24 / 18,
     );
   }
 }
