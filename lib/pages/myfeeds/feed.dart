@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -17,6 +18,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Column(
           children: [
             const Body1(value: '포포', bold: true),
@@ -43,8 +45,8 @@ class _MyFeedPageState extends State<MyFeedPage> {
               const SizedBox(height: 12),
               const Row(
                 children: [
-                  FeedReactionButton(icon: Icons.emoji_emotions, count: 3),
-                  FeedReactionButton(icon: Icons.comment, count: 3),
+                  FeedReactionButton(svg: 'emoji', count: 3),
+                  FeedReactionButton(svg: 'talk', count: 3),
                 ],
               ),
               const SizedBox(height: 20),
@@ -74,7 +76,11 @@ class _MyFeedPageState extends State<MyFeedPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.comment_outlined, color: ThemeColor.gray3),
+                          SvgPicture.asset(
+                            'assets/icons/episode.svg',
+                            colorFilter: ColorFilter.mode(
+                                ThemeColor.gray3, BlendMode.srcIn),
+                          ),
                           const SizedBox(width: 4),
                           const Body2(value: '오늘의 에피소드', bold: true)
                         ],
@@ -98,11 +104,11 @@ class _MyFeedPageState extends State<MyFeedPage> {
 }
 
 class FeedReactionButton extends StatelessWidget {
-  final IconData icon;
+  final String svg;
   final int count;
 
   const FeedReactionButton({
-    required this.icon,
+    required this.svg,
     required this.count,
     super.key,
   });
@@ -133,9 +139,12 @@ class FeedReactionButton extends StatelessWidget {
         },
         child: Row(
           children: [
-            Icon(icon, color: ThemeColor.gray3),
+            SvgPicture.asset(
+              'assets/icons/$svg.svg',
+              colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+            ),
             const SizedBox(width: 2),
-            Body4(value: '3', color: ThemeColor.gray3),
+            Body4(value: '$count', color: ThemeColor.gray3),
           ],
         ),
       ),
