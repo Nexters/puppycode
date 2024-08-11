@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
 import 'package:puppycode/pages/home/home.dart';
+import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
@@ -58,31 +59,38 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
         label: label);
   }
 
+  AppBarLeft _getAppBarLeft() {
+    if (_currentTab == Tab.home) return AppBarLeft(iconType: LeftIconType.LOGO);
+    if (_currentTab == Tab.feed) return AppBarLeft(label: '산책피드');
+    return AppBarLeft(label: '산책일지');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: SharedAppBar(
+        leftOptions: _getAppBarLeft(),
+        rightOptions: AppBarRight(icons: [
+          RightIcon(name: 'calendar', onTap: () => {}),
+          RightIcon(name: 'menu', onTap: () => {Get.toNamed('/settings')})
+        ]),
+      ),
       body: _pages[_currentTab],
       floatingActionButton:
           _currentTab == Tab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(top: 7),
         decoration: BoxDecoration(
-            border:
-                Border(top: BorderSide(color: ThemeColor.gray2, width: 1))),
+            border: Border(top: BorderSide(color: ThemeColor.gray2, width: 1))),
         child: BottomNavigationBar(
           currentIndex: _allowedRoutes.indexOf(_currentTab),
           onTap: (index) => _changeTab(index),
           selectedItemColor: ThemeColor.black,
           selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
-            letterSpacing: -1),
+              fontWeight: FontWeight.w600, fontSize: 10, letterSpacing: -1),
           unselectedItemColor: ThemeColor.gray4,
           unselectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
-              letterSpacing: -1),
+              fontWeight: FontWeight.w600, fontSize: 10, letterSpacing: -1),
           items: [
             _createBottomNavigationBarItem('feed', '피드'),
             _createBottomNavigationBarItem('home', '홈'),

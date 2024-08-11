@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/success.dart';
+import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -69,7 +70,10 @@ class _FeedWritePageState extends State<FeedWritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: SharedAppBar(
+          leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
+          centerOptions: AppBarCenter(label: '산책 기록하기'),
+        ),
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(20),

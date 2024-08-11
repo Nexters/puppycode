@@ -59,7 +59,9 @@ class HomeContent extends StatelessWidget {
             height: 56,
             bottom: 0,
             child:
-                DefaultTextButton(text: '오늘 산책도 무사히 완료!', onPressed: () => {}))
+                DefaultTextButton(
+                text: '오늘 산책도 무사히 완료!',
+                onPressed: () => {Get.toNamed('/create')}))
       ],
     );
   }

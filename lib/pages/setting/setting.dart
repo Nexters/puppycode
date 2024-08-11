@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:puppycode/shared/app_bar.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -66,8 +67,9 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(),
+        centerOptions: AppBarCenter(label: '설정'),
       ),
       body: SingleChildScrollView(
         child: Padding(

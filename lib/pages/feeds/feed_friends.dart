@@ -69,14 +69,14 @@ class FeedUserStatus extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEFF2F5),
+                  color: ThemeColor.gray2,
                   border: isFocused
                       ? Border.all(color: ThemeColor.primary, width: 2)
                       : null,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.network(
                     isMine
                         ? 'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg'
@@ -111,7 +111,7 @@ class FeedUserStatus extends StatelessWidget {
           const SizedBox(height: 4),
           Body4(
             value: name,
-            color: const Color(0xFF8D959A),
+            color: ThemeColor.gray4,
           )
         ],
       ),
