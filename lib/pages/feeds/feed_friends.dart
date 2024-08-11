@@ -69,7 +69,7 @@ class FeedUserStatus extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEFF2F5),
+                  color: ThemeColor.gray2,
                   border: isFocused
                       ? Border.all(color: ThemeColor.primary, width: 2)
                       : null,
@@ -111,7 +111,7 @@ class FeedUserStatus extends StatelessWidget {
           const SizedBox(height: 4),
           Body4(
             value: name,
-            color: const Color(0xFF8D959A),
+            color: ThemeColor.gray4,
           )
         ],
       ),
