@@ -18,6 +18,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Column(
           children: [
             const Body1(value: '포포', bold: true),
