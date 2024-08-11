@@ -33,7 +33,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
               hintText: '강아지 이름',
               maxLength: 10,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
+            TextInputWithBottomSheet(
+              hintText: '지역',
+              onTap: () => {},
+            ),
             // 지역 INPUT
           ],
         ),
