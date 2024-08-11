@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/shared/function/showModalBottomSheetCustom.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -119,7 +120,7 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          _showModalBottomSheet(context);
+          showModalBottomSheetCustom(context, const ReactionTabBar());
         },
         child: Row(
           children: [
@@ -132,46 +133,6 @@ class FeedReactionButton extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Future<dynamic> _showModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (BuildContext context) {
-        return Container(
-          height: 480,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Column(
-              children: [
-                Container(
-                  height: 5,
-                  width: 63,
-                  decoration: BoxDecoration(
-                      color: ThemeColor.gray3,
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-                const SizedBox(height: 14),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 440,
-                  child: const ReactionTabBar(),
-                )
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
