@@ -62,7 +62,7 @@ class _MyFeedPageState extends State<MyFeedPage> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Head3(value: '자다가 산책 가자니까 벌떡 일어나는  거 봐'),
+              const Head3(value: '자다가 산책 가자니까 벌떡 일어나는거 봐'),
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
