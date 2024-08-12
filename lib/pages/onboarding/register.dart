@@ -17,6 +17,7 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final _nameController = TextEditingController();
+  late String _location = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
               maxLength: 10,
             ),
             const SizedBox(height: 16),
-            const LocationInputWithBottomSheet(),
+            LocationInputWithBottomSheet(
+              value: _location,
+              onSelect: (location) => {
+                setState(() {
+                  _location = location;
+                })
+              },
+            ),
             // 지역 INPUT
           ],
         ),
@@ -94,11 +102,13 @@ List<String> _kLocationValues = [
 ];
 
 class LocationInputWithBottomSheet extends StatefulWidget {
-  final String? value;
+  final String value;
+  final void Function(String value) onSelect;
 
   const LocationInputWithBottomSheet({
     super.key,
-    this.value,
+    required this.onSelect,
+    required this.value,
   });
 
   @override
@@ -113,31 +123,40 @@ class _LocationInputWithBottomSheetState
   Widget _createLocationSelectContainer(BuildContext context) {
     return BottomSheet(
         onClosing: () => {},
-        builder: (context) => Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+        builder: (context) => SafeArea(
               child: Container(
+                height: 480,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Head3(value: '어디에 사시나요?'),
-                    SizedBox(height: 3),
-                    Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
-                    SizedBox(height: 12),
+                    const Head3(value: '어디에 사시나요?'),
+                    const SizedBox(height: 3),
+                    const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
+                    const SizedBox(height: 12),
                     SingleChildScrollView(
-                      child: Column(children: [
-                        for (var location in _kLocationValues)
-                          LocationOption(
-                            location: location,
-                            isSelected: location == '서울',
-                          )
-                      ]),
+                      scrollDirection: Axis.vertical,
+                      child: SizedBox(
+                        child: Column(children: [
+                          for (var location in _kLocationValues)
+                            LocationOption(
+                              location: location,
+                              isSelected: location == widget.value,
+                              onSelect: (selectedValue) => {
+                                setState(() {
+                                  widget.onSelect(selectedValue);
+                                })
+                              },
+                            )
+                        ]),
+                      ),
                     )
                   ],
                 ),
@@ -172,9 +191,9 @@ class _LocationInputWithBottomSheetState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Body1(
-                value: widget.value ?? '지역',
+                value: widget.value.isNotEmpty ? widget.value : '지역',
                 color:
-                    widget.value == null ? ThemeColor.gray4 : ThemeColor.gray6,
+                    widget.value.isEmpty ? ThemeColor.gray4 : ThemeColor.gray6,
               ),
               RotatedBox(
                 quarterTurns: 3,
@@ -193,26 +212,31 @@ class LocationOption extends StatelessWidget {
     super.key,
     required this.location,
     required this.isSelected,
+    required this.onSelect,
   });
 
   final String location;
   final bool isSelected;
+  final void Function(String) onSelect;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 16, 8, 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Body1(value: location),
-          if (isSelected)
-            SvgPicture.asset(
-              'assets/icons/check.svg',
-              colorFilter:
-                  ColorFilter.mode(ThemeColor.primary, BlendMode.srcIn),
-            )
-        ],
+    return GestureDetector(
+      onTap: () => {},
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 16, 8, 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Body1(value: location),
+            if (isSelected)
+              SvgPicture.asset(
+                'assets/icons/check.svg',
+                colorFilter:
+                    ColorFilter.mode(ThemeColor.primary, BlendMode.srcIn),
+              )
+          ],
+        ),
       ),
     );
   }
