@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -47,53 +49,30 @@ class _ReactionTabBarState extends State<ReactionTabBar>
           unselectedLabelStyle:
               BodyTextStyle.getBody3Style(bold: true, color: ThemeColor.gray3),
           tabs: [
-            Tab(
-              child: SizedBox(
-                width: 72,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _tabController.index == 0
-                        ? SvgPicture.asset(
-                            'assets/icons/emoji.svg',
-                            colorFilter: ColorFilter.mode(
-                              ThemeColor.primary,
-                              BlendMode.srcIn,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    const SizedBox(width: 4),
-                    const Text('이모지'),
-                  ],
-                ),
-              ),
+            CustomTab(
+              tabController: _tabController,
+              index: 0,
+              label: '이모지',
+              iconPath: 'emoji',
             ),
-            Tab(
-              child: SizedBox(
-                width: 72,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _tabController.index == 1
-                        ? SvgPicture.asset(
-                            'assets/icons/talk.svg',
-                            colorFilter: ColorFilter.mode(
-                              ThemeColor.primary,
-                              BlendMode.srcIn,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    const SizedBox(width: 4),
-                    const Text('댓글'),
-                  ],
-                ),
-              ),
+            CustomTab(
+              tabController: _tabController,
+              index: 1,
+              label: '댓글',
+              iconPath: 'talk',
             ),
           ]),
       body: TabBarView(controller: _tabController, children: const [
-        Center(
-          child: Body2(
-            value: '이모지',
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ReactionEmojiList(emoji: '😆', userName: '푸름이'),
+                ReactionEmojiList(emoji: '😍', userName: '앙꼬'),
+                ReactionEmojiList(emoji: '😍', userName: '샛별이'),
+              ],
+            ),
           ),
         ),
         Center(
@@ -102,6 +81,89 @@ class _ReactionTabBarState extends State<ReactionTabBar>
           ),
         ),
       ]),
+    );
+  }
+}
+
+class ReactionEmojiList extends StatelessWidget {
+  final String emoji;
+  final String userName;
+
+  const ReactionEmojiList({
+    super.key,
+    required this.emoji,
+    required this.userName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 58,
+      child: Row(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 34,
+                width: 34,
+                decoration: BoxDecoration(
+                    color: ThemeColor.gray2,
+                    borderRadius: BorderRadius.circular(21.25)),
+              ),
+              Text(
+                emoji,
+                style: const TextStyle(
+                    fontSize: 21.25,
+                    letterSpacing: -0.012 * 21.25,
+                    height: 29.8 / 21.25),
+              ),
+            ],
+          ),
+          const SizedBox(width: 8),
+          Body1(value: userName),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomTab extends StatelessWidget {
+  final TabController _tabController;
+  final int index;
+  final String label;
+  final String iconPath;
+
+  const CustomTab({
+    super.key,
+    required TabController tabController,
+    required this.index,
+    required this.label,
+    required this.iconPath,
+  }) : _tabController = tabController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      child: SizedBox(
+        width: 72,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _tabController.index == index
+                ? SvgPicture.asset(
+                    'assets/icons/$iconPath.svg',
+                    colorFilter: ColorFilter.mode(
+                      ThemeColor.primary,
+                      BlendMode.srcIn,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            const SizedBox(width: 4),
+            Text(label),
+          ],
+        ),
+      ),
     );
   }
 }
