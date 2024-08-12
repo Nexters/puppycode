@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/pages/myfeeds/reaction_tab_bar.dart';
 import 'package:puppycode/shared/function/showModalBottomSheetCustom.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -132,79 +133,6 @@ class FeedReactionButton extends StatelessWidget {
             Body4(value: '$count', color: ThemeColor.gray3),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ReactionTabBar extends StatelessWidget {
-  const ReactionTabBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: TabBar(
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 3),
-            indicatorColor: ThemeColor.primary,
-            indicatorSize: TabBarIndicatorSize.tab,
-            unselectedLabelColor: ThemeColor.gray3,
-            unselectedLabelStyle: BodyTextStyle.getBody3Style(
-                bold: true, color: ThemeColor.gray3),
-            labelStyle: BodyTextStyle.getBody3Style(
-                bold: true, color: ThemeColor.gray5),
-            tabs: [
-              Tab(
-                child: SizedBox(
-                  width: 72,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/emoji.svg',
-                        colorFilter: ColorFilter.mode(
-                          ThemeColor.primary,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Text('이모지'),
-                    ],
-                  ),
-                ),
-              ),
-              const Tab(
-                child: SizedBox(
-                  width: 72,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 4),
-                      Text('댓글'),
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-        body: const TabBarView(children: [
-          Center(
-            child: Body2(
-              value: '이모지',
-            ),
-          ),
-          Center(
-            child: Body2(
-              value: '이모지',
-            ),
-          ),
-        ]),
       ),
     );
   }

@@ -31,9 +31,7 @@ Future<dynamic> showModalBottomSheetCustom(
                 ),
               ),
               const SizedBox(height: 14),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 440,
+              Expanded(
                 child: widget, // 여기 위젯 넣으면 됩니댜 ,,
               ),
             ],
