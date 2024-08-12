@@ -25,7 +25,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   final Map<Tab, Widget> _pages = {
     Tab.feed: const FeedScreen(),
     Tab.home: const HomePage(),
-    Tab.my: const HomePage(),
+    Tab.my: const FeedScreen(),
   };
 
   @override
@@ -63,7 +63,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   AppBarLeft _getAppBarLeft() {
     if (_currentTab == Tab.home) return AppBarLeft(iconType: LeftIconType.LOGO);
     if (_currentTab == Tab.feed) return AppBarLeft(label: '산책피드');
-    return AppBarLeft(label: '산책일지');
+    return AppBarLeft(label: '내 일지');
   }
 
   @override
