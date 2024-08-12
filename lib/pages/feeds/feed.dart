@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:puppycode/pages/feeds/feed_friends.dart';
 import 'package:puppycode/pages/feeds/feed_scroll.dart';
 
-class FeedPage extends StatelessWidget {
-  const FeedPage({super.key});
+class FeedScreen extends StatelessWidget {
+  const FeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,10 @@ class FeedPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const FeedFriends(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            width: MediaQuery.of(context).size.width,
-            child: const FeedListView(),
+          Expanded(
+            child: Container(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                child: const FeedListView()),
           )
         ],
       ),

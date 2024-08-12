@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 
 class HttpService {
   const HttpService();
-  static const String baseUrl = 'http://175.106.99.165/api';
+  static const String baseUrl = '175.106.99.165';
 
   static Future<Map<String, dynamic>> get(String endPoint,
       {Map<String, dynamic>? params}) async {
-    final url = Uri.http(baseUrl, '/$endPoint', params);
+    final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res =
         await http.get(url, headers: {'Content-Type': 'application/json'});
     if (res.statusCode == 200) {

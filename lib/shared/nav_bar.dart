@@ -23,7 +23,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   static const List<Tab> _allowedRoutes = [Tab.feed, Tab.home, Tab.my];
 
   final Map<Tab, Widget> _pages = {
-    Tab.feed: const FeedPage(),
+    Tab.feed: const FeedScreen(),
     Tab.home: const HomePage(),
     Tab.my: const HomePage(),
   };

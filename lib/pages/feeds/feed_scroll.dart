@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/shared/http.dart';
 
 class FeedListView extends StatefulWidget {
   const FeedListView({super.key});
@@ -10,29 +11,34 @@ class FeedListView extends StatefulWidget {
 }
 
 class _FeedListViewState extends State<FeedListView> {
-  static const _pageSize = 20;
+  static const _limit = 5;
 
   final PagingController<int, Feed> _pagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0); // == firstCursor
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
+    _pagingController.addPageRequestListener((cursor) {
+      _fetchPage(cursor);
     });
     super.initState();
   }
 
-  Future<void> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(int cursor) async {
     try {
-      List<Feed> feedItems = [Feed(id: '1', name: '포포')];
-      //final newItems = await RemoteApi.getFeedList(pageKey, _pageSize);
-      final isLastPage = feedItems.length < _pageSize;
+      final response = await HttpService.get('walk-logs', params: {
+        'pageSize': '$_limit',
+        'cursorId': cursor == 0 ? null : '$cursor'
+      });
+      List<dynamic> logs = response['walkLogList']; // res 추상화 서버에 요청
+      List<Feed> feedItems = logs.map((item) => Feed(item)).toList();
+
+      final isLastPage = feedItems.length < _limit;
       if (isLastPage) {
         _pagingController.appendLastPage(feedItems);
       } else {
-        final nextPageKey = pageKey + feedItems.length;
-        _pagingController.appendPage(feedItems, nextPageKey);
+        final nextCursor = feedItems.last.id;
+        _pagingController.appendPage(feedItems, nextCursor);
       }
     } catch (error) {
       _pagingController.error = error;
