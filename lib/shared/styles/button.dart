@@ -40,7 +40,11 @@ class DefaultTextButton extends TextButton {
   }) : super(
           onPressed: onPressed,
           style: style ?? getStyle(disabled: disabled),
-          child: child ?? Body1(value: text),
+          child: child ??
+              Body1(
+                value: text,
+                bold: true,
+              ),
         );
 
   static const getStyle = TextButtonStyle.getStyle;

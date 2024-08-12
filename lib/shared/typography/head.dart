@@ -66,8 +66,8 @@ class HeadTextStyle {
   static getH1Style({Color? color}) {
     return TextStyle(
       fontSize: 24,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 24 * -0.012,
+      fontWeight: FontWeight.w700, // bold
+      letterSpacing: -0.012 * 24,
       color: color ?? _kDefaultTextColor,
       height: 33 / 24,
     );
@@ -76,8 +76,8 @@ class HeadTextStyle {
   static getH2Style({Color? color}) {
     return TextStyle(
       fontSize: 22,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 22 * -0.012,
+      fontWeight: FontWeight.w700, // bold
+      letterSpacing: -0.012 * 22,
       color: color ?? _kDefaultTextColor,
       height: 31 / 22,
     );
@@ -86,8 +86,8 @@ class HeadTextStyle {
   static getH3Style({Color? color}) {
     return TextStyle(
       fontSize: 20,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 20 * -0.012,
+      fontWeight: FontWeight.w600, // semibold
+      letterSpacing: -0.012 * 20,
       color: color ?? _kDefaultTextColor,
       height: 28 / 20,
     );

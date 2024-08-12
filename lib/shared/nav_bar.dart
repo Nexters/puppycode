@@ -87,14 +87,18 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
           onTap: (index) => _changeTab(index),
           selectedItemColor: ThemeColor.black,
           selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 10, letterSpacing: -1),
+              fontWeight: FontWeight.w600,
+              fontSize: 10,
+              letterSpacing: -0.01 * 10),
           unselectedItemColor: ThemeColor.gray4,
           unselectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600, fontSize: 10, letterSpacing: -1),
+              fontWeight: FontWeight.w600,
+              fontSize: 10,
+              letterSpacing: -0.01 * 10),
           items: [
-            _createBottomNavigationBarItem('feed', '피드'),
+            _createBottomNavigationBarItem('feed', '산책피드'),
             _createBottomNavigationBarItem('home', '홈'),
-            _createBottomNavigationBarItem('calendar', '산책일지'),
+            _createBottomNavigationBarItem('calendar', '내 일지'),
           ],
         ),
       ),
