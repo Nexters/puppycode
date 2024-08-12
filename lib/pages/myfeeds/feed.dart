@@ -121,7 +121,7 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          sharedModalBottomSheet(context, const ReactionTabBar());
+          sharedModalBottomSheet(context, const ReactionTabBar(), null);
         },
         child: Row(
           children: [

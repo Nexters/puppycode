@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/pages/myfeeds/reaction_tab_view.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -15,6 +14,7 @@ class ReactionTabBar extends StatefulWidget {
 class _ReactionTabBarState extends State<ReactionTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -32,10 +32,17 @@ class _ReactionTabBarState extends State<ReactionTabBar>
     super.dispose();
   }
 
+  static _getTabBarTextStyle(bool focus) {
+    return BodyTextStyle.getBody3Style(
+      bold: true,
+      color: focus ? ThemeColor.gray5 : ThemeColor.gray3,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       appBar: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -43,11 +50,9 @@ class _ReactionTabBarState extends State<ReactionTabBar>
           labelPadding: const EdgeInsets.symmetric(horizontal: 3),
           indicatorColor: ThemeColor.primary,
           indicatorSize: TabBarIndicatorSize.tab,
-          labelStyle:
-              BodyTextStyle.getBody3Style(bold: true, color: ThemeColor.gray5),
+          labelStyle: _getTabBarTextStyle(true),
           unselectedLabelColor: ThemeColor.gray3,
-          unselectedLabelStyle:
-              BodyTextStyle.getBody3Style(bold: true, color: ThemeColor.gray3),
+          unselectedLabelStyle: _getTabBarTextStyle(false),
           tabs: [
             CustomTab(
               tabController: _tabController,
@@ -62,87 +67,9 @@ class _ReactionTabBarState extends State<ReactionTabBar>
               iconPath: 'talk',
             ),
           ]),
-      body: TabBarView(controller: _tabController, children: const [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionEmojiListItem(emoji: '😆', userName: '푸름이'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '앙꼬'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '샛별이'),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '샛별이', comment: '우리집 강아지가 젤 귀여움 ☀︎'),
-                  ReactionCommentListItem(
-                      userName: '앙꼬',
-                      comment: '미쳤다 저정도 정전기라면 모든 것을 이겨낼 수 있지 않을까 캬캬캬캬캬캬캬캬캬캬')
-                ],
-              ),
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
-}
-
-class ReactionCommentListItem extends StatelessWidget {
-  // final Image profileImage;
-  final String userName;
-  final String comment;
-
-  const ReactionCommentListItem({
-    super.key,
-    // required this.profileImage,
-    required this.userName,
-    required this.comment,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      width: MediaQuery.of(context).size.width,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: ThemeColor.gray2,
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Body3(value: userName, bold: true),
-              const SizedBox(height: 2),
-              SizedBox(
-                width: MediaQuery.of(context).size.width -
-                    93, // 지정해둔 width를 넘으면 개행시킬 수 있는 방법이 있나요 ..?
-                child: Body3(value: comment),
-              )
-            ],
-          )
-        ],
+      body: ReactionTabView(
+        tabController: _tabController,
+        commentController: _commentController,
       ),
     );
   }
@@ -183,49 +110,6 @@ class CustomTab extends StatelessWidget {
             Text(label),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ReactionEmojiListItem extends StatelessWidget {
-  final String emoji;
-  final String userName;
-
-  const ReactionEmojiListItem({
-    super.key,
-    required this.emoji,
-    required this.userName,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 58,
-      child: Row(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                height: 34,
-                width: 34,
-                decoration: BoxDecoration(
-                    color: ThemeColor.gray2,
-                    borderRadius: BorderRadius.circular(21.25)),
-              ),
-              Text(
-                emoji,
-                style: const TextStyle(
-                    fontSize: 21.25,
-                    letterSpacing: -0.012 * 21.25,
-                    height: 29.8 / 21.25),
-              ),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Body1(value: userName),
-        ],
       ),
     );
   }
