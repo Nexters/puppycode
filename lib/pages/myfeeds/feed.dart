@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/pages/myfeeds/reaction_tab_bar.dart';
-import 'package:puppycode/shared/function/showModalBottomSheetCustom.dart';
+import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -121,7 +121,7 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          showModalBottomSheetCustom(context, const ReactionTabBar());
+          sharedModalBottomSheet(context, const ReactionTabBar());
         },
         child: Row(
           children: [

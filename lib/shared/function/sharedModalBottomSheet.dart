@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
-Future<dynamic> showModalBottomSheetCustom(
-    BuildContext context, Widget widget) {
+Future<dynamic> sharedModalBottomSheet(BuildContext context, Widget widget) {
   return showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
