@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
@@ -86,13 +87,19 @@ class _FeedItemState extends State<FeedItem> {
                         0.4
                       ])),
             ),
-            NameLabel(name: name),
-            const Positioned(
-                top: 58,
-                left: 16,
-                child: Head3(
+            Positioned(
+                top: height * 0.0421,
+                left: width * 0.0457,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NameLabel(name: name),
+                    const SizedBox(height: 8),
+                    const Head3(
                   value: '자다가 산책가자니까 벌떡 일어나는거봐',
                   color: Colors.white,
+                    )
+                  ],
                 )),
           ],
         ),
@@ -102,9 +109,8 @@ class _FeedItemState extends State<FeedItem> {
 }
 
 class FeedPhoto extends StatelessWidget {
-  const FeedPhoto({
-    super.key,
-  });
+  const FeedPhoto({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,19 +139,16 @@ class NameLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-        top: 20,
-        left: 16,
-        child: Container(
+    return Container(
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
           decoration: BoxDecoration(
-              color: const Color(0x14FFFFFF),
+          color: ThemeColor.white.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20)),
           child: Body4(
             value: name,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+        color: ThemeColor.white,
           ),
-        ));
+    );
   }
 }

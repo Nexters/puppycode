@@ -14,7 +14,7 @@ class FeedPage extends StatelessWidget {
         children: [
           const FeedFriends(),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             width: MediaQuery.of(context).size.width,
             child: const FeedListView(),
           )
