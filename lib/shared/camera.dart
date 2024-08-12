@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/photo_preview.dart';
-import 'package:puppycode/shared/styles/color.dart';
-import 'package:puppycode/shared/typography/body.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});

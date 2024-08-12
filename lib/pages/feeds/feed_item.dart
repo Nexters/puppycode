@@ -77,7 +77,6 @@ class _FeedItemState extends State<FeedItem> {
                   gradient: LinearGradient(
                       begin: FractionalOffset.topCenter,
                       end: FractionalOffset.bottomCenter,
-                      // TODO: gradient 이해하고 수정하기...
                       colors: [
                         Colors.black.withOpacity(0.3),
                         Colors.black.withOpacity(0),
