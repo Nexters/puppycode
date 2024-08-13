@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
+import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/input.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
@@ -124,67 +125,58 @@ class _LocationInputWithBottomSheetState
     return BottomSheet(
         onClosing: () => {},
         builder: (context) => StatefulBuilder(
-            builder: (BuildContext context, setState) => SafeArea(
-                  child: Container(
-                    height: 480,
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(25),
-                            topRight: Radius.circular(25))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const Head3(value: '어디에 사시나요?'),
-                        const SizedBox(height: 3),
-                        const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
-                        const SizedBox(height: 12),
-                        Expanded(
-                          child: Scrollbar(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: SizedBox(
-                                child: Column(children: [
-                                  for (var location in _kLocationValues)
-                                    LocationOption(
-                                      location: location,
-                                      isSelected: location == widget.value,
-                                      onSelect: (selectedValue) => {
-                                        setState(() {
-                                          widget.onSelect(selectedValue);
-                                          Get.back();
-                                        })
-                                      },
-                                    )
-                                ]),
-                              ),
+            builder: (BuildContext context, setState) => Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Head3(value: '어디에 사시나요?'),
+                      const SizedBox(height: 3),
+                      const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
+                      const SizedBox(height: 12),
+                      Expanded(
+                        child: Scrollbar(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: SizedBox(
+                              child: Column(children: [
+                                for (var location in _kLocationValues)
+                                  LocationOption(
+                                    location: location,
+                                    isSelected: location == widget.value,
+                                    onSelect: (selectedValue) => {
+                                      setState(() {
+                                        widget.onSelect(selectedValue);
+                                        Get.back();
+                                      })
+                                    },
+                                  )
+                              ]),
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 )));
   }
 
   @override
   Widget build(BuildContext context) {
+    onComplete() {
+      setState(() {
+        _isFocused = false;
+      });
+    }
+
     return GestureDetector(
         onTap: () => {
               setState(() {
                 _isFocused = true;
               }),
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) =>
-                      _createLocationSelectContainer(context)).whenComplete(() {
-                setState(() {
-                  _isFocused = false;
-                });
-              })
+              sharedModalBottomSheet(
+                  context, _createLocationSelectContainer(context), onComplete)
             },
         child: Container(
           padding: const EdgeInsets.all(16),
