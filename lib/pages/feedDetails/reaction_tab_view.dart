@@ -5,35 +5,71 @@ import 'package:puppycode/pages/feedDetails/emoji_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
-class ReactionTabView extends StatelessWidget {
+class ReactionTabView extends StatefulWidget {
   const ReactionTabView({
     super.key,
     required TabController tabController,
-    required TextEditingController commentController,
-  })  : _tabController = tabController,
-        _commentController = commentController;
+  }) : _tabController = tabController;
 
   final TabController _tabController;
-  final TextEditingController _commentController;
+
+  @override
+  State<ReactionTabView> createState() => _ReactionTabViewState();
+}
+
+class _ReactionTabViewState extends State<ReactionTabView> {
+  final TextEditingController _emojiController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
+  bool hasEmoji = false;
+
+  void _onEmojiChanged(String value) {
+    // 정규 표현식으로 이모지만 허용
+    final RegExp emojiRegExp = RegExp(
+      r'^[\p{Emoji}]$', // 하나의 이모지만 허용
+      unicode: true,
+    );
+
+    // 입력이 유효하지 않은 경우
+    if (!emojiRegExp.hasMatch(value)) {
+      _emojiController.text = ''; // 이모지가 아닌 경우 빈 문자열로 설정
+    } else if (value.length > 1) {
+      // 이모지가 하나만 입력되도록 제한
+      _emojiController.text = value.substring(0, 1);
+    }
+
+    _emojiController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _emojiController.text.length),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return TabBarView(
-      controller: _tabController,
+      controller: widget._tabController,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionEmojiListItem(emoji: '😆', userName: '푸름이'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '앙꼬'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '샛별이'),
-                ],
-              ),
-            ),
-          ),
+        Padding(
+          padding: EdgeInsets.only(
+              top: 12,
+              bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 46),
+          child: hasEmoji
+              ? const Scrollbar(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ReactionEmojiListItem(emoji: '😆', userName: '푸름이'),
+                        ReactionEmojiListItem(emoji: '😍', userName: '앙꼬'),
+                        ReactionEmojiListItem(emoji: '😍', userName: '샛별이'),
+                      ],
+                    ),
+                  ),
+                )
+              : // 이모티콘 디자인 받으면 다시 손 볼게용 ~
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CommentTextField(
+                    textFieldController: _emojiController,
+                  ),
+                ),
         ),
         Padding(
           padding: EdgeInsets.only(
@@ -68,7 +104,7 @@ class ReactionTabView extends StatelessWidget {
                   ),
                 ),
               ),
-              CommentTextField(commentController: _commentController)
+              CommentTextField(textFieldController: _commentController)
             ],
           ),
         ),
@@ -80,8 +116,8 @@ class ReactionTabView extends StatelessWidget {
 class CommentTextField extends StatefulWidget {
   const CommentTextField({
     super.key,
-    required TextEditingController commentController,
-  }) : _commentController = commentController;
+    required TextEditingController textFieldController,
+  }) : _commentController = textFieldController;
 
   final TextEditingController _commentController;
 

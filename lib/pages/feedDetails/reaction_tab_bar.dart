@@ -18,7 +18,6 @@ class ReactionTabBar extends StatefulWidget {
 class _ReactionTabBarState extends State<ReactionTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -74,7 +73,6 @@ class _ReactionTabBarState extends State<ReactionTabBar>
           ]),
       body: ReactionTabView(
         tabController: _tabController,
-        commentController: _commentController,
       ),
     );
   }
