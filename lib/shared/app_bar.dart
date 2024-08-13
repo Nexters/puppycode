@@ -92,7 +92,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
   // ignore: non_constant_identifier_names
   Widget? CenterPart(BuildContext context) {
     return Positioned(
-      child: Container(
+      child: SizedBox(
         height: kToolbarHeight + (bottom?.preferredSize.height ?? 0.0),
         child: Center(
             child: Body1(

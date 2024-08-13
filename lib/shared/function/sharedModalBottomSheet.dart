@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
-Future<dynamic> sharedModalBottomSheet(BuildContext context, Widget widget) {
+Future<dynamic> sharedModalBottomSheet(
+    BuildContext context, Widget widget, VoidCallback? onComplete) {
   return showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (BuildContext context) {
+      final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+      final double modalHeight = keyboardHeight > 0 ? 660 : 480;
+
       return Container(
-        height: 480,
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        height: modalHeight,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -20,6 +27,7 @@ Future<dynamic> sharedModalBottomSheet(BuildContext context, Widget widget) {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 height: 5,
@@ -38,5 +46,7 @@ Future<dynamic> sharedModalBottomSheet(BuildContext context, Widget widget) {
         ),
       );
     },
-  );
+  ).whenComplete(() {
+    // 요거 말하는걸까용..
+  });
 }

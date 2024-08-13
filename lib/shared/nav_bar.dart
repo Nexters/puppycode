@@ -23,9 +23,9 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   static const List<Tab> _allowedRoutes = [Tab.feed, Tab.home, Tab.my];
 
   final Map<Tab, Widget> _pages = {
-    Tab.feed: const FeedPage(),
+    Tab.feed: const FeedScreen(),
     Tab.home: const HomePage(),
-    Tab.my: const HomePage(),
+    Tab.my: const FeedScreen(),
   };
 
   @override
@@ -53,6 +53,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
         activeIcon: SvgPicture.asset('assets/icons/$assetName.svg'),
         icon: SvgPicture.asset(
           'assets/icons/$assetName.svg',
+          width: 32,
           colorFilter:
               const ColorFilter.mode(Color(0xFFBFC9D0), BlendMode.srcIn),
         ),
@@ -62,43 +63,40 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   AppBarLeft _getAppBarLeft() {
     if (_currentTab == Tab.home) return AppBarLeft(iconType: LeftIconType.LOGO);
     if (_currentTab == Tab.feed) return AppBarLeft(label: '산책피드');
-    return AppBarLeft(label: '산책일지');
+    return AppBarLeft(label: '내 일지');
   }
 
   @override
   Widget build(BuildContext context) {
+    var labelStyle = const TextStyle(
+        fontWeight: FontWeight.w600, fontSize: 11, letterSpacing: -0.01 * 11);
+
     return Scaffold(
       appBar: SharedAppBar(
         leftOptions: _getAppBarLeft(),
         rightOptions: AppBarRight(icons: [
           RightIcon(name: 'calendar', onTap: () => {}),
-          RightIcon(name: 'menu', onTap: () => {Get.toNamed('/settings')})
+          RightIcon(name: 'setting', onTap: () => {Get.toNamed('/settings')})
         ]),
       ),
       body: _pages[_currentTab],
       floatingActionButton:
           _currentTab == Tab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 7),
+        padding: const EdgeInsets.only(top: 5.5),
         decoration: BoxDecoration(
             border: Border(top: BorderSide(color: ThemeColor.gray2, width: 1))),
         child: BottomNavigationBar(
           currentIndex: _allowedRoutes.indexOf(_currentTab),
           onTap: (index) => _changeTab(index),
-          selectedItemColor: ThemeColor.black,
-          selectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
-              letterSpacing: -0.01 * 10),
+          selectedItemColor: ThemeColor.gray6,
+          selectedLabelStyle: labelStyle,
           unselectedItemColor: ThemeColor.gray4,
-          unselectedLabelStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 10,
-              letterSpacing: -0.01 * 10),
+          unselectedLabelStyle: labelStyle,
           items: [
             _createBottomNavigationBarItem('feed', '산책피드'),
             _createBottomNavigationBarItem('home', '홈'),
-            _createBottomNavigationBarItem('calendar', '내 일지'),
+            _createBottomNavigationBarItem('diary', '내 일지'),
           ],
         ),
       ),

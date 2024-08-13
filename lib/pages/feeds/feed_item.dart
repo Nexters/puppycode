@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 class Feed {
-  Feed({required this.id, required this.name, this.title});
+  Feed(dynamic logItem) {
+    id = logItem['id'];
+    photoUrl = logItem['photoUrl'];
+    name = logItem['writerNickname'] ?? 'unknown';
+    title = logItem['title'];
+    episode = logItem['content'];
+    profileUrl = logItem['writerProfileUrl'];
+  }
 
-  final String id;
-  final String name;
-  final String? title;
+  late int id;
+  late String photoUrl;
+  late String name;
+  String? title;
+  String? episode;
+  String? profileUrl;
 }
 
 class FeedItem extends StatefulWidget {
@@ -25,12 +36,14 @@ class FeedItem extends StatefulWidget {
 
 class _FeedItemState extends State<FeedItem> {
   late FocusNode focusNode;
+  late Feed feed;
 
   Color overlayColor = Colors.grey;
 
   @override
   void initState() {
     super.initState();
+    feed = widget.item;
     focusNode = FocusNode();
     focusNode.addListener(() {
       _changeOverlayColor(focusNode.hasFocus);
@@ -55,7 +68,6 @@ class _FeedItemState extends State<FeedItem> {
   Widget build(BuildContext context) {
     var width = (MediaQuery.of(context).size.width - 40);
     var height = width * 1.33;
-    final name = widget.item.name;
 
     return GestureDetector(
       onTap: () {
@@ -69,7 +81,7 @@ class _FeedItemState extends State<FeedItem> {
             color: overlayColor, borderRadius: BorderRadius.circular(20)),
         child: Stack(
           children: <Widget>[
-            const FeedPhoto(),
+            FeedPhoto(photoUrl: feed.photoUrl),
             Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -77,7 +89,6 @@ class _FeedItemState extends State<FeedItem> {
                   gradient: LinearGradient(
                       begin: FractionalOffset.topCenter,
                       end: FractionalOffset.bottomCenter,
-                      // TODO: gradient 이해하고 수정하기...
                       colors: [
                         Colors.black.withOpacity(0.3),
                         Colors.black.withOpacity(0),
@@ -87,13 +98,20 @@ class _FeedItemState extends State<FeedItem> {
                         0.4
                       ])),
             ),
-            NameLabel(name: name),
-            const Positioned(
-                top: 58,
-                left: 16,
-                child: Head3(
-                  value: '자다가 산책가자니까 벌떡 일어나는거봐',
-                  color: Colors.white,
+            Positioned(
+                top: height * 0.0421,
+                left: width * 0.0457,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NameLabel(name: feed.name),
+                    const SizedBox(height: 8),
+                    if (feed.title != null)
+                      Head3(
+                        value: feed.title!,
+                        color: Colors.white,
+                      )
+                  ],
                 )),
           ],
         ),
@@ -103,9 +121,8 @@ class _FeedItemState extends State<FeedItem> {
 }
 
 class FeedPhoto extends StatelessWidget {
-  const FeedPhoto({
-    super.key,
-  });
+  const FeedPhoto({super.key, this.photoUrl});
+  final String? photoUrl; // my feed 수정하고 required로
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +132,8 @@ class FeedPhoto extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png',
+        photoUrl ??
+            'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png', // TODO: errorBuilder
         fit: BoxFit.cover,
         width: width,
         height: height,
@@ -134,19 +152,16 @@ class NameLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-        top: 20,
-        left: 16,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
-          decoration: BoxDecoration(
-              color: const Color(0x14FFFFFF),
-              borderRadius: BorderRadius.circular(20)),
-          child: Body4(
-            value: name,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ));
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
+      decoration: BoxDecoration(
+          color: ThemeColor.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(20)),
+      child: Body4(
+        value: name,
+        fontWeight: FontWeight.w600,
+        color: ThemeColor.white,
+      ),
+    );
   }
 }
