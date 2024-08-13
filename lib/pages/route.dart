@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:puppycode/pages/feedDetails/feed.dart';
+import 'package:puppycode/pages/feedDetails/feedDetails.dart';
 import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/setting/setting.dart';

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
@@ -7,6 +8,7 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:share/share.dart';
 
 class MyFeedPage extends StatefulWidget {
   const MyFeedPage({super.key});
@@ -16,6 +18,43 @@ class MyFeedPage extends StatefulWidget {
 }
 
 class _MyFeedPageState extends State<MyFeedPage> {
+  String tmpCode = 'abcd';
+
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              // 수정하기
+              Navigator.pop(context);
+            },
+            child: Body2(value: '수정하기', color: ThemeColor.blue),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Share.share(tmpCode); // 무엇을 공유하지요?
+              Navigator.pop(context);
+            },
+            child: Body2(value: '공유하기', color: ThemeColor.blue),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Body2(value: '삭제하기', color: ThemeColor.error),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Body2(value: '취소하기', color: ThemeColor.blue)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +71,9 @@ class _MyFeedPageState extends State<MyFeedPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _showActionSheet(context);
+            },
             icon: const Icon(Icons.more_vert_sharp),
           ),
         ],

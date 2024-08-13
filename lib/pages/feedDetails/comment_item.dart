@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/caption.dart';
 
 class ReactionCommentListItem extends StatelessWidget {
   // final Image profileImage;
   final String userName;
   final String comment;
+  final bool owner;
 
   const ReactionCommentListItem({
     super.key,
     // required this.profileImage,
     required this.userName,
     required this.comment,
+    this.owner = false,
   });
 
   @override
@@ -35,7 +38,13 @@ class ReactionCommentListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Body3(value: userName, bold: true),
+              Row(
+                children: [
+                  Body3(value: userName, bold: true),
+                  const SizedBox(width: 6),
+                  if (owner) Caption(value: '작성자', color: ThemeColor.gray4),
+                ],
+              ),
               const SizedBox(height: 2),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 90,
