@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -62,7 +64,9 @@ class _CalendarPageState extends State<CalendarPage> {
         child: Column(
           children: [
             SharedBanner(
-              onClick: () => {},
+              onClick: () => {
+                Get.toNamed('/', arguments: {'tab': NavTab.feed})
+              },
               mainText: '친구의 산책 소식이 도착했어요',
               subText: '오늘은 어떤 산책이었을지 확인해볼까요?',
             ),
