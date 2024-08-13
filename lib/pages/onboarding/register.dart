@@ -123,49 +123,51 @@ class _LocationInputWithBottomSheetState
   Widget _createLocationSelectContainer(BuildContext context) {
     return BottomSheet(
         onClosing: () => {},
-        builder: (context) => SafeArea(
-              child: Container(
-                height: 480,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Head3(value: '어디에 사시나요?'),
-                    const SizedBox(height: 3),
-                    const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: Scrollbar(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: SizedBox(
-                            child: Column(children: [
-                              for (var location in _kLocationValues)
-                                LocationOption(
-                                  location: location,
-                                  isSelected: location == widget.value,
-                                  onSelect: (selectedValue) => {
-                                    setState(() {
-                                      widget.onSelect(selectedValue);
-                                    })
-                                  },
-                                )
-                            ]),
+        builder: (context) => StatefulBuilder(
+            builder: (BuildContext context, setState) => SafeArea(
+                  child: Container(
+                    height: 480,
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Head3(value: '어디에 사시나요?'),
+                        const SizedBox(height: 3),
+                        const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
+                        const SizedBox(height: 12),
+                        Expanded(
+                          child: Scrollbar(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: SizedBox(
+                                child: Column(children: [
+                                  for (var location in _kLocationValues)
+                                    LocationOption(
+                                      location: location,
+                                      isSelected: location == widget.value,
+                                      onSelect: (selectedValue) => {
+                                        setState(() {
+                                          widget.onSelect(selectedValue);
+                                          Get.back();
+                                        })
+                                      },
+                                    )
+                                ]),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ));
+                        )
+                      ],
+                    ),
+                  ),
+                )));
   }
 
   @override
@@ -226,13 +228,13 @@ class LocationOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => {onSelect(location)},
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 16, 8, 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Body1(value: location),
+            Expanded(child: Body1(value: location)),
             if (isSelected)
               SvgPicture.asset(
                 'assets/icons/check.svg',
