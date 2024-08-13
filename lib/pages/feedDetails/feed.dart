@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
-import 'package:puppycode/pages/myfeeds/reaction_tab_bar.dart';
+import 'package:puppycode/pages/feedDetails/reaction_tab_bar.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -47,8 +47,8 @@ class _MyFeedPageState extends State<MyFeedPage> {
               const SizedBox(height: 12),
               const Row(
                 children: [
-                  FeedReactionButton(svg: 'emoji', count: 3),
-                  FeedReactionButton(svg: 'talk', count: 3),
+                  FeedReactionButton(idx: 0, svg: 'emoji', count: 3),
+                  FeedReactionButton(idx: 1, svg: 'talk', count: 3),
                 ],
               ),
               const SizedBox(height: 20),
@@ -106,10 +106,12 @@ class _MyFeedPageState extends State<MyFeedPage> {
 }
 
 class FeedReactionButton extends StatelessWidget {
+  final int idx;
   final String svg;
   final int count;
 
   const FeedReactionButton({
+    required this.idx,
     required this.svg,
     required this.count,
     super.key,
@@ -121,7 +123,8 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          sharedModalBottomSheet(context, const ReactionTabBar(), null);
+          sharedModalBottomSheet(
+              context, ReactionTabBar(selectedTabIdx: idx), null);
         },
         child: Row(
           children: [

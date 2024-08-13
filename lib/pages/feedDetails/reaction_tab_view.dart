@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/pages/myfeeds/comment_item.dart';
-import 'package:puppycode/pages/myfeeds/emoji_item.dart';
+import 'package:puppycode/pages/feedDetails/comment_item.dart';
+import 'package:puppycode/pages/feedDetails/emoji_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
