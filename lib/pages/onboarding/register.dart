@@ -141,21 +141,25 @@ class _LocationInputWithBottomSheetState
                     const SizedBox(height: 3),
                     const Body3(value: '지역을 설정하면 날씨 정보를 제공해 드려요.'),
                     const SizedBox(height: 12),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: SizedBox(
-                        child: Column(children: [
-                          for (var location in _kLocationValues)
-                            LocationOption(
-                              location: location,
-                              isSelected: location == widget.value,
-                              onSelect: (selectedValue) => {
-                                setState(() {
-                                  widget.onSelect(selectedValue);
-                                })
-                              },
-                            )
-                        ]),
+                    Expanded(
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SizedBox(
+                            child: Column(children: [
+                              for (var location in _kLocationValues)
+                                LocationOption(
+                                  location: location,
+                                  isSelected: location == widget.value,
+                                  onSelect: (selectedValue) => {
+                                    setState(() {
+                                      widget.onSelect(selectedValue);
+                                    })
+                                  },
+                                )
+                            ]),
+                          ),
+                        ),
                       ),
                     )
                   ],
