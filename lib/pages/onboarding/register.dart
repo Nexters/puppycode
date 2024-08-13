@@ -50,18 +50,21 @@ class _RegistrationPageState extends State<RegistrationPage> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        color: Colors.white,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            Expanded(
-                child: DefaultTextButton(
-              text: '등록하기',
-              onPressed: () => {Get.to(() => const StartPage())},
-            )),
-          ],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          color: Colors.white,
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Expanded(
+                  child: DefaultTextButton(
+                text: '등록하기',
+                onPressed: () => {Get.to(() => const StartPage())},
+              )),
+            ],
+          ),
         ),
       ),
     );
