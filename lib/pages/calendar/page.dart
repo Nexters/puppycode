@@ -14,17 +14,40 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  String? focusedUserId;
+  static const int maxMonth = 12;
+  static const int minMonth = 1;
+
+  int year = DateTime.now().year;
   int month = DateTime.now().month;
+  bool isThisMonth = true;
   DateTime firstDayOfMonth =
       DateTime.utc(DateTime.now().year, DateTime.now().month, 1);
   DateTime lastDayOfMonth =
       DateTime.utc(DateTime.now().year, DateTime.now().month + 1, 0);
 
-  void setFocusUser(String? userId) {
+  void changeMonth(bool next) {
+    if (isThisMonth && next) return;
+    var relativeMonth = next ? month + 1 : month - 1;
+    var nextMonth = (relativeMonth < minMonth)
+        ? maxMonth
+        : (relativeMonth > maxMonth)
+            ? minMonth
+            : relativeMonth;
+    var isYearChanged = (nextMonth - month).abs() > 1;
+    var nextYear =
+        isYearChanged ? (month > nextMonth ? year + 1 : year - 1) : year;
+
     setState(() {
-      focusedUserId = focusedUserId == userId ? null : userId;
+      _updateDays(nextYear, nextMonth);
     });
+  }
+
+  void _updateDays(int nextYear, int nextMonth) {
+    isThisMonth = nextMonth == DateTime.now().month;
+    firstDayOfMonth = DateTime.utc(nextYear, nextMonth, 1);
+    lastDayOfMonth = DateTime.utc(nextYear, nextMonth + 1, 0);
+    month = nextMonth;
+    year = nextYear;
   }
 
   @override
@@ -48,6 +71,7 @@ class _CalendarPageState extends State<CalendarPage> {
               month: month,
               firstDayOfMonth: firstDayOfMonth,
               lastDayOfMonth: lastDayOfMonth,
+              onMonthClick: changeMonth,
             )
           ],
         ),
@@ -62,18 +86,24 @@ class CalendarTable extends StatelessWidget {
     required this.month,
     required this.firstDayOfMonth,
     required this.lastDayOfMonth,
+    required this.onMonthClick,
   });
 
   final int month;
   final DateTime firstDayOfMonth;
   final DateTime lastDayOfMonth;
+  final void Function(bool) onMonthClick;
 
-  static List<String> daysText = ['월', '화', '수', '목', '금', '토', '일'];
-  static List<int> days = [0, 1, 2, 3, 4, 5, 6];
+  static const List<String> daysText = ['월', '화', '수', '목', '금', '토', '일'];
+  static const List<int> days = [0, 1, 2, 3, 4, 5, 6];
+  static const double cellPadding = 2;
 
   @override
   Widget build(BuildContext context) {
-    var cellHeight = (MediaQuery.of(context).size.width - 40) / 7 - 4;
+    var cellHeight =
+        (MediaQuery.of(context).size.width - 40) / 7 - cellPadding * 2;
+    var showMaxWeek =
+        35 - firstDayOfMonth.weekday + 1 < lastDayOfMonth.day; // row 6개 보여야 할 때
 
     return Container(
       child: Column(
@@ -87,10 +117,12 @@ class CalendarTable extends StatelessWidget {
               Row(
                 children: [
                   GestureDetector(
+                      onTap: () => {onMonthClick(false)},
                       child:
                           SvgPicture.asset('assets/icons/calendar_prev.svg')),
                   const SizedBox(width: 8),
                   GestureDetector(
+                      onTap: () => {onMonthClick(true)},
                       child: SvgPicture.asset('assets/icons/calendar_next.svg'))
                 ],
               )
@@ -107,6 +139,7 @@ class CalendarTable extends StatelessWidget {
                   getWeekRow(2, cellHeight),
                   getWeekRow(3, cellHeight),
                   getWeekRow(4, cellHeight),
+                  if (showMaxWeek) getWeekRow(5, cellHeight),
                 ]),
           )
         ],
@@ -145,7 +178,7 @@ class CalendarTable extends StatelessWidget {
 
       return Container(
         height: cellHeight,
-        margin: const EdgeInsets.all(2),
+        margin: const EdgeInsets.all(cellPadding),
         decoration: isValidDate
             ? BoxDecoration(
                 color: isToday ? ThemeColor.primary : ThemeColor.gray2,
