@@ -65,8 +65,9 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   }
 
   AppBarLeft _getAppBarLeft() {
-    if (_currentTab == NavTab.home)
+    if (_currentTab == NavTab.home) {
       return AppBarLeft(iconType: LeftIconType.LOGO);
+    }
     if (_currentTab == NavTab.feed) return AppBarLeft(label: '산책피드');
     return AppBarLeft(label: '내 일지');
   }
@@ -80,7 +81,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       appBar: SharedAppBar(
         leftOptions: _getAppBarLeft(),
         rightOptions: AppBarRight(icons: [
-          RightIcon(name: 'calendar', onTap: () => {}),
+          RightIcon(name: 'calendar', onTap: () => {Get.toNamed('/calendar')}),
           RightIcon(name: 'setting', onTap: () => {Get.toNamed('/settings')})
         ]),
       ),

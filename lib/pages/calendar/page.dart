@@ -109,45 +109,40 @@ class CalendarTable extends StatelessWidget {
     var showMaxWeek =
         35 - firstDayOfMonth.weekday + 1 < lastDayOfMonth.day; // row 6개 보여야 할 때
 
-    return Container(
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+                child: Head4(
+              value: '$month월',
+            )),
+            Row(
+              children: [
+                GestureDetector(
+                    onTap: () => {onMonthClick(false)},
+                    child: SvgPicture.asset('assets/icons/calendar_prev.svg')),
+                const SizedBox(width: 8),
+                GestureDetector(
+                    onTap: () => {onMonthClick(true)},
+                    child: SvgPicture.asset('assets/icons/calendar_next.svg'))
+              ],
+            )
+          ],
+        ),
+        const SizedBox(height: 20),
+        Table(
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
-              Expanded(
-                  child: Head4(
-                value: '$month월',
-              )),
-              Row(
-                children: [
-                  GestureDetector(
-                      onTap: () => {onMonthClick(false)},
-                      child:
-                          SvgPicture.asset('assets/icons/calendar_prev.svg')),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                      onTap: () => {onMonthClick(true)},
-                      child: SvgPicture.asset('assets/icons/calendar_next.svg'))
-                ],
-              )
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            child: Table(
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: [
-                  getWeekDaysTextRow(),
-                  getWeekRow(0, cellHeight),
-                  getWeekRow(1, cellHeight),
-                  getWeekRow(2, cellHeight),
-                  getWeekRow(3, cellHeight),
-                  getWeekRow(4, cellHeight),
-                  if (showMaxWeek) getWeekRow(5, cellHeight),
-                ]),
-          )
-        ],
-      ),
+              getWeekDaysTextRow(),
+              getWeekRow(0, cellHeight),
+              getWeekRow(1, cellHeight),
+              getWeekRow(2, cellHeight),
+              getWeekRow(3, cellHeight),
+              getWeekRow(4, cellHeight),
+              if (showMaxWeek) getWeekRow(5, cellHeight),
+            ])
+      ],
     );
   }
 
