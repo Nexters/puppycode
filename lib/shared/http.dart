@@ -6,14 +6,15 @@ class HttpService {
   const HttpService();
   static const String baseUrl = '175.106.99.165';
 
-  static Future<Map<String, dynamic>> get(String endPoint,
+  static Future<List<dynamic>> get(String endPoint,
       {Map<String, dynamic>? params}) async {
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res =
         await http.get(url, headers: {'Content-Type': 'application/json'});
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
-      return body;
+      List<dynamic> items = body['items'];
+      return items;
     } else {
       throw 'error'; // 에러 더 자세히 해야 함
     }

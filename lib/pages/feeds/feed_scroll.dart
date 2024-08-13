@@ -26,12 +26,11 @@ class _FeedListViewState extends State<FeedListView> {
 
   Future<void> _fetchPage(int cursor) async {
     try {
-      final response = await HttpService.get('walk-logs', params: {
+      final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
         'cursorId': cursor == 0 ? null : '$cursor'
       });
-      List<dynamic> logs = response['walkLogList']; // res 추상화 서버에 요청
-      List<Feed> feedItems = logs.map((item) => Feed(item)).toList();
+      List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 
       final isLastPage = feedItems.length < _limit;
       if (isLastPage) {
