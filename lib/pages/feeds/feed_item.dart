@@ -132,7 +132,8 @@ class FeedPhoto extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Image.network(
-        'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png', // api 사진 타입이 이상한듯; svg?
+        photoUrl ??
+            'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png', // TODO: errorBuilder
         fit: BoxFit.cover,
         width: width,
         height: height,
