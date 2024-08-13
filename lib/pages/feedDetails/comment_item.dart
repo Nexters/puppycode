@@ -7,7 +7,7 @@ class ReactionCommentListItem extends StatelessWidget {
   // final Image profileImage;
   final String userName;
   final String comment;
-  final bool owner;
+  final bool owner; // api 연결 후 수정
 
   const ReactionCommentListItem({
     super.key,

@@ -22,26 +22,6 @@ class _ReactionTabViewState extends State<ReactionTabView> {
   final TextEditingController _commentController = TextEditingController();
   bool hasEmoji = false;
 
-  void _onEmojiChanged(String value) {
-    // 정규 표현식으로 이모지만 허용
-    final RegExp emojiRegExp = RegExp(
-      r'^[\p{Emoji}]$', // 하나의 이모지만 허용
-      unicode: true,
-    );
-
-    // 입력이 유효하지 않은 경우
-    if (!emojiRegExp.hasMatch(value)) {
-      _emojiController.text = ''; // 이모지가 아닌 경우 빈 문자열로 설정
-    } else if (value.length > 1) {
-      // 이모지가 하나만 입력되도록 제한
-      _emojiController.text = value.substring(0, 1);
-    }
-
-    _emojiController.selection = TextSelection.fromPosition(
-      TextPosition(offset: _emojiController.text.length),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return TabBarView(

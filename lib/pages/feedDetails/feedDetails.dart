@@ -18,23 +18,25 @@ class MyFeedPage extends StatefulWidget {
 }
 
 class _MyFeedPageState extends State<MyFeedPage> {
-  String tmpCode = 'abcd';
+  String tmpLink = 'abcd';
+  bool owner = false; // 상상코딩이 되지 않아요 ..
 
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
+          if (owner)
+            CupertinoActionSheetAction(
+              onPressed: () {
+                // 수정하기
+                Navigator.pop(context);
+              },
+              child: Body2(value: '수정하기', color: ThemeColor.blue),
+            ),
           CupertinoActionSheetAction(
             onPressed: () {
-              // 수정하기
-              Navigator.pop(context);
-            },
-            child: Body2(value: '수정하기', color: ThemeColor.blue),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Share.share(tmpCode); // 무엇을 공유하지요?
+              Share.share(tmpLink); // 무엇을 공유하지요? => 링크 ?
               Navigator.pop(context);
             },
             child: Body2(value: '공유하기', color: ThemeColor.blue),
@@ -43,7 +45,8 @@ class _MyFeedPageState extends State<MyFeedPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Body2(value: '삭제하기', color: ThemeColor.error),
+            child:
+                Body2(value: owner ? '삭제하기' : '신고하기', color: ThemeColor.error),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
