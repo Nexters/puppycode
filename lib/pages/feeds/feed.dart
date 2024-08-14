@@ -11,9 +11,9 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  String? focusedUserId;
+  int? focusedUserId;
 
-  void setFocusUser(String? userId) {
+  void setFocusUser(int? userId) {
     setState(() {
       focusedUserId = focusedUserId == userId ? null : userId;
     });
@@ -31,7 +31,7 @@ class _FeedScreenState extends State<FeedScreen> {
         Expanded(
           child: Container(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-              child: const FeedListView()),
+              child: FeedListView(focusedUserId: focusedUserId)),
         )
       ],
     );

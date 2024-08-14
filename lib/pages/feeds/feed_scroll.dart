@@ -4,13 +4,16 @@ import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 
 class FeedListView extends StatefulWidget {
-  const FeedListView({super.key});
+  const FeedListView({super.key, this.focusedUserId});
+
+  final int? focusedUserId;
 
   @override
-  _FeedListViewState createState() => _FeedListViewState();
+  FeedListViewState createState() => FeedListViewState();
 }
 
-class _FeedListViewState extends State<FeedListView> {
+class FeedListViewState extends State<FeedListView> {
+  final ValueNotifier<int>? focusedUserId = ValueNotifier<int>(0);
   static const _limit = 5;
 
   final PagingController<int, Feed> _pagingController =
@@ -24,11 +27,20 @@ class _FeedListViewState extends State<FeedListView> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(FeedListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusedUserId != widget.focusedUserId) {
+      _pagingController.refresh(); //
+    }
+  }
+
   Future<void> _fetchPage(int cursor) async {
     try {
       final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
-        'cursorId': cursor == 0 ? null : '$cursor'
+        'cursorId': cursor == 0 ? null : '$cursor',
+        'userId': widget.focusedUserId?.toString(),
       });
       List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 
@@ -45,11 +57,7 @@ class _FeedListViewState extends State<FeedListView> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      // Don't worry about displaying progress or error indicators on screen; the
-      // package takes care of that. If you want to customize them, use the
-      // [PagedChildBuilderDelegate] properties.
-      RefreshIndicator(
+  Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
         child: PagedListView<int, Feed>(
           shrinkWrap: true,
