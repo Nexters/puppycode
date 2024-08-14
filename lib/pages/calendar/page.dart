@@ -147,7 +147,15 @@ class CalendarTable extends StatelessWidget {
               getWeekRow(3, cellHeight, isThisMonth),
               getWeekRow(4, cellHeight, isThisMonth),
               if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
-            ])
+            ]),
+        Container(
+          margin: const EdgeInsets.only(top: 40),
+          height: 170,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage('assets/images/pawpaw_puppy.png'))),
+        )
       ],
     );
   }
