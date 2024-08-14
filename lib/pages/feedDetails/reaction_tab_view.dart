@@ -27,10 +27,7 @@ class _ReactionTabViewState extends State<ReactionTabView> {
     return TabBarView(
       controller: widget._tabController,
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-              top: 12,
-              bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 46),
+        SafeArea(
           child: hasEmoji
               ? const Scrollbar(
                   child: SingleChildScrollView(
@@ -74,7 +71,7 @@ class _ReactionTabViewState extends State<ReactionTabView> {
                         ReactionCommentListItem(
                             userName: '푸름이',
                             comment: '우리집 강아지가 젤 귀여움 ☀︎',
-                            owner: true),
+                            isFeedWriter: true),
                         ReactionCommentListItem(
                             userName: '앙꼬',
                             comment:

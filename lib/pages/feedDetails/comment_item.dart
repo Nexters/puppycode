@@ -7,14 +7,14 @@ class ReactionCommentListItem extends StatelessWidget {
   // final Image profileImage;
   final String userName;
   final String comment;
-  final bool owner; // api 연결 후 수정
+  final bool isFeedWriter; // api 연결 후 수정
 
   const ReactionCommentListItem({
     super.key,
     // required this.profileImage,
     required this.userName,
     required this.comment,
-    this.owner = false,
+    this.isFeedWriter = false,
   });
 
   @override
@@ -42,7 +42,7 @@ class ReactionCommentListItem extends StatelessWidget {
                 children: [
                   Body3(value: userName, bold: true),
                   const SizedBox(width: 6),
-                  if (owner) Caption(value: '작성자', color: ThemeColor.gray4),
+                  if (isFeedWriter) const Caption(value: '작성자'),
                 ],
               ),
               const SizedBox(height: 2),
