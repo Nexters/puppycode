@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:puppycode/pages/setting/time_button.dart';
@@ -164,17 +165,13 @@ class SettingListItem extends StatelessWidget {
   final String title;
   final String? subTitle;
   final String? destination;
-  final Widget widget;
+  final Widget? widget;
 
   const SettingListItem({
     super.key,
     required this.title,
     this.subTitle,
-    this.widget = const Icon(
-      color: Color.fromRGBO(128, 128, 128, 0.55),
-      Icons.arrow_forward_ios,
-      size: 16,
-    ),
+    this.widget,
     required this.destination,
   });
 
@@ -208,8 +205,13 @@ class SettingListItem extends StatelessWidget {
               ],
             ),
             SizedBox(
-              child: widget,
-            )
+              child: widget ??
+                  SvgPicture.asset(
+                    'assets/icons/chevron_right.svg',
+                    colorFilter:
+                        ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+                  ), // 기본값으로 SvgPicture 사용
+            ),
           ],
         ),
       ),
