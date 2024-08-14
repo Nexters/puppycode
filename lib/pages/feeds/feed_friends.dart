@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -39,7 +38,6 @@ class _FeedFriendsState extends State<FeedFriends> {
 
   @override
   void initState() {
-    print(friendList);
     _fetch();
     super.initState();
   }
