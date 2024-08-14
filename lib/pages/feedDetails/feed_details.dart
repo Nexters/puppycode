@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/pages/feedDetails/reaction_tab_bar.dart';
+import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -19,14 +20,14 @@ class MyFeedPage extends StatefulWidget {
 
 class _MyFeedPageState extends State<MyFeedPage> {
   String tmpLink = 'abcd';
-  bool owner = false; // 상상코딩이 되지 않아요 ..
+  bool isWriter = false; // 상상코딩이 되지 않아요 ..
 
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          if (owner)
+          if (isWriter)
             CupertinoActionSheetAction(
               onPressed: () {
                 // 수정하기
@@ -45,8 +46,8 @@ class _MyFeedPageState extends State<MyFeedPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child:
-                Body2(value: owner ? '삭제하기' : '신고하기', color: ThemeColor.error),
+            child: Body2(
+                value: isWriter ? '삭제하기' : '신고하기', color: ThemeColor.error),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -61,25 +62,12 @@ class _MyFeedPageState extends State<MyFeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Column(
-          children: [
-            const Body1(value: '포포', bold: true),
-            Caption(
-              value: '1시간 전',
-              color: ThemeColor.gray4,
-            )
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _showActionSheet(context);
-            },
-            icon: const Icon(Icons.more_vert_sharp),
-          ),
-        ],
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(),
+        centerOptions: AppBarCenter(label: '포포', caption: '1시간 전 · 20분~40분 산책'),
+        rightOptions: AppBarRight(icons: [
+          RightIcon(name: 'more', onTap: () => _showActionSheet(context))
+        ]),
       ),
       body: SingleChildScrollView(
         child: Padding(
