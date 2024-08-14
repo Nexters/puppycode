@@ -8,11 +8,13 @@ class SharedBanner extends StatelessWidget {
     super.key,
     required this.mainText,
     required this.subText,
+    required this.iconName,
     required this.onClick,
   });
 
   final String mainText;
   final String subText;
+  final String iconName;
   final VoidCallback onClick;
 
   @override
@@ -38,13 +40,13 @@ class SharedBanner extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              padding: const EdgeInsets.all(9),
               decoration: BoxDecoration(
-                color: ThemeColor.gray2,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: ThemeColor.gray2),
               ),
-              //child: SvgPicture.asset(''),
+              child: SvgPicture.asset(
+                'assets/icons/$iconName.svg',
+                width: 48,
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
