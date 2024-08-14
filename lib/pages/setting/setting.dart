@@ -20,7 +20,7 @@ class _SettingPageState extends State<SettingPage> {
   bool isRoutineNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
 
-  void onRoutineNotificationSwitchPressed(value) {
+  void onRoutineNotificationSwitchPressed(bool value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
     setState(() {
       isRoutineNotificationEnabled = value;
@@ -59,63 +59,39 @@ class _SettingPageState extends State<SettingPage> {
               SettingList(lists: [
                 SettingListItem(
                   title: '산책 시간 설정',
-                  destination: '',
                   widget: SizedBox(
                       height: 34,
                       child: SetWalkTimeButton(
                           buttonEnabled: isRoutineNotificationEnabled)),
                 ),
                 SettingListItem(
-                  title: '산책 루틴 알림',
-                  subTitle: '지정한 산책 시간에 알림을 받을 수 있어요',
-                  destination: '',
-                  widget: SizedBox(
-                    width: 52,
-                    height: 30,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: CupertinoSwitch(
-                        value: isRoutineNotificationEnabled,
-                        activeColor: ThemeColor.primary,
-                        onChanged: onRoutineNotificationSwitchPressed,
-                      ),
-                    ),
-                  ),
-                ),
+                    title: '산책 루틴 알림',
+                    subTitle: '지정한 산책 시간에 알림을 받을 수 있어요',
+                    widget: CustomCupertinoSwitch(
+                      onPressed: onRoutineNotificationSwitchPressed,
+                      isNotificationEnabled: isRoutineNotificationEnabled,
+                    )),
                 SettingListItem(
                   title: '찌르기 알림',
-                  destination: '',
-                  widget: SizedBox(
-                    width: 52,
-                    height: 30,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: CupertinoSwitch(
-                        value: isPushNotificationEnabled,
-                        activeColor: ThemeColor.primary,
-                        onChanged: onPushNotificationSwitchPressed,
-                      ),
-                    ),
+                  widget: CustomCupertinoSwitch(
+                    onPressed: onPushNotificationSwitchPressed,
+                    isNotificationEnabled: isPushNotificationEnabled,
                   ),
                 ),
               ], title: '알림'),
               SettingList(lists: [
                 SettingListItem(
                   title: '앱 정보',
-                  destination: '',
                   widget: Body3(value: '현재 버전 1.0.0', color: ThemeColor.gray4),
                 ),
                 const SettingListItem(
                   title: '계정정보',
-                  destination: '',
                 ),
                 const SettingListItem(
                   title: '이용약관',
-                  destination: '',
                 ),
                 const SettingListItem(
                   title: '개인정보 처리방침',
-                  destination: '',
                 ),
               ], title: '도움말'),
             ],
@@ -167,7 +143,7 @@ class SettingListItem extends StatelessWidget {
     required this.title,
     this.subTitle,
     this.widget,
-    required this.destination,
+    this.destination,
   });
 
   @override
@@ -177,7 +153,7 @@ class SettingListItem extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          if (destination != '') Get.toNamed(destination!);
+          if (destination != null) Get.toNamed(destination!);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,6 +184,40 @@ class SettingListItem extends StatelessWidget {
                   ), // 기본값으로 SvgPicture 사용
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomCupertinoSwitch extends StatefulWidget {
+  const CustomCupertinoSwitch({
+    super.key,
+    required this.onPressed,
+    required this.isNotificationEnabled,
+  });
+
+  final void Function(bool) onPressed;
+  final bool isNotificationEnabled;
+
+  @override
+  State<CustomCupertinoSwitch> createState() => _CustomCupertinoSwitchState();
+}
+
+class _CustomCupertinoSwitchState extends State<CustomCupertinoSwitch> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 52,
+      height: 30,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: CupertinoSwitch(
+          value: widget.isNotificationEnabled,
+          activeColor: ThemeColor.primary,
+          onChanged: (value) {
+            widget.onPressed(value);
+          },
         ),
       ),
     );
