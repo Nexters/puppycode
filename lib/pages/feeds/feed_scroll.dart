@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class FeedListView extends StatefulWidget {
   const FeedListView({super.key, this.focusedUserId});
@@ -63,6 +66,7 @@ class FeedListViewState extends State<FeedListView> {
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Feed>(
+            noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
             itemBuilder: (context, item, index) => FeedItem(
               item: item,
               isListView: true,
