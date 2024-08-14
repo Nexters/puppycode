@@ -108,6 +108,7 @@ class CalendarTable extends StatelessWidget {
         (MediaQuery.of(context).size.width - 40) / 7 - cellPadding * 2;
     var showMaxWeek =
         35 - firstDayOfMonth.weekday + 1 < lastDayOfMonth.day; // row 6개 보여야 할 때
+    var isThisMonth = month == DateTime.now().month;
 
     return Column(
       children: [
@@ -125,7 +126,12 @@ class CalendarTable extends StatelessWidget {
                 const SizedBox(width: 8),
                 GestureDetector(
                     onTap: () => {onMonthClick(true)},
-                    child: SvgPicture.asset('assets/icons/calendar_next.svg'))
+                    child: isThisMonth
+                        ? Opacity(
+                            opacity: 0.4,
+                            child: SvgPicture.asset(
+                                'assets/icons/calendar_next.svg'))
+                        : SvgPicture.asset('assets/icons/calendar_next.svg'))
               ],
             )
           ],
@@ -135,12 +141,12 @@ class CalendarTable extends StatelessWidget {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               getWeekDaysTextRow(),
-              getWeekRow(0, cellHeight),
-              getWeekRow(1, cellHeight),
-              getWeekRow(2, cellHeight),
-              getWeekRow(3, cellHeight),
-              getWeekRow(4, cellHeight),
-              if (showMaxWeek) getWeekRow(5, cellHeight),
+              getWeekRow(0, cellHeight, isThisMonth),
+              getWeekRow(1, cellHeight, isThisMonth),
+              getWeekRow(2, cellHeight, isThisMonth),
+              getWeekRow(3, cellHeight, isThisMonth),
+              getWeekRow(4, cellHeight, isThisMonth),
+              if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
             ])
       ],
     );
@@ -160,9 +166,8 @@ class CalendarTable extends StatelessWidget {
             .toList());
   }
 
-  TableRow getWeekRow(int week, double cellHeight) {
+  TableRow getWeekRow(int week, double cellHeight, bool isThisMonth) {
     var addedDate = 7 * week - firstDayOfMonth.weekday + 2;
-    var isThisMonth = month == DateTime.now().month;
 
     return TableRow(
         children: days.map((day) {
