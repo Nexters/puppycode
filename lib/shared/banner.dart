@@ -62,12 +62,9 @@ class SharedBanner extends StatelessWidget {
                 ],
               ),
             ),
-            RotatedBox(
-              quarterTurns: 2,
-              child: SvgPicture.asset(
-                'assets/icons/chevron_left.svg',
-              ),
-            )
+            SvgPicture.asset('assets/icons/chevron_right.svg',
+                colorFilter:
+                    ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn))
           ],
         ),
       ),
