@@ -11,14 +11,14 @@ import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:share/share.dart';
 
-class MyFeedPage extends StatefulWidget {
-  const MyFeedPage({super.key});
+class FeedDetailPage extends StatefulWidget {
+  const FeedDetailPage({super.key});
 
   @override
-  State<MyFeedPage> createState() => _MyFeedPageState();
+  State<FeedDetailPage> createState() => _FeedDetailPageState();
 }
 
-class _MyFeedPageState extends State<MyFeedPage> {
+class _FeedDetailPageState extends State<FeedDetailPage> {
   String tmpLink = 'abcd';
   bool isWriter = false; // 상상코딩이 되지 않아요 ..
 

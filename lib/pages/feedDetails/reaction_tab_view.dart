@@ -27,10 +27,7 @@ class _ReactionTabViewState extends State<ReactionTabView> {
     return TabBarView(
       controller: widget._tabController,
       children: [
-        Padding(
-          padding: EdgeInsets.only(
-              top: 12,
-              bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 46),
+        SafeArea(
           child: hasEmoji
               ? const Scrollbar(
                   child: SingleChildScrollView(

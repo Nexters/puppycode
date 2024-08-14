@@ -14,6 +14,6 @@ class ThemeColor {
   static Color gray5 = const Color(0xFF50555C);
   static Color gray6 = const Color(0xFF1F1F20);
 
-  static Color blue = const Color.fromRGBO(0, 122, 255, 1);
+  static Color blue = const Color(0xFF007AFF);
   static Color error = const Color(0xFFFd6257);
 }
