@@ -15,17 +15,21 @@ class ScreenWithNavBar extends StatefulWidget {
   State<ScreenWithNavBar> createState() => _ScreenWithNavBarState();
 }
 
-enum Tab { feed, home, my }
+enum NavTab { feed, home, my }
 
 class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     with WidgetsBindingObserver {
-  Tab _currentTab = Tab.feed;
-  static const List<Tab> _allowedRoutes = [Tab.feed, Tab.home, Tab.my];
+  NavTab _currentTab = NavTab.feed;
+  static const List<NavTab> _allowedRoutes = [
+    NavTab.feed,
+    NavTab.home,
+    NavTab.my
+  ];
 
-  final Map<Tab, Widget> _pages = {
-    Tab.feed: const FeedScreen(),
-    Tab.home: const HomePage(),
-    Tab.my: const FeedScreen(),
+  final Map<NavTab, Widget> _pages = {
+    NavTab.feed: const FeedScreen(),
+    NavTab.home: const HomePage(),
+    NavTab.my: const FeedScreen(),
   };
 
   @override
@@ -61,8 +65,10 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   }
 
   AppBarLeft _getAppBarLeft() {
-    if (_currentTab == Tab.home) return AppBarLeft(iconType: LeftIconType.LOGO);
-    if (_currentTab == Tab.feed) return AppBarLeft(label: '산책피드');
+    if (_currentTab == NavTab.home) {
+      return AppBarLeft(iconType: LeftIconType.LOGO);
+    }
+    if (_currentTab == NavTab.feed) return AppBarLeft(label: '산책피드');
     return AppBarLeft(label: '내 일지');
   }
 
@@ -75,13 +81,13 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       appBar: SharedAppBar(
         leftOptions: _getAppBarLeft(),
         rightOptions: AppBarRight(icons: [
-          RightIcon(name: 'calendar', onTap: () => {}),
+          RightIcon(name: 'calendar', onTap: () => {Get.toNamed('/calendar')}),
           RightIcon(name: 'setting', onTap: () => {Get.toNamed('/settings')})
         ]),
       ),
       body: _pages[_currentTab],
       floatingActionButton:
-          _currentTab == Tab.feed ? const WriteFloatingButton() : null,
+          _currentTab == NavTab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(top: 5.5),
         decoration: BoxDecoration(
