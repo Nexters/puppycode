@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:puppycode/pages/setting/time_button.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -19,6 +20,7 @@ class _SettingPageState extends State<SettingPage> {
   bool isRoutineNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
   String time = DateFormat.jm().format(DateTime.now());
+  GlobalKey buttonKey = GlobalKey();
 
   void onRoutineNotificationSwitchPressed(value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
@@ -31,48 +33,6 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       isPushNotificationEnabled = value;
     });
-  }
-
-  DateTime _parseTime(String time) {
-    final now = DateTime.now();
-    final format = DateFormat.jm();
-    final DateTime date = format.parse(time);
-
-    return DateTime(now.year, now.month, now.day, date.hour, date.minute);
-  }
-
-  void onSetTime() {
-    showCupertinoDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                height: 213,
-                width: 198,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(13),
-                    color: Colors.white),
-                child: CupertinoDatePicker(
-                  //use24hFormat: true,
-                  mode: CupertinoDatePickerMode.time,
-                  initialDateTime: _parseTime(time),
-                  onDateTimeChanged: (DateTime date) {
-                    setState(() {
-                      time = DateFormat.jm().format(date);
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-      barrierDismissible: true,
-    );
   }
 
   @override
@@ -103,28 +63,11 @@ class _SettingPageState extends State<SettingPage> {
                   title: '산책 시간 설정',
                   destination: '',
                   widget: SizedBox(
-                    height: 34,
-                    child: TextButton(
-                      onPressed: isRoutineNotificationEnabled == false
-                          ? null
-                          : onSetTime,
-                      style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 11),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          backgroundColor:
-                              const Color.fromRGBO(120, 120, 128, 0.12)),
-                      child: Text(
-                        time,
-                        style: const TextStyle(
-                            color: Colors.blue,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
+                      height: 34,
+                      child: SetWalkTimeButton(
+                          buttonKey: buttonKey,
+                          time: time,
+                          buttonEnabled: isRoutineNotificationEnabled)),
                 ),
                 SettingListItem(
                   title: '산책 루틴 알림',
@@ -138,7 +81,7 @@ class _SettingPageState extends State<SettingPage> {
                       child: CupertinoSwitch(
                         value: isRoutineNotificationEnabled,
                         activeColor: ThemeColor.primary,
-                        onChanged: onPushNotificationSwitchPressed,
+                        onChanged: onRoutineNotificationSwitchPressed,
                       ),
                     ),
                   ),
