@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:puppycode/pages/setting/time_button.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -20,8 +19,6 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isRoutineNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
-  String time = DateFormat.jm().format(DateTime.now());
-  GlobalKey buttonKey = GlobalKey();
 
   void onRoutineNotificationSwitchPressed(value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
@@ -66,8 +63,6 @@ class _SettingPageState extends State<SettingPage> {
                   widget: SizedBox(
                       height: 34,
                       child: SetWalkTimeButton(
-                          buttonKey: buttonKey,
-                          time: time,
                           buttonEnabled: isRoutineNotificationEnabled)),
                 ),
                 SettingListItem(

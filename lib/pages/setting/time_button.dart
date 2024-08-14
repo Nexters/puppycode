@@ -5,13 +5,9 @@ import 'package:intl/intl.dart';
 class SetWalkTimeButton extends StatefulWidget {
   const SetWalkTimeButton({
     super.key,
-    required this.buttonKey,
-    required this.time,
     required this.buttonEnabled,
   });
 
-  final GlobalKey<State<StatefulWidget>> buttonKey;
-  final String time;
   final bool buttonEnabled;
 
   @override
@@ -19,15 +15,8 @@ class SetWalkTimeButton extends StatefulWidget {
 }
 
 class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
-  late String time;
-  late bool buttonEnabled;
-
-  @override
-  void initState() {
-    super.initState();
-    time = widget.time;
-    buttonEnabled = widget.buttonEnabled;
-  }
+  String time = DateFormat.jm().format(DateTime.now());
+  GlobalKey buttonKey = GlobalKey();
 
   DateTime _parseTime(String time) {
     final now = DateTime.now();
@@ -78,10 +67,10 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      key: widget.buttonKey,
+      key: buttonKey,
       onPressed: () {
-        if (buttonEnabled) {
-          onSetTime(context, widget.buttonKey);
+        if (widget.buttonEnabled) {
+          onSetTime(context, buttonKey);
         }
       },
       style: TextButton.styleFrom(
@@ -91,7 +80,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
           ),
           backgroundColor: const Color.fromRGBO(120, 120, 128, 0.12)),
       child: Text(
-        widget.time,
+        time,
         style: const TextStyle(
             color: Colors.blue, fontSize: 17, fontWeight: FontWeight.w500),
       ),
