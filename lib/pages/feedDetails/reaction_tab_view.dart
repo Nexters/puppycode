@@ -74,7 +74,7 @@ class _ReactionTabViewState extends State<ReactionTabView> {
                         ReactionCommentListItem(
                             userName: '푸름이',
                             comment: '우리집 강아지가 젤 귀여움 ☀︎',
-                            owner: true),
+                            isFeedWriter: true),
                         ReactionCommentListItem(
                             userName: '앙꼬',
                             comment:
