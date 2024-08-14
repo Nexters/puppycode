@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/pages/myfeeds/reaction_tab_view.dart';
+import 'package:puppycode/pages/feedDetails/reaction_tab_view.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
 class ReactionTabBar extends StatefulWidget {
-  const ReactionTabBar({super.key});
+  final int selectedTabIdx;
+  const ReactionTabBar({
+    super.key,
+    required this.selectedTabIdx,
+  });
 
   @override
   State<ReactionTabBar> createState() => _ReactionTabBarState();
@@ -14,12 +18,12 @@ class ReactionTabBar extends StatefulWidget {
 class _ReactionTabBarState extends State<ReactionTabBar>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _commentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(
+        length: 2, vsync: this, initialIndex: widget.selectedTabIdx);
 
     _tabController.addListener(() {
       setState(() {});
@@ -69,7 +73,6 @@ class _ReactionTabBarState extends State<ReactionTabBar>
           ]),
       body: ReactionTabView(
         tabController: _tabController,
-        commentController: _commentController,
       ),
     );
   }

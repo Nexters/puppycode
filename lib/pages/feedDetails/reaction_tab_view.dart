@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/pages/myfeeds/comment_item.dart';
-import 'package:puppycode/pages/myfeeds/emoji_item.dart';
+import 'package:puppycode/pages/feedDetails/comment_item.dart';
+import 'package:puppycode/pages/feedDetails/emoji_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
-class ReactionTabView extends StatelessWidget {
+class ReactionTabView extends StatefulWidget {
   const ReactionTabView({
     super.key,
     required TabController tabController,
-    required TextEditingController commentController,
-  })  : _tabController = tabController,
-        _commentController = commentController;
+  }) : _tabController = tabController;
 
   final TabController _tabController;
-  final TextEditingController _commentController;
+
+  @override
+  State<ReactionTabView> createState() => _ReactionTabViewState();
+}
+
+class _ReactionTabViewState extends State<ReactionTabView> {
+  final TextEditingController _emojiController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
+  bool hasEmoji = false;
 
   @override
   Widget build(BuildContext context) {
     return TabBarView(
-      controller: _tabController,
+      controller: widget._tabController,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionEmojiListItem(emoji: '😆', userName: '푸름이'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '앙꼬'),
-                  ReactionEmojiListItem(emoji: '😍', userName: '샛별이'),
-                ],
-              ),
-            ),
-          ),
+        SafeArea(
+          child: hasEmoji
+              ? const Scrollbar(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ReactionEmojiListItem(emoji: '😆', userName: '푸름이'),
+                        ReactionEmojiListItem(emoji: '😍', userName: '앙꼬'),
+                        ReactionEmojiListItem(emoji: '😍', userName: '샛별이'),
+                      ],
+                    ),
+                  ),
+                )
+              : // 이모티콘 디자인 받으면 다시 손 볼게용 ~
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CommentTextField(
+                    textFieldController: _emojiController,
+                  ),
+                ),
         ),
         Padding(
           padding: EdgeInsets.only(
@@ -56,6 +69,10 @@ class ReactionTabView extends StatelessWidget {
                         ReactionCommentListItem(
                             userName: '샛별이', comment: '우리집 강아지가 젤 귀여움 ☀︎'),
                         ReactionCommentListItem(
+                            userName: '푸름이',
+                            comment: '우리집 강아지가 젤 귀여움 ☀︎',
+                            isFeedWriter: true),
+                        ReactionCommentListItem(
                             userName: '앙꼬',
                             comment:
                                 '미쳤다 저정도 정전기라면 모든 것을 이겨낼 수 있지 않을까 캬캬캬캬캬캬캬캬캬캬')
@@ -64,7 +81,7 @@ class ReactionTabView extends StatelessWidget {
                   ),
                 ),
               ),
-              CommentTextField(commentController: _commentController)
+              CommentTextField(textFieldController: _commentController)
             ],
           ),
         ),
@@ -76,8 +93,8 @@ class ReactionTabView extends StatelessWidget {
 class CommentTextField extends StatefulWidget {
   const CommentTextField({
     super.key,
-    required TextEditingController commentController,
-  }) : _commentController = commentController;
+    required TextEditingController textFieldController,
+  }) : _commentController = textFieldController;
 
   final TextEditingController _commentController;
 
