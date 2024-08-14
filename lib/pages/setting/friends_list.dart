@@ -148,7 +148,7 @@ class FriendsList extends StatelessWidget {
               actions: <CupertinoActionSheetAction>[
                 CupertinoActionSheetAction(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.back();
                     },
                     isDestructiveAction: true,
                     child: const Text(
@@ -160,7 +160,7 @@ class FriendsList extends StatelessWidget {
                     )),
                 CupertinoActionSheetAction(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.back();
                     },
                     isDestructiveAction: true,
                     child: const Text(
@@ -173,7 +173,7 @@ class FriendsList extends StatelessWidget {
               ],
               cancelButton: CupertinoActionSheetAction(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Get.back();
                 },
                 child: const Text(
                   '취소하기',

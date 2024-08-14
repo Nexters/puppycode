@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
-Color _kDefaultTextColor = ThemeColor.gray6;
-
 class Caption extends StatelessWidget {
+  static Color defaultColor = ThemeColor.gray4;
+
   const Caption({
     super.key,
     required this.value,
@@ -28,7 +28,7 @@ class CaptionTextStyle {
       fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0,
-      color: color ?? _kDefaultTextColor,
+      color: color ?? Caption.defaultColor,
       height: 16 / 12,
     );
   }

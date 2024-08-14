@@ -42,8 +42,7 @@ class ReactionCommentListItem extends StatelessWidget {
                 children: [
                   Body3(value: userName, bold: true),
                   const SizedBox(width: 6),
-                  if (isFeedWriter)
-                    Caption(value: '작성자', color: ThemeColor.gray4),
+                  if (isFeedWriter) const Caption(value: '작성자'),
                 ],
               ),
               const SizedBox(height: 2),
