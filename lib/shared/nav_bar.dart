@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
+import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/home/home.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -29,7 +30,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   final Map<NavTab, Widget> _pages = {
     NavTab.feed: const FeedScreen(),
     NavTab.home: const HomePage(),
-    NavTab.my: const FeedScreen(),
+    NavTab.my: const MyFeedScreen(),
   };
 
   @override

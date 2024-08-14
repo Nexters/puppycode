@@ -26,16 +26,17 @@ class FeedItem extends StatefulWidget {
   const FeedItem({
     super.key,
     required this.item,
+    required this.isListView,
   });
 
   final Feed item;
+  final bool isListView;
 
   @override
   State<FeedItem> createState() => _FeedItemState();
 }
 
 class _FeedItemState extends State<FeedItem> {
-  late FocusNode focusNode;
   late Feed feed;
 
   Color overlayColor = Colors.grey;
@@ -44,29 +45,18 @@ class _FeedItemState extends State<FeedItem> {
   void initState() {
     super.initState();
     feed = widget.item;
-    focusNode = FocusNode();
-    focusNode.addListener(() {
-      _changeOverlayColor(focusNode.hasFocus);
-    });
   }
 
   @override
   void dispose() {
-    focusNode.dispose();
     super.dispose();
-  }
-
-  _changeOverlayColor(bool hasFocus) {
-    setState(() {
-      overlayColor = hasFocus
-          ? Colors.black.withOpacity(0.6)
-          : Colors.black.withOpacity(0.3);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var width = (MediaQuery.of(context).size.width - 40);
+    var width = widget.isListView
+        ? (MediaQuery.of(context).size.width - 40)
+        : (MediaQuery.of(context).size.width - 40 - 10) / 2;
     var height = width * 1.33;
 
     return GestureDetector(
@@ -75,38 +65,38 @@ class _FeedItemState extends State<FeedItem> {
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 20),
+        margin: widget.isListView ? const EdgeInsets.only(bottom: 20) : null,
         height: height,
-        decoration: BoxDecoration(
-            color: overlayColor, borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         child: Stack(
           children: <Widget>[
-            FeedPhoto(photoUrl: feed.photoUrl),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                      begin: FractionalOffset.topCenter,
-                      end: FractionalOffset.bottomCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.3),
-                        Colors.black.withOpacity(0),
-                      ],
-                      stops: const [
-                        0,
-                        0.4
-                      ])),
-            ),
+            FeedPhoto(isListView: widget.isListView, photoUrl: feed.photoUrl),
+            if (widget.isListView)
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.3),
+                          Colors.black.withOpacity(0),
+                        ],
+                        stops: const [
+                          0,
+                          0.4
+                        ])),
+              ),
             Positioned(
                 top: height * 0.0421,
                 left: width * 0.0457,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    NameLabel(name: feed.name),
+                    if (widget.isListView) NameLabel(name: feed.name),
                     const SizedBox(height: 8),
-                    if (feed.title != null)
+                    if (widget.isListView && feed.title != null)
                       Head3(
                         value: feed.title!,
                         color: Colors.white,
@@ -121,12 +111,15 @@ class _FeedItemState extends State<FeedItem> {
 }
 
 class FeedPhoto extends StatelessWidget {
-  const FeedPhoto({super.key, this.photoUrl});
+  const FeedPhoto({super.key, this.isListView, this.photoUrl});
+  final bool? isListView;
   final String? photoUrl; // my feed 수정하고 required로
 
   @override
   Widget build(BuildContext context) {
-    var width = (MediaQuery.of(context).size.width - 40);
+    var width = isListView == false
+        ? (MediaQuery.of(context).size.width - 40 - 10) / 2
+        : (MediaQuery.of(context).size.width - 40);
     var height = width * 1.33;
 
     return ClipRRect(

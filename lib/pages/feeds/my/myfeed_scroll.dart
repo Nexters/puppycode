@@ -3,15 +3,15 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 
-class FeedListView extends StatefulWidget {
-  const FeedListView({super.key});
+class MyFeedGridView extends StatefulWidget {
+  const MyFeedGridView({super.key});
 
   @override
-  _FeedListViewState createState() => _FeedListViewState();
+  MyFeedGridViewState createState() => MyFeedGridViewState();
 }
 
-class _FeedListViewState extends State<FeedListView> {
-  static const _limit = 5;
+class MyFeedGridViewState extends State<MyFeedGridView> {
+  static const _limit = 10;
 
   final PagingController<int, Feed> _pagingController =
       PagingController(firstPageKey: 0); // == firstCursor
@@ -45,19 +45,21 @@ class _FeedListViewState extends State<FeedListView> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      // Don't worry about displaying progress or error indicators on screen; the
-      // package takes care of that. If you want to customize them, use the
-      // [PagedChildBuilderDelegate] properties.
-      RefreshIndicator(
+  Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedListView<int, Feed>(
+        child: PagedGridView<int, Feed>(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 4,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Feed>(
             itemBuilder: (context, item, index) => FeedItem(
               item: item,
-              isListView: true,
+              isListView: false,
             ),
           ),
         ),
