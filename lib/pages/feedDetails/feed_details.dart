@@ -101,7 +101,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                             SvgPicture.asset(
                               'assets/icons/episode.svg',
                               colorFilter: ColorFilter.mode(
-                                  ThemeColor.gray3, BlendMode.srcIn),
+                                  ThemeColor.gray4, BlendMode.srcIn),
                             ),
                             const SizedBox(width: 4),
                             const Body2(value: '오늘의 에피소드', bold: true)
@@ -151,10 +151,10 @@ class FeedReactionButton extends StatelessWidget {
           children: [
             SvgPicture.asset(
               'assets/icons/$svg.svg',
-              colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
             ),
             const SizedBox(width: 2),
-            Body4(value: '$count', color: ThemeColor.gray3),
+            Body4(value: '$count', color: ThemeColor.gray4),
           ],
         ),
       ),
