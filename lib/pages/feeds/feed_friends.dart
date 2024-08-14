@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -71,8 +72,8 @@ class _FeedFriendsState extends State<FeedFriends> {
               child: SharedBanner(
                   mainText: '친구를 찾아 떠나볼까요?',
                   subText: '친구와 함께 강아지의 일상을 공유해 보아요!',
-                  iconName: 'folded_note',
-                  onClick: () => {}),
+                  iconName: 'hello',
+                  onClick: () => {}), // 친구초대링크
             ),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
