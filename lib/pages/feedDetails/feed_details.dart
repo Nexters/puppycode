@@ -69,57 +69,68 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           RightIcon(name: 'more', onTap: () => _showActionSheet(context))
         ]),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const FeedPhoto(),
-                const SizedBox(height: 12),
-                const Row(
+                FeedPhoto(),
+                SizedBox(height: 12),
+                Row(
                   children: [
                     FeedReactionButton(idx: 0, svg: 'emoji', count: 3),
                     FeedReactionButton(idx: 1, svg: 'talk', count: 3),
                   ],
                 ),
-                const SizedBox(height: 16),
-                const Head3(value: '자다가 산책 가자니까 벌떡 일어나는거 봐'),
-                const SizedBox(height: 16),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 18),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: ThemeColor.gray2, width: 1.2)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/episode.svg',
-                              colorFilter: ColorFilter.mode(
-                                  ThemeColor.gray4, BlendMode.srcIn),
-                            ),
-                            const SizedBox(width: 4),
-                            const Body2(value: '오늘의 에피소드', bold: true)
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Body3(
-                          value:
-                              '날이 너무 더워서 에어컨 틀어놓고 잠깐 나간 사이에 잠든 포포🐕 귀여워... 산책갈까? 하니까 바로 벌떡!!!ㅋㅋ',
-                          color: ThemeColor.gray5,
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                SizedBox(height: 16),
+                Head3(value: '자다가 산책 가자니까 벌떡 일어나는거 봐'),
+                SizedBox(height: 16),
+                Episode()
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class Episode extends StatelessWidget {
+  const Episode({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 18),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: ThemeColor.gray2, width: 1.2)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/episode.svg',
+                  colorFilter:
+                      ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                ),
+                const SizedBox(width: 4),
+                const Body2(value: '오늘의 에피소드', bold: true)
+              ],
+            ),
+            const SizedBox(height: 8),
+            Body3(
+              value:
+                  '날이 너무 더워서 에어컨 틀어놓고 잠깐 나간 사이에 잠든 포포🐕 귀여워... 산책갈까? 하니까 바로 벌떡!!!ㅋㅋ',
+              color: ThemeColor.gray5,
+            )
+          ],
         ),
       ),
     );
