@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 class SetWalkTimeButton extends StatefulWidget {
   const SetWalkTimeButton({
     super.key,
-    required this.buttonEnabled,
+    required this.notificationEnabled,
   });
 
-  final bool buttonEnabled;
+  final bool notificationEnabled;
 
   @override
   State<SetWalkTimeButton> createState() => _SetWalkTimeButtonState();
@@ -69,7 +69,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
     return TextButton(
       key: buttonKey,
       onPressed: () {
-        if (widget.buttonEnabled) {
+        if (widget.notificationEnabled) {
           onSetTime(context, buttonKey);
         }
       },
