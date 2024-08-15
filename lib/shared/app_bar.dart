@@ -42,11 +42,15 @@ class RightIcon {
 
 class AppBarRight {
   final String? label;
+  final Color? labelColor;
+  final VoidCallback? onLabelClick;
   final List<RightIcon>? icons;
 
   AppBarRight({
     this.label,
     this.icons,
+    this.labelColor,
+    this.onLabelClick,
   });
 }
 
@@ -77,13 +81,13 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Align(
         alignment: Alignment.center,
         child: leftOptions!.label != null
-          ? Head2(value: leftOptions!.label!)
-          : GestureDetector(
-              onTap: leftOptions?.onTap ?? () => {Get.back()},
-              child: SvgPicture.asset(iconAsset,
-              colorFilter: leftOptions?.iconType == LeftIconType.LOGO
-                  ? null
-                      : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
+            ? Head2(value: leftOptions!.label!)
+            : GestureDetector(
+                onTap: leftOptions?.onTap ?? () => {Get.back()},
+                child: SvgPicture.asset(iconAsset,
+                    colorFilter: leftOptions?.iconType == LeftIconType.LOGO
+                        ? null
+                        : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
               ),
       ),
     );
@@ -109,7 +113,14 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Positioned(
       right: 0,
       child: rightOptions!.label != null
-          ? Head2(value: rightOptions!.label!)
+          ? GestureDetector(
+              onTap: () {
+                if (rightOptions!.onLabelClick != null) {
+                  rightOptions!.onLabelClick!();
+                }
+              },
+              child: Head2(
+                  value: rightOptions!.label!, color: rightOptions!.labelColor))
           : Wrap(
               spacing: 16,
               children: rightOptions!.icons!
@@ -117,9 +128,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onTap: asset.onTap,
                         child: SvgPicture.asset(
                           'assets/icons/${asset.name}.svg',
-                        width: 24,
-                        colorFilter:
-                            ColorFilter.mode(
+                          width: 24,
+                          colorFilter: ColorFilter.mode(
                               ThemeColor.gray5, BlendMode.srcIn),
                         ),
                       ))
