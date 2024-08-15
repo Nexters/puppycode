@@ -168,8 +168,7 @@ class SettingListItem extends StatelessWidget {
                     if (subTitle != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
-                        child:
-                            Caption(value: subTitle!, color: ThemeColor.gray4),
+                        child: Caption(value: subTitle!),
                       ),
                   ],
                 ),
