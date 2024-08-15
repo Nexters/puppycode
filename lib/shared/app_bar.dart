@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 // ignore: constant_identifier_names
@@ -28,9 +29,11 @@ class AppBarLeft {
 
 class AppBarCenter {
   final String label;
+  final String? caption;
 
   AppBarCenter({
     required this.label,
+    this.caption,
   });
 }
 
@@ -77,9 +80,9 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
         : '';
     return Positioned(
       left: 0,
-      height: 26,
+      height: 54,
       child: Align(
-        alignment: Alignment.center,
+        alignment: Alignment.centerLeft,
         child: leftOptions!.label != null
             ? Head2(value: leftOptions!.label!)
             : GestureDetector(
@@ -95,9 +98,26 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   // ignore: non_constant_identifier_names
   Widget? CenterPart(BuildContext context) {
+    double height = kToolbarHeight + (bottom?.preferredSize.height ?? 0.0);
+    if (centerOptions!.caption != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Body1(
+              value: centerOptions!.label,
+              bold: true,
+            ),
+            Caption(value: centerOptions!.caption!)
+          ],
+        ),
+      );
+    }
+
     return Positioned(
       child: SizedBox(
-        height: kToolbarHeight + (bottom?.preferredSize.height ?? 0.0),
+        height: height,
         child: Center(
             child: Body1(
           value: centerOptions!.label,
@@ -111,30 +131,35 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
 // ignore: non_constant_identifier_names
   Widget? Right(BuildContext context) {
     return Positioned(
+      height: 54,
       right: 0,
-      child: rightOptions!.label != null
-          ? GestureDetector(
-              onTap: () {
-                if (rightOptions!.onLabelClick != null) {
-                  rightOptions!.onLabelClick!();
-                }
-              },
-              child: Head2(
-                  value: rightOptions!.label!, color: rightOptions!.labelColor))
-          : Wrap(
-              spacing: 16,
-              children: rightOptions!.icons!
-                  .map((asset) => GestureDetector(
-                        onTap: asset.onTap,
-                        child: SvgPicture.asset(
-                          'assets/icons/${asset.name}.svg',
-                          width: 24,
-                          colorFilter: ColorFilter.mode(
-                              ThemeColor.gray5, BlendMode.srcIn),
-                        ),
-                      ))
-                  .toList(),
-            ),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: rightOptions!.label != null
+            ? GestureDetector(
+                onTap: () {
+                  if (rightOptions!.onLabelClick != null) {
+                    rightOptions!.onLabelClick!();
+                  }
+                },
+                child: Head2(
+                    value: rightOptions!.label!,
+                    color: rightOptions!.labelColor))
+            : Wrap(
+                spacing: 16,
+                children: rightOptions!.icons!
+                    .map((asset) => GestureDetector(
+                          onTap: asset.onTap,
+                          child: SvgPicture.asset(
+                            'assets/icons/${asset.name}.svg',
+                            width: 24,
+                            colorFilter: ColorFilter.mode(
+                                ThemeColor.gray5, BlendMode.srcIn),
+                          ),
+                        ))
+                    .toList(),
+              ),
+      ),
     );
   }
 
@@ -147,7 +172,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return SafeArea(
         child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 56,
       child: Stack(
         children: children,
