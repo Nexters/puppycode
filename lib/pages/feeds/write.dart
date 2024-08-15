@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/pages/feedDetails/feed_details.dart';
 import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
@@ -25,6 +24,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
   List<String> options = [];
   TextEditingController episodeController = TextEditingController();
 
+  final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
+
   @override
   void initState() {
     super.initState();
@@ -41,13 +42,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   List<Widget> _optionButtons() {
     List<Widget> widgets = [];
     for (int i = 0; i < 3; i++) {
-      String value = '';
-      if (i == 0) {
-        value = '$_kInitialTime분 미만';
-      } else {
-        value =
-            '${_kInitialTime + (i - 1) * _kInitialTime}분~${_kInitialTime + _kInitialGap}분';
-      }
+      String value = timeOptions[i];
 
       widgets.add(OptionButton(
           label: value,
@@ -80,31 +75,35 @@ class _FeedWritePageState extends State<FeedWritePage> {
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(20),
-            child: Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const PhotoItem(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.max,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        const Body1(value: '산책한 시간'),
-                        Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: _optionButtons(),
-                              ),
-                            ))
+                        const PhotoItem(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            const Body2(value: '산책한 시간', bold: true),
+                            Container(
+                                margin: const EdgeInsets.only(top: 8),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: _optionButtons(),
+                                  ),
+                                ))
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Episode(isInput: true, controller: episodeController),
                       ],
                     ),
-                    const SizedBox(height: 20),
-                    Episode(isInput: true, controller: episodeController),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
@@ -116,7 +115,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
               onPressed: () => {Get.to(() => const FeedCreateSuccessPage())},
-              text: '오늘도 산책완료!',
+              text: '기록 남기기',
             ),
           ),
         ));
