@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/pages/feedDetails/feed_details.dart';
 import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -21,6 +23,7 @@ const _kOptionCount = 3;
 class _FeedWritePageState extends State<FeedWritePage> {
   String? selectedTime;
   List<String> options = [];
+  TextEditingController episodeController = TextEditingController();
 
   @override
   void initState() {
@@ -77,25 +80,31 @@ class _FeedWritePageState extends State<FeedWritePage> {
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const PhotoItem(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    const Body1(value: '산책한 시간'),
-                    Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: _optionButtons(),
-                          ),
-                        ))
+                    const PhotoItem(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        const Body1(value: '산책한 시간'),
+                        Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: _optionButtons(),
+                              ),
+                            ))
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Episode(isInput: true, controller: episodeController),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

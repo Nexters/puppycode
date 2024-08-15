@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/pages/feedDetails/reaction_tab_bar.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -91,46 +92,6 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class Episode extends StatelessWidget {
-  const Episode({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 18),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: ThemeColor.gray2, width: 1.2)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/episode.svg',
-                  colorFilter:
-                      ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
-                ),
-                const SizedBox(width: 4),
-                const Body2(value: '오늘의 에피소드', bold: true)
-              ],
-            ),
-            const SizedBox(height: 8),
-            Body3(
-              value:
-                  '날이 너무 더워서 에어컨 틀어놓고 잠깐 나간 사이에 잠든 포포🐕 귀여워... 산책갈까? 하니까 바로 벌떡!!!ㅋㅋ',
-              color: ThemeColor.gray5,
-            )
-          ],
         ),
       ),
     );
