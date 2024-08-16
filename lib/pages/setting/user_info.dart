@@ -169,21 +169,21 @@ class _UserInfoPageState extends State<UserInfoPage> {
             if (!_isEditing)
               const SettingList(lists: [
                 SettingListItem(
-                    title: '산책일지',
-                    widget: Icon(
-                      color: Color.fromRGBO(128, 128, 128, 0.55),
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
-                    destination: ''),
+                  title: '산책일지',
+                  widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
+                ),
                 SettingListItem(
-                    title: '산책 캘린더',
-                    widget: Icon(
-                      color: Color.fromRGBO(128, 128, 128, 0.55),
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                    ),
-                    destination: '')
+                  title: '산책 캘린더',
+                  widget: Icon(
+                    color: Color.fromRGBO(128, 128, 128, 0.55),
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                  ),
+                )
               ], title: ''),
           ],
         ),
