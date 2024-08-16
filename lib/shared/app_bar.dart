@@ -142,8 +142,9 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                     rightOptions!.onLabelClick!();
                   }
                 },
-                child: Head2(
+                child: Body2(
                     value: rightOptions!.label!,
+                    bold: true,
                     color: rightOptions!.labelColor))
             : Wrap(
                 spacing: 16,

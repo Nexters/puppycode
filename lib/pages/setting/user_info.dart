@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:puppycode/pages/setting/setting.dart';
+import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:share/share.dart';
 
 class UserInfoPage extends StatefulWidget {
@@ -30,44 +32,20 @@ class _UserInfoPageState extends State<UserInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // SharedAppBar(
-      //   leftOptions: AppBarLeft(iconType: LeftIconType.BACK),
-      //   centerOptions: AppBarCenter(label: '내 프로필'),
-      //   rightOptions: AppBarRight(
-      //     actions: [
-      //       TextButton(
-      //         onPressed: _toggleEditing,
-      //         child: Text(
-      //           _isEditing ? '저장' : '편집',
-      //           style: const TextStyle(
-      //               color: Colors.black,
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.w500),
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          '내 프로필',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-        ),
-        actions: [
-          TextButton(
-            onPressed: _toggleEditing,
-            child: Text(
-              _isEditing ? '저장' : '편집',
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-          )
-        ],
-      ),
+      appBar: SharedAppBar(
+          leftOptions: AppBarLeft(iconType: LeftIconType.BACK),
+          centerOptions: AppBarCenter(label: '내 프로필'),
+          rightOptions: !_isEditing
+              ? AppBarRight(
+                  label: '편집',
+                  labelColor: ThemeColor.gray4,
+                  onLabelClick: _toggleEditing,
+                )
+              : AppBarRight(
+                  label: '저장',
+                  labelColor: ThemeColor.primary,
+                  onLabelClick: _toggleEditing,
+                )),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
