@@ -5,8 +5,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+
+class Friends {
+  Friends(dynamic item) {
+    id = item['id'];
+    profileUrl = item['profileImageUrl'];
+    name = item['nickname'];
+  }
+
+  late int id;
+  late String name;
+  late String profileUrl;
+}
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -16,7 +29,28 @@ class FriendsListPage extends StatefulWidget {
 }
 
 class _FriendsListPageState extends State<FriendsListPage> {
-  bool hasFriends = false; // 임시 bool, api 연결 후에 리팩
+  List<Friends>? friendList;
+
+  @override
+  void initState() {
+    _fetchFriends();
+    super.initState();
+  }
+
+  Future<void> _fetchFriends() async {
+    try {
+      final items = await HttpService.get('friends');
+      List<Friends> friends = items.map((item) => Friends(item)).toList();
+
+      setState(() {
+        friendList = friends;
+      });
+
+      print(friendList![0].profileUrl);
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +77,17 @@ class _FriendsListPageState extends State<FriendsListPage> {
               ],
             ),
           ),
-          hasFriends
-              ? const Padding(
-                  padding: EdgeInsets.fromLTRB(20, 18, 20, 0),
+          friendList != null
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
                   child: Column(
                     children: [
-                      FriendsList(
-                        userName: '푸름이',
-                      ),
-                      FriendsList(
-                        userName: '똥개',
-                      ),
+                      // friendList가 null이 아닐 경우 FriendsList로 표시
+                      for (var friend in friendList!) // for 문을 사용하여 반복
+                        FriendsList(
+                          userName: friend.name,
+                          profileImageUrl: friend.profileUrl,
+                        ), // Friend 모델의 이름 사용
                     ],
                   ),
                 )
@@ -86,10 +120,11 @@ class _FriendsListPageState extends State<FriendsListPage> {
 
 class FriendsList extends StatelessWidget {
   final String userName;
+  final String profileImageUrl;
 
   const FriendsList({
-    //profile 사진
     required this.userName,
+    required this.profileImageUrl,
     super.key,
   });
 
@@ -137,13 +172,12 @@ class FriendsList extends StatelessWidget {
                 badgeStyle: badges.BadgeStyle(
                     badgeColor: ThemeColor.white,
                     padding: const EdgeInsets.all(1)),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 63, 113, 163),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  height: 48,
-                  width: 48,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                      height: 48,
+                      width: 48,
+                      child: Image.network(profileImageUrl)),
                 ),
               ),
               const SizedBox(
