@@ -104,12 +104,12 @@ class _SettingPageState extends State<SettingPage> {
 
 class SettingList extends StatelessWidget {
   final List<SettingListItem> lists;
-  final String title;
+  final String? title;
 
   const SettingList({
     super.key,
     required this.lists,
-    required this.title,
+    this.title = '',
   });
 
   @override
@@ -119,10 +119,15 @@ class SettingList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Head4(value: title),
-          const SizedBox(
-            height: 12,
-          ),
+          if (title != '')
+            Column(
+              children: [
+                Head4(value: title!),
+                const SizedBox(
+                  height: 12,
+                )
+              ],
+            ),
           Column(
             children: lists,
           ),

@@ -19,4 +19,16 @@ class HttpService {
       throw 'error'; // 에러 더 자세히 해야 함
     }
   }
+
+  static Future<Map<String, dynamic>> getOne(String endPoint) async {
+    final url = Uri.http(baseUrl, '/api/$endPoint');
+    http.Response res =
+        await http.get(url, headers: {'Content-Type': 'application/json'});
+    if (res.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
+      return body; // 단일 객체
+    } else {
+      throw 'error';
+    }
+  }
 }
