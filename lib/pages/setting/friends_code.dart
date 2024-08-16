@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
@@ -15,19 +16,9 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Body1(
-          value: '친구 코드 입력하기',
-          bold: true,
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.close_rounded,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
+        centerOptions: AppBarCenter(label: '친구 코드 입력하기'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 42, horizontal: 20),
@@ -42,7 +33,15 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                 6,
-                (index) => const CodeTextField(),
+                (index) => CodeTextField(
+                  onChanged: (value) {
+                    if (value.length == 1 && index < 5) {
+                      FocusScope.of(context).nextFocus(); // 다음 필드로 포커스 이동
+                    } else if (value.isEmpty && index > 0) {
+                      FocusScope.of(context).previousFocus(); // 이전 필드로 포커스 이동
+                    }
+                  },
+                ),
               ),
             )
           ],
@@ -53,40 +52,43 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
 }
 
 class CodeTextField extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+
   const CodeTextField({
+    required this.onChanged,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+
+    final FocusNode focusNode = FocusNode();
+
     return SizedBox(
       height: 56,
       width: 56,
       child: TextField(
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
-          letterSpacing: -1.2,
-          color: Color(0xFF1E2022),
-          height: 33 / 24,
-        ),
+        controller: controller,
+        focusNode: focusNode,
+        style: HeadTextStyle.getH1Style(color: ThemeColor.gray5),
         inputFormatters: [LengthLimitingTextInputFormatter(1)],
         textAlign: TextAlign.center,
-        cursorColor: Colors.black,
-        cursorWidth: 1,
+        cursorColor: ThemeColor.primary,
+        cursorHeight: 18,
+        onChanged: (value) {
+          onChanged(value);
+        },
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color.fromARGB(255, 217, 217, 217),
-          border: OutlineInputBorder(
+          fillColor: ThemeColor.gray2,
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: BorderSide.none,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              color: Color(0xFF36DBBF),
-              width: 1,
-            ),
+            borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.symmetric(vertical: 11.2),
         ),
