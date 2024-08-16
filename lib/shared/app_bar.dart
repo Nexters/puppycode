@@ -45,11 +45,15 @@ class RightIcon {
 
 class AppBarRight {
   final String? label;
+  final Color? labelColor;
+  final VoidCallback? onLabelClick;
   final List<RightIcon>? icons;
 
   AppBarRight({
     this.label,
     this.icons,
+    this.labelColor,
+    this.onLabelClick,
   });
 }
 
@@ -132,7 +136,15 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Align(
         alignment: Alignment.centerRight,
         child: rightOptions!.label != null
-            ? Head2(value: rightOptions!.label!)
+            ? GestureDetector(
+                onTap: () {
+                  if (rightOptions!.onLabelClick != null) {
+                    rightOptions!.onLabelClick!();
+                  }
+                },
+                child: Head2(
+                    value: rightOptions!.label!,
+                    color: rightOptions!.labelColor))
             : Wrap(
                 spacing: 16,
                 children: rightOptions!.icons!

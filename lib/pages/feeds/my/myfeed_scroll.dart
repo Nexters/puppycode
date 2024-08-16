@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 
-class FeedListView extends StatefulWidget {
-  const FeedListView({super.key, this.focusedUserId});
-
-  final int? focusedUserId;
+class MyFeedGridView extends StatefulWidget {
+  const MyFeedGridView({super.key});
 
   @override
-  FeedListViewState createState() => FeedListViewState();
+  MyFeedGridViewState createState() => MyFeedGridViewState();
 }
 
-class FeedListViewState extends State<FeedListView> {
-  final ValueNotifier<int>? focusedUserId = ValueNotifier<int>(0);
-  static const _limit = 5;
+class MyFeedGridViewState extends State<MyFeedGridView> {
+  static const _limit = 10;
 
   final PagingController<int, Feed> _pagingController =
       PagingController(firstPageKey: 0); // == firstCursor
@@ -28,20 +24,11 @@ class FeedListViewState extends State<FeedListView> {
     super.initState();
   }
 
-  @override
-  void didUpdateWidget(FeedListView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.focusedUserId != widget.focusedUserId) {
-      _pagingController.refresh(); //
-    }
-  }
-
   Future<void> _fetchPage(int cursor) async {
     try {
       final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
-        'cursorId': cursor == 0 ? null : '$cursor',
-        'userId': widget.focusedUserId?.toString(),
+        'cursorId': cursor == 0 ? null : '$cursor'
       });
       List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 
@@ -60,14 +47,19 @@ class FeedListViewState extends State<FeedListView> {
   @override
   Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedListView<int, Feed>(
+        child: PagedGridView<int, Feed>(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 3 / 4,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Feed>(
-            noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
             itemBuilder: (context, item, index) => FeedItem(
               item: item,
-              isListView: true,
+              isListView: false,
             ),
           ),
         ),
