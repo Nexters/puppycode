@@ -72,12 +72,11 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
                   child: Column(
                     children: [
-                      // friendList가 null이 아닐 경우 FriendsList로 표시
-                      for (var friend in friendList!) // for 문을 사용하여 반복
+                      for (var friend in friendList!)
                         FriendsList(
                           userName: friend.name,
                           profileImageUrl: friend.profileUrl,
-                        ), // Friend 모델의 이름 사용
+                        ),
                     ],
                   ),
                 )
