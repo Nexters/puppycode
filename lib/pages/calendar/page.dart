@@ -8,7 +8,7 @@ import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
-import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/apis/models/feed.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});

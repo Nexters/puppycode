@@ -1,41 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/feed.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/typography/head.dart';
-
-class Feed {
-  Feed(dynamic logItem) {
-    id = logItem['id'];
-    photoUrl = logItem['photoUrl'];
-    name = logItem['writerNickname'] ?? 'unknown';
-    title = logItem['title'];
-    createdAt = logItem['createdAt'];
-    episode = logItem['content'];
-    profileUrl = logItem['writerProfileUrl'];
-    formattedCreatedAt = _formatCreatedAt(createdAt);
-  }
-
-  static String _formatCreatedAt(String dateString) {
-    DateTime date = DateTime.parse(dateString);
-    DateTime now = DateTime.now();
-    int daysDiff = date.difference(now).inDays.abs();
-    if (daysDiff > 7) return dateString;
-    int hoursDiff = date.difference(now).inHours.abs();
-    if (hoursDiff < 24) return '$hoursDiff시간 전';
-    return '$daysDiff일 전';
-  }
-
-  late int id;
-  late String photoUrl;
-  late String name;
-  late String title;
-  late String createdAt;
-  late String formattedCreatedAt;
-  String? episode;
-  String? profileUrl;
-}
 
 class FeedItem extends StatefulWidget {
   const FeedItem({
@@ -114,9 +83,9 @@ class _FeedItemState extends State<FeedItem> {
                       children: [
                         if (widget.isListView) NameLabel(name: feed.name),
                         const SizedBox(height: 8),
-                        if (widget.isListView && feed.title != null)
+                        if (widget.isListView)
                           Head3(
-                            value: feed.title!,
+                            value: feed.title,
                             color: Colors.white,
                           )
                       ],

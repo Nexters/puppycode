@@ -3,23 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/friends.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
-
-class Friends {
-  Friends(dynamic item) {
-    id = item['id'];
-    profileUrl = item['profileImageUrl'];
-    name = item['nickname'];
-  }
-
-  late int id;
-  late String name;
-  late String profileUrl;
-}
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -29,7 +18,7 @@ class FriendsListPage extends StatefulWidget {
 }
 
 class _FriendsListPageState extends State<FriendsListPage> {
-  List<Friends>? friendList;
+  List<Friend>? friendList;
 
   @override
   void initState() {
@@ -39,8 +28,9 @@ class _FriendsListPageState extends State<FriendsListPage> {
 
   Future<void> _fetchFriends() async {
     try {
-      final items = await HttpService.get('friends');
-      List<Friends> friends = items.map((item) => Friends(item)).toList();
+      final items =
+          await HttpService.get('friends', params: {'sort': 'FRIEND_DESC'});
+      List<Friend> friends = items.map((item) => Friend(item)).toList();
 
       setState(() {
         friendList = friends;
