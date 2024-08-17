@@ -61,7 +61,7 @@ class _FeedItemState extends State<FeedItem> {
 
     return GestureDetector(
       onTap: () {
-        Get.toNamed('/feed/1');
+        Get.toNamed('/feed/${widget.item.id}');
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
