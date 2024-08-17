@@ -15,7 +15,7 @@ class AppRoutes {
   static final routes = [
     GetPage(name: '/', page: () => const ScreenWithNavBar()),
     GetPage(name: '/login', page: () => const LoginPage()),
-    GetPage(name: '/onboarding/info', page: () => const OnboardingPage()),
+    GetPage(name: '/signup', page: () => const OnboardingPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(

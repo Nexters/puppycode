@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
           )),
-      initialRoute: '/',
+      initialRoute: '/login',
       getPages: AppRoutes.routes,
     );
   }

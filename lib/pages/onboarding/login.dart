@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_user.dart';
 import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/http.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,10 +13,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static const storage = FlutterSecureStorage();
   @override
   void initState() {
-    // 로컬 확인하고
-    // 있으면 메인 고고 리다이렉트
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuthToken();
+    });
+  }
+
+  void _checkAuthToken() async {
+    String? value = await storage.read(key: 'authToken');
+    if (value != null) {
+      Get.offAllNamed('/');
+    }
+  }
+
+  void _onLogin(String token) async {
+    await storage.write(key: 'authToken', value: token);
+    Get.offAllNamed('/');
   }
 
   @override
@@ -30,12 +47,20 @@ class _LoginPageState extends State<LoginPage> {
       bottomSheet: Container(
         constraints: const BoxConstraints(maxHeight: 102),
         margin: const EdgeInsets.fromLTRB(45, 0, 45, 75),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SignupButton(text: '카카오로 시작하기', type: SignupType.kakao),
-            SizedBox(height: 12),
-            SignupButton(text: 'Continue with Apple', type: SignupType.apple)
+            SignupButton(
+              text: '카카오로 시작하기',
+              type: SignupType.kakao,
+              onLogin: _onLogin,
+            ),
+            const SizedBox(height: 12),
+            SignupButton(
+              text: 'Continue with Apple',
+              type: SignupType.apple,
+              onLogin: _onLogin,
+            )
           ],
         ),
       ),
@@ -49,20 +74,32 @@ class SignupButton extends StatelessWidget {
   const SignupButton({
     required this.text,
     required this.type,
+    required this.onLogin,
     super.key,
   });
 
   final String text;
   final SignupType type;
+  final void Function(String) onLogin;
 
   void _login() async {
     if (type != SignupType.kakao) return;
     try {
       await UserApi.instance.loginWithKakaoTalk();
       var me = await UserApi.instance.me();
-      print(me.id);
-      // get을 찌르고 ~
-      // true 토큰 저장하고 메인으로
+      try {
+        var loginResult = await HttpService.getOne('/auth/login',
+            params: {'oauthIdentifier': me.id.toString()});
+        String token = loginResult['token'] ?? '';
+        if (token.isEmpty) return;
+        onLogin(token);
+      } catch (err) {
+        Get.toNamed('/signup', arguments: {
+          'oAauthToken': me.id.toString(),
+          'profileUrl': me.kakaoAccount?.profile?.profileImageUrl ?? '',
+          'provider': 'KAKAO'
+        });
+      }
       // false register로 토큰 물고 이동하기
       // API를 쏘고 ~
       // 토큰받고

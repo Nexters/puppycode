@@ -1,13 +1,61 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/input.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+enum LOCATION {
+  SEOUL,
+  BUSAN,
+  DAEGU,
+  INCHEON,
+  GWANGJU,
+  DAEJEON,
+  ULSAN,
+  SEJONG,
+  GYEONGGI,
+  GANGWON,
+  CHUNGBUK,
+  CHUNGNAM,
+  JEONBUK,
+  JEONNAME,
+  GYEONGBUK,
+  GYEONGNAM,
+  JEJU
+}
+
+extension LocationExtension on LOCATION {
+  String get name => toString().split('.').last;
+}
+
+Map<LOCATION, String> locationNames = {
+  LOCATION.SEOUL: "서울",
+  LOCATION.BUSAN: "부산",
+  LOCATION.DAEGU: "대구",
+  LOCATION.INCHEON: "인천",
+  LOCATION.GWANGJU: "광주",
+  LOCATION.DAEJEON: "대전",
+  LOCATION.ULSAN: "울산",
+  LOCATION.SEJONG: "세종",
+  LOCATION.GYEONGGI: "경기",
+  LOCATION.GANGWON: "강원",
+  LOCATION.CHUNGBUK: "충북",
+  LOCATION.CHUNGNAM: "충남",
+  LOCATION.JEONBUK: "전북",
+  LOCATION.JEONNAME: "전남",
+  LOCATION.GYEONGBUK: "경북",
+  LOCATION.GYEONGNAM: "경남",
+  LOCATION.JEJU: "제주"
+};
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -18,7 +66,44 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final _nameController = TextEditingController();
-  late String _location = '';
+  LOCATION? _location;
+  late String authToken;
+  late String provider;
+  late String? profileUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.arguments != null) {
+      authToken = Get.arguments['oAauthToken'];
+      profileUrl = Get.arguments['profileUrl'];
+      provider = Get.arguments['provider'];
+    }
+  }
+
+  void _signup() async {
+    if (authToken.isEmpty) return;
+    try {
+      Map<String, dynamic> result = await HttpService.post('auth/signup', {
+        'oauthIdentifier': authToken,
+        'nickname': _nameController.text,
+        'profileUrl': profileUrl ?? '',
+        'city': _location?.name ?? '',
+        'provider': provider
+      });
+
+      String? token = result['token'];
+      if (token == null) {
+        throw 'empty token';
+      }
+
+      const storage = FlutterSecureStorage();
+      await storage.write(key: 'authToken', value: token);
+      Get.to(() => const StartPage());
+    } catch (err) {
+      print(err);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +146,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               Expanded(
                   child: DefaultTextButton(
                 text: '등록하기',
-                onPressed: () => {Get.to(() => const StartPage())},
+                onPressed: () => {_signup()},
               )),
             ],
           ),
@@ -94,25 +179,14 @@ class GuideText extends StatelessWidget {
   }
 }
 
-List<String> _kLocationValues = [
-  '서울',
-  '부산',
-  '대구',
-  '인천',
-  '광주',
-  '대전',
-  '울산',
-  '경기'
-];
-
 class LocationInputWithBottomSheet extends StatefulWidget {
-  final String value;
-  final void Function(String value) onSelect;
+  final LOCATION? value;
+  final void Function(LOCATION value) onSelect;
 
   const LocationInputWithBottomSheet({
     super.key,
     required this.onSelect,
-    required this.value,
+    this.value,
   });
 
   @override
@@ -143,19 +217,21 @@ class _LocationInputWithBottomSheetState
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: SizedBox(
-                              child: Column(children: [
-                                for (var location in _kLocationValues)
-                                  LocationOption(
-                                    location: location,
-                                    isSelected: location == widget.value,
-                                    onSelect: (selectedValue) => {
-                                      setState(() {
-                                        widget.onSelect(selectedValue);
-                                        Get.back();
-                                      })
-                                    },
-                                  )
-                              ]),
+                              child: Column(
+                                  children: locationNames.entries
+                                      .map((entry) => LocationOption(
+                                            value: entry.key,
+                                            label: entry.value,
+                                            isSelected:
+                                                entry.key == widget.value,
+                                            onSelect: (selectedValue) => {
+                                              setState(() {
+                                                widget.onSelect(selectedValue);
+                                                Get.back();
+                                              })
+                                            },
+                                          ))
+                                      .toList()),
                             ),
                           ),
                         ),
@@ -167,6 +243,7 @@ class _LocationInputWithBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    print(widget.value);
     onComplete() {
       setState(() {
         _isFocused = false;
@@ -192,9 +269,10 @@ class _LocationInputWithBottomSheetState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Body1(
-                value: widget.value.isNotEmpty ? widget.value : '지역',
+                value:
+                    widget.value != null ? locationNames[widget.value]! : '지역',
                 color:
-                    widget.value.isEmpty ? ThemeColor.gray4 : ThemeColor.gray6,
+                    widget.value == null ? ThemeColor.gray4 : ThemeColor.gray6,
               ),
               RotatedBox(
                 quarterTurns: 3,
@@ -211,25 +289,27 @@ class _LocationInputWithBottomSheetState
 class LocationOption extends StatelessWidget {
   const LocationOption({
     super.key,
-    required this.location,
+    required this.value,
+    required this.label,
     required this.isSelected,
     required this.onSelect,
   });
 
-  final String location;
+  final LOCATION value;
+  final String label;
   final bool isSelected;
-  final void Function(String) onSelect;
+  final void Function(LOCATION) onSelect;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {onSelect(location)},
+      onTap: () => {onSelect(value)},
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 16, 8, 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: Body1(value: location)),
+            Expanded(child: Body1(value: label)),
             if (isSelected)
               SvgPicture.asset(
                 'assets/icons/check.svg',
