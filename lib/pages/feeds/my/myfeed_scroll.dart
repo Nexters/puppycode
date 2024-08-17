@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -73,6 +74,7 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
           //shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MyMontlyList>(
+            noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
             itemBuilder: (context, monthly, index) => Column(
               children: [
                 Container(
