@@ -20,7 +20,7 @@ enum NavTab { feed, home, my }
 
 class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     with WidgetsBindingObserver {
-  NavTab _currentTab = NavTab.my;
+  NavTab _currentTab = NavTab.feed;
   static const List<NavTab> _allowedRoutes = [
     NavTab.feed,
     NavTab.home,
