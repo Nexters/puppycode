@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,14 +61,28 @@ class _UserInfoPageState extends State<UserInfoPage> {
       _isEditing = !_isEditing;
       if (_isEditing) {
         FocusScope.of(context).requestFocus(_focusNode); // TextField에 포커스 요청
+      } else {
+        _editProfile();
       }
     });
   }
 
-  // 프로필 변경
-  // void _editProfile() {
+  //프로필 변경
+  void _editProfile() async {
+    try {
+      Map<String, dynamic> res = await HttpService.patch(
+        'users/nickname',
+        params: {'nickname': _editingController.text},
+      );
 
-  // }
+      if (_image != null) {
+        Map<String, dynamic> result = await HttpService.patchProfileImage(
+            'users/profile-image', File(_image!.path));
+      }
+    } catch (err) {
+      print('edit Error: $err');
+    }
+  }
 
   bool validateName(name) {
     setState(() {
@@ -102,7 +117,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
         profileImageUrl = user.profileImageUrl;
       });
     } catch (error) {
-      print(error);
+      print('fetchUser Error: $error');
     }
   }
 
