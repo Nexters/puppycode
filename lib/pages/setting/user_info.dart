@@ -114,7 +114,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   const SettingList(lists: [
                     SettingListItem(
                         title: '산책일지',
-                        icon: Icons.notes,
                         widget: Icon(
                           color: Color.fromRGBO(128, 128, 128, 0.55),
                           Icons.arrow_forward_ios,
@@ -123,7 +122,6 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         destination: ''),
                     SettingListItem(
                         title: '산책 캘린더',
-                        icon: Icons.calendar_month_outlined,
                         widget: Icon(
                           color: Color.fromRGBO(128, 128, 128, 0.55),
                           Icons.arrow_forward_ios,
