@@ -128,7 +128,7 @@ class _CalendarTableState extends State<CalendarTable> {
         'month': widget.month.toString(),
         'userId': '1'
       });
-      final items = response['items'];
+      Map<String, dynamic> items = response['items'];
       setState(() {
         calendarItems =
             items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
