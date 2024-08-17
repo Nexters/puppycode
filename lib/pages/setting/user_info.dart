@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
@@ -39,6 +42,18 @@ class _UserInfoPageState extends State<UserInfoPage> {
   bool _isValidName = false;
   late final TextEditingController _editingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+
+  XFile? _image;
+  final ImagePicker picker = ImagePicker();
+
+  Future getImage(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _image = XFile(pickedFile.path);
+      });
+    }
+  }
 
   void _toggleEditing() {
     setState(() {
@@ -115,13 +130,25 @@ class _UserInfoPageState extends State<UserInfoPage> {
           children: [
             GestureDetector(
               onTap: () {
-                Get.toNamed('/album');
+                if (_isEditing) {
+                  getImage(ImageSource.gallery);
+                }
               },
               child: ClipOval(
-                child: profileImageUrl.isNotEmpty
-                    ? Image.network(profileImageUrl, height: 128, width: 128)
-                    : Image.asset('assets/images/profile.png',
-                        height: 128, width: 128),
+                child: _image != null
+                    ? SizedBox(
+                        height: 128,
+                        width: 128,
+                        child: Image.file(
+                          fit: BoxFit.cover,
+                          File(_image!.path),
+                        ),
+                      )
+                    : profileImageUrl.isNotEmpty
+                        ? Image.network(profileImageUrl,
+                            height: 128, width: 128)
+                        : Image.asset('assets/images/profile.png',
+                            height: 128, width: 128),
               ),
             ),
             Container(
