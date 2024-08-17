@@ -21,7 +21,10 @@ class Feed {
     DateTime date = DateTime.parse(dateString);
     DateTime now = DateTime.now();
     int daysDiff = date.difference(now).inDays.abs();
-    if (daysDiff > 7) return dateString;
+    bool isYearDifferent = date.year != now.year;
+    if (daysDiff > 7) {
+      return '${isYearDifferent ? '${date.year}년 ' : ''}${date.month}월 ${date.day}일';
+    }
     int hoursDiff = date.difference(now).inHours.abs();
     if (hoursDiff < 24) return '$hoursDiff시간 전';
     return '$daysDiff일 전';
