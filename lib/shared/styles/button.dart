@@ -73,7 +73,7 @@ class DefaultElevatedButton extends ElevatedButton {
   }) : super(
           onPressed: onPressed,
           style: getStyle(disabled: disabled),
-          child: Body1(value: text),
+          child: Body1(value: text, bold: true),
         );
 
   static const getStyle = TextButtonStyle.getStyle;
