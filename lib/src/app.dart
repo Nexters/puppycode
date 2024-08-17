@@ -10,14 +10,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
-        fontFamily: 'Pretendard',
+          fontFamily: 'Pretendard',
           scaffoldBackgroundColor: ThemeColor.white,
           appBarTheme: AppBarTheme(backgroundColor: ThemeColor.white),
           bottomNavigationBarTheme:
               BottomNavigationBarThemeData(backgroundColor: ThemeColor.white),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
               backgroundColor: ThemeColor.primary),
-        bottomSheetTheme:
+          bottomSheetTheme:
               BottomSheetThemeData(backgroundColor: ThemeColor.white),
           inputDecorationTheme: const InputDecorationTheme(
             border: InputBorder.none,
@@ -25,8 +25,7 @@ class MyApp extends StatelessWidget {
             enabledBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
-          )
-      ),
+          )),
       initialRoute: '/',
       getPages: AppRoutes.routes,
     );
