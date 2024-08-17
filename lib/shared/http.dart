@@ -20,8 +20,9 @@ class HttpService {
     }
   }
 
-  static Future<Map<String, dynamic>> getOne(String endPoint) async {
-    final url = Uri.http(baseUrl, '/api/$endPoint');
+  static Future<Map<String, dynamic>> getOne(String endPoint,
+      {Map<String, dynamic>? params}) async {
+    final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res =
         await http.get(url, headers: {'Content-Type': 'application/json'});
     if (res.statusCode == 200) {

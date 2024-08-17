@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:puppycode/pages/feeds/feed_item.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -73,6 +75,7 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             const SizedBox(height: 30),
             CalendarTable(
+              year: year,
               month: month,
               firstDayOfMonth: firstDayOfMonth,
               lastDayOfMonth: lastDayOfMonth,
@@ -85,15 +88,17 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 }
 
-class CalendarTable extends StatelessWidget {
+class CalendarTable extends StatefulWidget {
   const CalendarTable({
     super.key,
+    required this.year,
     required this.month,
     required this.firstDayOfMonth,
     required this.lastDayOfMonth,
     required this.onMonthClick,
   });
 
+  final int year;
   final int month;
   final DateTime firstDayOfMonth;
   final DateTime lastDayOfMonth;
@@ -104,12 +109,42 @@ class CalendarTable extends StatelessWidget {
   static const double cellPadding = 2;
 
   @override
+  State<CalendarTable> createState() => _CalendarTableState();
+}
+
+class _CalendarTableState extends State<CalendarTable> {
+  Map<String, Feed>? calendarItems;
+
+  @override
+  void initState() {
+    _fetchCalendarData();
+    super.initState();
+  }
+
+  Future<void> _fetchCalendarData() async {
+    try {
+      final response = await HttpService.getOne('walk-logs/calendar', params: {
+        'year': widget.year.toString(),
+        'month': widget.month.toString(),
+        'userId': '1'
+      });
+      final items = response['items'];
+      setState(() {
+        calendarItems =
+            items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
+      });
+    } catch (error) {
+      //print(error);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var cellHeight =
-        (MediaQuery.of(context).size.width - 40) / 7 - cellPadding * 2;
-    var showMaxWeek =
-        35 - firstDayOfMonth.weekday + 1 < lastDayOfMonth.day; // row 6개 보여야 할 때
-    var isThisMonth = month == DateTime.now().month;
+    var cellHeight = (MediaQuery.of(context).size.width - 40) / 7 -
+        CalendarTable.cellPadding * 2;
+    var showMaxWeek = 35 - widget.firstDayOfMonth.weekday + 1 <
+        widget.lastDayOfMonth.day; // row 6개 보여야 할 때
+    var isThisMonth = widget.month == DateTime.now().month;
 
     return Column(
       children: [
@@ -117,16 +152,16 @@ class CalendarTable extends StatelessWidget {
           children: [
             Expanded(
                 child: Head4(
-              value: '$month월',
+              value: '${widget.month}월',
             )),
             Row(
               children: [
                 GestureDetector(
-                    onTap: () => {onMonthClick(false)},
+                    onTap: () => {widget.onMonthClick(false)},
                     child: SvgPicture.asset('assets/icons/calendar_prev.svg')),
                 const SizedBox(width: 8),
                 GestureDetector(
-                    onTap: () => {onMonthClick(true)},
+                    onTap: () => {widget.onMonthClick(true)},
                     child: isThisMonth
                         ? Opacity(
                             opacity: 0.4,
@@ -163,7 +198,7 @@ class CalendarTable extends StatelessWidget {
 
   TableRow getWeekDaysTextRow() {
     return TableRow(
-        children: daysText
+        children: CalendarTable.daysText
             .map((day) => Container(
                 height: 26,
                 margin: const EdgeInsets.only(bottom: 16),
@@ -176,33 +211,62 @@ class CalendarTable extends StatelessWidget {
   }
 
   TableRow getWeekRow(int week, double cellHeight, bool isThisMonth) {
-    var addedDate = 7 * week - firstDayOfMonth.weekday + 2;
+    var addedDate = 7 * week - widget.firstDayOfMonth.weekday + 2;
 
     return TableRow(
-        children: days.map((day) {
-      var cellDate = day + addedDate;
-      var isValidDate = cellDate > 0 && cellDate <= lastDayOfMonth.day;
-      var today = DateTime.now().day;
-      var isToday = isThisMonth && cellDate == today;
-      var isInFuture = isThisMonth && cellDate > today;
-      var textColor = isToday
+        children: CalendarTable.days.map((day) {
+      int cellDate = day + addedDate;
+      bool isValidDate = cellDate > 0 && cellDate <= widget.lastDayOfMonth.day;
+      int today = DateTime.now().day;
+      bool isToday = isThisMonth && cellDate == today;
+      bool isInFuture = isThisMonth && cellDate > today;
+      Color textColor = isToday
           ? ThemeColor.white
           : (isInFuture ? ThemeColor.gray3 : ThemeColor.gray5);
+      Feed? dateFeedItem =
+          calendarItems != null ? calendarItems!['$cellDate'] : null;
 
-      return Container(
-        height: cellHeight,
-        margin: const EdgeInsets.all(cellPadding),
-        decoration: isValidDate
-            ? BoxDecoration(
-                color: isToday ? ThemeColor.primary : ThemeColor.gray2,
-                borderRadius: BorderRadius.circular(20),
-              )
-            : null,
-        child: Center(
-          child: Body4(
-            value: (isValidDate ? cellDate : '').toString(),
-            fontWeight: FontWeight.w500,
-            color: textColor,
+      if (dateFeedItem == null) {
+        return Container(
+          height: cellHeight,
+          margin: const EdgeInsets.all(CalendarTable.cellPadding),
+          decoration: isValidDate
+              ? BoxDecoration(
+                  color: isToday ? ThemeColor.primary : ThemeColor.gray2,
+                  borderRadius: BorderRadius.circular(20),
+                )
+              : null,
+          child: Center(
+            child: Body4(
+              value: (isValidDate ? cellDate : '').toString(),
+              fontWeight: FontWeight.w500,
+              color: textColor,
+            ),
+          ),
+        );
+      }
+
+      return GestureDetector(
+        onTap: () => {Get.toNamed('/feed/${dateFeedItem.id}')},
+        child: Container(
+          height: cellHeight,
+          margin: const EdgeInsets.all(CalendarTable.cellPadding),
+          decoration: BoxDecoration(
+              color: isToday ? ThemeColor.primary : ThemeColor.gray2,
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                  image: NetworkImage(dateFeedItem.photoUrl),
+                  fit: BoxFit.cover)),
+          child: Center(
+            child: Body4(
+              value: cellDate.toString(),
+              fontWeight: FontWeight.w500,
+              color: ThemeColor.white,
+              textShadow: Shadow(
+                blurRadius: 5,
+                color: ThemeColor.black.withOpacity(0.3),
+              ),
+            ),
           ),
         ),
       );

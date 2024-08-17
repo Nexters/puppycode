@@ -17,17 +17,17 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool isRoutineNotificationEnabled = true; // 산책 루틴 알림
+  bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
 
-  void onRoutineNotificationSwitchPressed(bool value) {
+  void onWalkNotificationSwitched(bool value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
     setState(() {
-      isRoutineNotificationEnabled = value;
+      isWalkNotificationEnabled = value;
     });
   }
 
-  void onPushNotificationSwitchPressed(value) {
+  void onPushNotificationSwitched(value) {
     setState(() {
       isPushNotificationEnabled = value;
     });
@@ -62,19 +62,19 @@ class _SettingPageState extends State<SettingPage> {
                   widget: SizedBox(
                       height: 34,
                       child: SetWalkTimeButton(
-                          buttonEnabled: isRoutineNotificationEnabled)),
+                          notificationEnabled: isWalkNotificationEnabled)),
                 ),
                 SettingListItem(
                     title: '산책 루틴 알림',
                     subTitle: '지정한 산책 시간에 알림을 받을 수 있어요',
                     widget: CustomCupertinoSwitch(
-                      onPressed: onRoutineNotificationSwitchPressed,
-                      isNotificationEnabled: isRoutineNotificationEnabled,
+                      onPressed: onWalkNotificationSwitched,
+                      isNotificationEnabled: isWalkNotificationEnabled,
                     )),
                 SettingListItem(
                   title: '찌르기 알림',
                   widget: CustomCupertinoSwitch(
-                    onPressed: onPushNotificationSwitchPressed,
+                    onPressed: onPushNotificationSwitched,
                     isNotificationEnabled: isPushNotificationEnabled,
                   ),
                 ),
@@ -104,12 +104,12 @@ class _SettingPageState extends State<SettingPage> {
 
 class SettingList extends StatelessWidget {
   final List<SettingListItem> lists;
-  final String? title;
+  final String title;
 
   const SettingList({
     super.key,
     required this.lists,
-    this.title = '',
+    required this.title,
   });
 
   @override
@@ -119,10 +119,10 @@ class SettingList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (title != '')
+          if (title.isNotEmpty)
             Column(
               children: [
-                Head4(value: title!),
+                Head4(value: title),
                 const SizedBox(
                   height: 12,
                 )
@@ -173,8 +173,7 @@ class SettingListItem extends StatelessWidget {
                     if (subTitle != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
-                        child:
-                            Caption(value: subTitle!, color: ThemeColor.gray4),
+                        child: Caption(value: subTitle!),
                       ),
                   ],
                 ),

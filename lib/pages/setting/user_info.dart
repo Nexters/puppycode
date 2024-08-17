@@ -55,7 +55,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   bool validateName(name) {
     setState(() {
-      _isValidName = name.length > 2;
+      _isValidName = name.length > 1;
     });
 
     return _isValidName;
