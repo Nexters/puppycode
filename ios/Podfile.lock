@@ -2,9 +2,9 @@ PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - image_picker_ios (0.0.1):
-    - Flutter
   - flutter_secure_storage (6.0.0):
+    - Flutter
+  - image_picker_ios (0.0.1):
     - Flutter
   - kakao_flutter_sdk_common (1.9.5):
     - Flutter
@@ -22,8 +22,8 @@ PODS:
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
-  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - kakao_flutter_sdk_common (from `.symlinks/plugins/kakao_flutter_sdk_common/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -35,10 +35,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   Flutter:
     :path: Flutter
-  image_picker_ios:
-    :path: ".symlinks/plugins/image_picker_ios/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
   kakao_flutter_sdk_common:
     :path: ".symlinks/plugins/kakao_flutter_sdk_common/ios"
   path_provider_foundation:
@@ -53,8 +53,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera_avfoundation: dd002b0330f4981e1bbcb46ae9b62829237459a4
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   kakao_flutter_sdk_common: 985c7085c29a2bd949972cadac8238845dc354db
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
