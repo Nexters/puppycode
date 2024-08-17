@@ -20,6 +20,21 @@ class HttpService {
     }
   }
 
+  static Future<Map<String, dynamic>> post(
+      String endPoint, Map<String, dynamic> body) async {
+    final url = Uri.http(baseUrl, '/api/$endPoint');
+    http.Response res = await http.post(url,
+        headers: {'Content-Type': 'application/json'}, body: json.encode(body));
+    print(body);
+    print(json.encode(body));
+    if (res.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(utf8.decode(res.bodyBytes));
+      return result;
+    } else {
+      throw 'failed';
+    }
+  }
+
   static Future<Map<String, dynamic>> getOne(String endPoint,
       {Map<String, dynamic>? params}) async {
     final url = Uri.http(baseUrl, '/api/$endPoint', params);

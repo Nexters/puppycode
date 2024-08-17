@@ -22,6 +22,9 @@ dependencies:
   infinite_scroll_pagination: ^4.0.0
   http: ^1.2.2
   image_picker: ^1.1.2
+  kakao_flutter_sdk: ^1.9.5
+  kakao_flutter_sdk_user: ^1.9.5
+  flutter_secure_storage: ^9.0.1
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +42,7 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/icons/
+    - assets/config.json
 
   fonts:
     - family: Pretendard
