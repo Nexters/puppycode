@@ -100,11 +100,6 @@ class SignupButton extends StatelessWidget {
           'provider': 'KAKAO'
         });
       }
-      // false register로 토큰 물고 이동하기
-      // API를 쏘고 ~
-      // 토큰받고
-      // 로컬에 박고
-      // 메인으로 리다이렉트
     } catch (err) {
       //
     }
@@ -112,22 +107,27 @@ class SignupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: TextButton(
+    if (type == SignupType.apple) {
+      return TextButton(
         onPressed: () => {_login()},
         style: TextButton.styleFrom(
-            backgroundColor:
-                type == SignupType.kakao ? Colors.yellow : Colors.black,
+            backgroundColor: Colors.black,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5)))),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14.5,
-            color: type == SignupType.kakao ? Colors.black : Colors.white,
+            color: Colors.white,
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return Expanded(
+        child: Container(
+      decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/images/kakao.png'))),
+    ));
   }
 }
