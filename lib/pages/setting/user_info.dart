@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
@@ -145,25 +143,46 @@ class _UserInfoPageState extends State<UserInfoPage> {
           children: [
             GestureDetector(
               onTap: () {
-                if (_isEditing) {
-                  getImage(ImageSource.gallery);
-                }
+                if (_isEditing) getImage(ImageSource.gallery);
               },
-              child: ClipOval(
-                child: _image != null
-                    ? SizedBox(
-                        height: 128,
-                        width: 128,
-                        child: Image.file(
-                          fit: BoxFit.cover,
-                          File(_image!.path),
+              child: Stack(
+                children: [
+                  ClipOval(
+                    child: _image != null
+                        ? SizedBox(
+                            height: 128,
+                            width: 128,
+                            child: Image.file(
+                              fit: BoxFit.cover,
+                              File(_image!.path),
+                            ),
+                          )
+                        : profileImageUrl.isNotEmpty
+                            ? Image.network(profileImageUrl,
+                                fit: BoxFit.cover, height: 128, width: 128)
+                            : Image.asset('assets/images/profile.png',
+                                fit: BoxFit.cover, height: 128, width: 128),
+                  ),
+                  if (_isEditing)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: ThemeColor.white,
+                          borderRadius: BorderRadius.circular(100),
                         ),
-                      )
-                    : profileImageUrl.isNotEmpty
-                        ? Image.network(profileImageUrl,
-                            height: 128, width: 128)
-                        : Image.asset('assets/images/profile.png',
-                            height: 128, width: 128),
+                        child: SvgPicture.asset(
+                          'assets/icons/plus.svg',
+                          colorFilter: ColorFilter.mode(
+                              ThemeColor.primary, BlendMode.srcIn),
+                        ),
+                      ),
+                    )
+                ],
               ),
             ),
             Container(
