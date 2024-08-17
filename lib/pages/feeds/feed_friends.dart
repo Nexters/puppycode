@@ -22,7 +22,7 @@ class FeedFriends extends StatefulWidget {
 }
 
 class _FeedFriendsState extends State<FeedFriends> {
-  List<Friends>? friendList;
+  List<Friend>? friendList;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _FeedFriendsState extends State<FeedFriends> {
       final items = await HttpService.get('friends', params: {
         'sort': 'WALK_DONE_DESC',
       });
-      List<Friends> friends = items.map((item) => Friends(item)).toList();
+      List<Friend> friends = items.map((item) => Friend(item)).toList();
 
       setState(() {
         friendList = friends;

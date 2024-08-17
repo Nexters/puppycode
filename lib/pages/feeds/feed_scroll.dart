@@ -3,6 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/apis/models/feed.dart';
 
 class FeedListView extends StatefulWidget {
   const FeedListView({super.key, this.focusedUserId});

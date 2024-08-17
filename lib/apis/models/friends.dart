@@ -1,7 +1,7 @@
 // ignore: constant_identifier_names
 
-class Friends {
-  Friends(dynamic item) {
+class Friend {
+  Friend(dynamic item) {
     id = item['id'];
     name = item['nickname'];
     profileUrl = item['profileImageUrl'];

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:puppycode/apis/models/monthly.dart';
+import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class MyFeedGridView extends StatefulWidget {
   const MyFeedGridView({super.key});
@@ -11,10 +15,8 @@ class MyFeedGridView extends StatefulWidget {
 }
 
 class MyFeedGridViewState extends State<MyFeedGridView> {
-  static const _limit = 10;
-
-  final PagingController<int, Feed> _pagingController =
-      PagingController(firstPageKey: 0); // == firstCursor
+  final PagingController<int, MyMontlyList> _pagingController =
+      PagingController(firstPageKey: DateTime.now().month); // == firstCursor
 
   @override
   void initState() {
@@ -26,18 +28,18 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
 
   Future<void> _fetchPage(int cursor) async {
     try {
-      final items = await HttpService.get('walk-logs', params: {
-        'pageSize': '$_limit',
-        'cursorId': cursor == 0 ? null : '$cursor'
-      });
-      List<Feed> feedItems = items.map((item) => Feed(item)).toList();
+      final monthlyItem = await HttpService.getOne('walk-logs/monthly',
+          params: {'userId': '1', 'year': '2024', 'month': '$cursor'});
 
-      final isLastPage = feedItems.length < _limit;
+      MyMontlyList monthlyList = MyMontlyList(monthlyItem);
+      //List<Feed> feedItems = monthlyList.items;
+
+      final isLastPage = !monthlyList.hasNext;
       if (isLastPage) {
-        _pagingController.appendLastPage(feedItems);
+        _pagingController.appendLastPage([monthlyList]);
       } else {
-        final nextCursor = feedItems.last.id;
-        _pagingController.appendPage(feedItems, nextCursor);
+        final nextCursor = monthlyList.nextMonth;
+        _pagingController.appendPage([monthlyList], nextCursor);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -47,19 +49,42 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
   @override
   Widget build(BuildContext context) => RefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
-        child: PagedGridView<int, Feed>(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 3 / 4,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
-          shrinkWrap: true,
+        child: PagedListView<int, MyMontlyList>(
+          //shrinkWrap: true,
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<Feed>(
-            itemBuilder: (context, item, index) => FeedItem(
-              item: item,
-              isListView: false,
+          builderDelegate: PagedChildBuilderDelegate<MyMontlyList>(
+            noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
+            itemBuilder: (context, monthly, index) => Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                  decoration: BoxDecoration(
+                      color: ThemeColor.gray2,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Body3(
+                    value: '${monthly.month}월 · ${monthly.count}개의 일지',
+                    color: ThemeColor.gray5,
+                    bold: true,
+                  ),
+                ),
+                GridView(
+                  physics: const ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 170 / 270,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 16,
+                  ),
+                  children: monthly.items
+                      .map((item) => FeedItem(item: item, isListView: false))
+                      .toList(),
+                ),
+                const SizedBox(height: 14)
+              ],
             ),
           ),
         ),
