@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -10,6 +11,9 @@ class FeedCreateSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isFromFeed = Get.arguments['from'] == 'feed';
+    var feedId = Get.arguments['feedId'];
+
     return Scaffold(
       body: Center(
           child: SafeArea(
@@ -46,11 +50,16 @@ class FeedCreateSuccessPage extends StatelessWidget {
             children: [
               Expanded(
                   child: DefaultCloseButton(
-                      onPressed: () => {Get.toNamed('/home')})),
+                      onPressed: () => {
+                            Get.toNamed('/', arguments: {
+                              'tab': isFromFeed ? NavTab.feed : NavTab.home
+                            })
+                          })),
               const SizedBox(width: 8),
               Expanded(
                   child: DefaultTextButton(
-                      text: '산책일지 보러가기', onPressed: () => {})),
+                      text: '산책일지 보러가기',
+                      onPressed: () => {Get.toNamed('/feed/$feedId')})),
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -22,13 +22,19 @@ const _kOptionCount = 3;
 class _FeedWritePageState extends State<FeedWritePage> {
   String? selectedTime;
   List<String> options = [];
+  TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
+  late String photoPath;
+  late String from;
 
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
 
   @override
   void initState() {
     super.initState();
+    photoPath = Get.arguments['photoPath'];
+    from = Get.arguments['from'];
+
     var options = [];
     for (int i = 0; i < _kOptionCount; i++) {
       if (i == 0) {
@@ -65,6 +71,27 @@ class _FeedWritePageState extends State<FeedWritePage> {
     });
   }
 
+  void onTitleChange() {
+    setState(() {});
+  }
+
+  void _createFeed() async {
+    try {
+      var result = await HttpService.postMultipartForm('walk-logs',
+          body: {
+            'title': titleController.text,
+            'content': episodeController.text,
+            'walkTime': selectedTime,
+          },
+          imagePath: photoPath);
+      if (result['success'] == true) {
+        Get.toNamed('/create/success', arguments: {from: from, 'feedId': '1'});
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +108,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        const PhotoItem(),
+                        PhotoItem(
+                          photoPath: photoPath,
+                          titleController: titleController,
+                          onChange: onTitleChange,
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.max,
@@ -114,8 +145,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 right: 20,
                 bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
-              onPressed: () => {Get.to(() => const FeedCreateSuccessPage())},
+              onPressed: () => {_createFeed()},
               text: '기록 남기기',
+              disabled: titleController.text.isEmpty,
             ),
           ),
         ));
