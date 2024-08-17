@@ -83,9 +83,9 @@ class _FeedItemState extends State<FeedItem> {
                       children: [
                         if (widget.isListView) NameLabel(name: feed.name),
                         const SizedBox(height: 8),
-                        if (widget.isListView && feed.title != null)
+                        if (widget.isListView)
                           Head3(
-                            value: feed.title!,
+                            value: feed.title,
                             color: Colors.white,
                           )
                       ],
