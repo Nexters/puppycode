@@ -1,32 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:puppycode/apis/models/monthly.dart';
 import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
-
-class MyMontlyList {
-  MyMontlyList(dynamic response) {
-    year = response['year'];
-    month = response['month'];
-    nextYear = response['nextYear'];
-    nextMonth = response['nextMonth'];
-    count = response['count'];
-    hasNext = response['hasNext'];
-
-    List<dynamic> _items = response['items'];
-    items = _items.map((item) => Feed(item)).toList();
-  }
-
-  late int year;
-  late int month;
-  late int nextYear;
-  late int nextMonth;
-  late int count;
-  late List<Feed> items;
-  late bool hasNext;
-}
 
 class MyFeedGridView extends StatefulWidget {
   const MyFeedGridView({super.key});
