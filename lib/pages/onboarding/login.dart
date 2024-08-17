@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_user.dart';
+import 'package:puppycode/config.dart';
 import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/http.dart';
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _checkAuthToken() async {
+    if (Config.isLocal) Get.offAllNamed('/');
     String? value = await storage.read(key: 'authToken');
     if (value != null) {
       Get.offAllNamed('/');
