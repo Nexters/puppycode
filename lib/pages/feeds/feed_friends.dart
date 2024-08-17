@@ -51,6 +51,7 @@ class _FeedFriendsState extends State<FeedFriends> {
       setState(() {
         friendList = friends;
       });
+      print(friendList);
     } catch (error) {
       //print(error);
     }

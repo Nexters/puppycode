@@ -1,8 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+
+class Friends {
+  Friends(dynamic item) {
+    id = item['id'];
+    profileUrl = item['profileImageUrl'];
+    name = item['nickname'];
+  }
+
+  late int id;
+  late String name;
+  late String profileUrl;
+}
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -12,121 +29,90 @@ class FriendsListPage extends StatefulWidget {
 }
 
 class _FriendsListPageState extends State<FriendsListPage> {
-  bool hasFriends = true; // 임시 bool, api 연결 후에 리팩
+  List<Friends>? friendList;
+
+  @override
+  void initState() {
+    _fetchFriends();
+    super.initState();
+  }
+
+  Future<void> _fetchFriends() async {
+    try {
+      final items = await HttpService.get('friends');
+      List<Friends> friends = items.map((item) => Friends(item)).toList();
+
+      setState(() {
+        friendList = friends;
+      });
+
+      print(friendList![0].profileUrl);
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          '친구 리스트',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(iconType: LeftIconType.BACK),
+        centerOptions: AppBarCenter(label: '친구 목록'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 14,
-        ),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    20,
-                  ),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 20,
-                    ),
-                  ]),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  Get.toNamed('/friends/code');
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(
-                    12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Column(
+              children: [
+                SharedBanner(
+                  mainText: '친구 코드 입력하기',
+                  subText: '함께 산책 공유할 친구를 추가해 보세요',
+                  iconName: 'code',
+                  onClick: () => {
+                    Get.toNamed('/friends/code'),
+                  },
+                ),
+              ],
+            ),
+          ),
+          friendList != null
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+                  child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.qr_code_2,
-                            size: 48,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Body2(
-                                value: '친구 코드 입력하기',
-                                bold: true,
-                              ),
-                              Body4(value: '함께 산책 공유할 친구를 추가해 보세요'),
-                            ],
-                          ),
-                        ],
+                      // friendList가 null이 아닐 경우 FriendsList로 표시
+                      for (var friend in friendList!) // for 문을 사용하여 반복
+                        FriendsList(
+                          userName: friend.name,
+                          profileImageUrl: friend.profileUrl,
+                        ), // Friend 모델의 이름 사용
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomRight,
+                        child: Image.asset('assets/images/friends_empty.png'),
                       ),
-                      Icon(Icons.arrow_forward_ios),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 100), // 이렇게 되네.. ㅋㅋㅋ
+                          child: Body2(
+                            value: '친구를 기다리고 있어요!',
+                            color: ThemeColor.gray3,
+                            bold: true,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
-            ),
-            hasFriends
-                ? const Column(
-                    children: [
-                      SizedBox(
-                        height: 27,
-                      ),
-                      FriendsList(
-                        userName: '푸름이',
-                      ),
-                      FriendsList(
-                        userName: '똥개',
-                      ),
-                    ],
-                  )
-                : Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 162, 162, 162),
-                            ),
-                            height: 128,
-                            width: 128,
-                            child: const Center(
-                              child: Text('graphic'),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Body4(
-                              value: '우리집 강아지 친구 찾으러 갈까요?',
-                              fontWeight: FontWeight.w600)
-                        ],
-                      ),
-                    ),
-                  )
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -134,10 +120,11 @@ class _FriendsListPageState extends State<FriendsListPage> {
 
 class FriendsList extends StatelessWidget {
   final String userName;
+  final String profileImageUrl;
 
   const FriendsList({
-    //profile 사진
     required this.userName,
+    required this.profileImageUrl,
     super.key,
   });
 
@@ -147,42 +134,25 @@ class FriendsList extends StatelessWidget {
         builder: (BuildContext context) => CupertinoActionSheet(
               actions: <CupertinoActionSheetAction>[
                 CupertinoActionSheetAction(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    isDestructiveAction: true,
-                    child: const Text(
-                      '신고하기',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
+                  onPressed: () {
+                    Get.back();
+                  },
+                  isDestructiveAction: true,
+                  child: Body2(value: '신고하기', color: ThemeColor.error),
+                ),
                 CupertinoActionSheetAction(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    isDestructiveAction: true,
-                    child: const Text(
-                      '친구끊기',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
+                  onPressed: () {
+                    Get.back();
+                  },
+                  isDestructiveAction: true,
+                  child: Body2(value: '친구끊기', color: ThemeColor.error),
+                ),
               ],
               cancelButton: CupertinoActionSheetAction(
                 onPressed: () {
                   Get.back();
                 },
-                child: const Text(
-                  '취소하기',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                child: Body2(value: '취소하기', color: ThemeColor.blue),
               ),
             ));
   }
@@ -190,55 +160,42 @@ class FriendsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        bottom: 12,
-      ),
+      padding: const EdgeInsets.only(top: 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
               badges.Badge(
-                position: badges.BadgePosition.bottomEnd(
-                  bottom: 0,
-                  end: 0,
-                ),
-                badgeContent: const Icon(
-                  Icons.person,
-                  size: 12,
-                  color: Color.fromRGBO(54, 219, 191, 1.0),
-                ),
-                badgeStyle: const badges.BadgeStyle(
-                  badgeColor: Color.fromRGBO(239, 242, 245, 1),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                    width: 2,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(239, 242, 245, 1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  height: 48,
-                  width: 48,
+                position: badges.BadgePosition.bottomEnd(bottom: -4, end: -3),
+                badgeContent: SvgPicture.asset('assets/icons/foot_print.svg'),
+                badgeStyle: badges.BadgeStyle(
+                    badgeColor: ThemeColor.white,
+                    padding: const EdgeInsets.all(1)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: SizedBox(
+                      height: 48,
+                      width: 48,
+                      child: Image.network(profileImageUrl)),
                 ),
               ),
               const SizedBox(
-                width: 10,
+                width: 14,
               ),
-              Text(
-                userName,
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-              ),
+              Body1(value: userName, bold: true),
             ],
           ),
           IconButton(
             onPressed: () {
               _showActionSheet(context);
             },
-            icon: const Icon(Icons.more_vert),
+            icon: SvgPicture.asset(
+              'assets/icons/details.svg',
+              colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+              height: 24,
+              width: 24,
+            ),
           )
         ],
       ),
