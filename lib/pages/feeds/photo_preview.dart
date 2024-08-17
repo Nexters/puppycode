@@ -10,7 +10,6 @@ class PhotoPreviewPage extends StatelessWidget {
   const PhotoPreviewPage({super.key, required this.imagePath});
 
   final String imagePath;
-  //final bool isSquare;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +58,7 @@ class PhotoPreviewPage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => {Get.toNamed('/create')},
+                    onTap: () => {Get.toNamed('/create', arguments: {})},
                     child: SvgPicture.asset('assets/icons/camera_complete.svg'),
                   ),
                   const SizedBox(
