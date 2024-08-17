@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
+import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/input.dart';
@@ -109,7 +110,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(),
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
