@@ -80,7 +80,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
         : '';
     return Positioned(
       left: 0,
-      height: 54,
+      height: 50,
       child: Align(
         alignment: Alignment.centerLeft,
         child: leftOptions!.label != null
@@ -131,7 +131,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
 // ignore: non_constant_identifier_names
   Widget? Right(BuildContext context) {
     return Positioned(
-      height: 54,
+      height: 50,
       right: 0,
       child: Align(
         alignment: Alignment.centerRight,
@@ -155,7 +155,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                             'assets/icons/${asset.name}.svg',
                             width: 24,
                             colorFilter: ColorFilter.mode(
-                                ThemeColor.gray5, BlendMode.srcIn),
+                                ThemeColor.gray4, BlendMode.srcIn),
                           ),
                         ))
                     .toList(),
@@ -174,7 +174,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
         child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 56,
+      height: 50,
       child: Stack(
         children: children,
       ),

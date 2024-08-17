@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
@@ -12,22 +13,32 @@ class FriendsCodePage extends StatefulWidget {
 }
 
 class _FriendsCodePageState extends State<FriendsCodePage> {
+  final List<TextEditingController> _controllers =
+      List.generate(6, (_) => TextEditingController());
+
+  void _handleInputChange(int index, String value) {
+    if (value.length == 1) {
+      if (index < 5) {
+        FocusScope.of(context).nextFocus(); // 다음 필드로 포커스 이동
+      }
+    } else if (value.isEmpty && index > 0) {
+      FocusScope.of(context).previousFocus(); // 이전 필드로 포커스 이동
+    }
+  }
+
+  void _handlePaste(String value) {
+    for (int i = 0; i < value.length && i < 6; i++) {
+      _controllers[i].text = value[i];
+      _handleInputChange(i, value[i]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Body1(
-          value: '친구 코드 입력하기',
-          bold: true,
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.close_rounded,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
+      appBar: SharedAppBar(
+        leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
+        centerOptions: AppBarCenter(label: '친구 코드 입력하기'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 42, horizontal: 20),
@@ -42,7 +53,15 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                 6,
-                (index) => const CodeTextField(),
+                (index) => CodeTextField(
+                  controller: _controllers[index],
+                  onChanged: (value) {
+                    _handleInputChange(index, value);
+                  },
+                  onPaste: (value) {
+                    _handlePaste(value);
+                  },
+                ),
               ),
             )
           ],
@@ -53,7 +72,14 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
 }
 
 class CodeTextField extends StatelessWidget {
+  final ValueChanged<String> onChanged;
+  final ValueChanged<String> onPaste;
+  final TextEditingController controller;
+
   const CodeTextField({
+    required this.onChanged,
+    required this.onPaste,
+    required this.controller,
     super.key,
   });
 
@@ -63,33 +89,34 @@ class CodeTextField extends StatelessWidget {
       height: 56,
       width: 56,
       child: TextField(
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
-          letterSpacing: -1.2,
-          color: Color(0xFF1E2022),
-          height: 33 / 24,
-        ),
+        controller: controller,
+        style: HeadTextStyle.getH1Style(color: ThemeColor.gray5),
         inputFormatters: [LengthLimitingTextInputFormatter(1)],
         textAlign: TextAlign.center,
-        cursorColor: Colors.black,
-        cursorWidth: 1,
+        cursorColor: ThemeColor.primary,
+        cursorHeight: 18,
+        onChanged: (value) {
+          onChanged(value);
+        },
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color.fromARGB(255, 217, 217, 217),
-          border: OutlineInputBorder(
+          fillColor: ThemeColor.gray2,
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: BorderSide.none,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(
-              color: Color(0xFF36DBBF),
-              width: 1,
-            ),
+            borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.symmetric(vertical: 11.2),
         ),
+        onTap: () async {
+          final data = await Clipboard.getData(Clipboard.kTextPlain);
+          if (data?.text != null) {
+            onPaste(data!.text!); // 붙여넣기된 문자열 처리
+          }
+        },
       ),
     );
   }
