@@ -123,11 +123,12 @@ class _CalendarTableState extends State<CalendarTable> {
 
   Future<void> _fetchCalendarData() async {
     try {
-      final items = await HttpService.getMap('walk-logs/calendar', params: {
+      final response = await HttpService.getOne('walk-logs/calendar', params: {
         'year': widget.year.toString(),
         'month': widget.month.toString(),
         'userId': '1'
       });
+      final items = response['items'];
       setState(() {
         calendarItems =
             items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));

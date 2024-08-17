@@ -119,10 +119,15 @@ class SettingList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Head4(value: title),
-          const SizedBox(
-            height: 12,
-          ),
+          if (title.isNotEmpty)
+            Column(
+              children: [
+                Head4(value: title),
+                const SizedBox(
+                  height: 12,
+                )
+              ],
+            ),
           Column(
             children: lists,
           ),
