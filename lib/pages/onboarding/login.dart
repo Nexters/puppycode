@@ -61,6 +61,9 @@ class SignupButton extends StatelessWidget {
       await UserApi.instance.loginWithKakaoTalk();
       var me = await UserApi.instance.me();
       print(me.id);
+      // get을 찌르고 ~
+      // true 토큰 저장하고 메인으로
+      // false register로 토큰 물고 이동하기
       // API를 쏘고 ~
       // 토큰받고
       // 로컬에 박고
