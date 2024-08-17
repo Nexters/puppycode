@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_user.dart';
 import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
 
-class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // 로컬 확인하고
+    // 있으면 메인 고고 리다이렉트
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('어서오시오'),
-      ),
       body: Center(
           child: TextButton(
         child: const Text('register'),
@@ -46,11 +55,26 @@ class SignupButton extends StatelessWidget {
   final String text;
   final SignupType type;
 
+  void _login() async {
+    if (type != SignupType.kakao) return;
+    try {
+      await UserApi.instance.loginWithKakaoTalk();
+      var me = await UserApi.instance.me();
+      print(me.id);
+      // API를 쏘고 ~
+      // 토큰받고
+      // 로컬에 박고
+      // 메인으로 리다이렉트
+    } catch (err) {
+      //
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Flexible(
       child: TextButton(
-        onPressed: () => {},
+        onPressed: () => {_login()},
         style: TextButton.styleFrom(
             backgroundColor:
                 type == SignupType.kakao ? Colors.yellow : Colors.black,
