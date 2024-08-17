@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
@@ -112,11 +113,16 @@ class _UserInfoPageState extends State<UserInfoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipOval(
-              child: profileImageUrl.isNotEmpty
-                  ? Image.network(profileImageUrl, height: 128, width: 128)
-                  : Image.asset('assets/images/profile.png',
-                      height: 128, width: 128),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed('/album');
+              },
+              child: ClipOval(
+                child: profileImageUrl.isNotEmpty
+                    ? Image.network(profileImageUrl, height: 128, width: 128)
+                    : Image.asset('assets/images/profile.png',
+                        height: 128, width: 128),
+              ),
             ),
             Container(
               height: 48,
