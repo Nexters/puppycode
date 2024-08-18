@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feedDetails/reaction_contents.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
-import 'package:puppycode/pages/feedDetails/reaction_tab_bar.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
@@ -117,7 +116,8 @@ class FeedReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 16),
       child: GestureDetector(
         onTap: () {
-          sharedModalBottomSheet(context, const ReactionContents(), null);
+          sharedModalBottomSheet(context, const ReactionContents(), null,
+              height: 640);
         },
         child: Row(
           children: [

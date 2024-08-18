@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
 Future<dynamic> sharedModalBottomSheet(
-    BuildContext context, Widget widget, VoidCallback? onComplete) {
+    BuildContext context, Widget widget, VoidCallback? onComplete,
+    {double? height = 480}) {
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -11,7 +12,7 @@ Future<dynamic> sharedModalBottomSheet(
     ),
     builder: (BuildContext context) {
       final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-      final double modalHeight = keyboardHeight > 0 ? 660 : 480;
+      final double modalHeight = keyboardHeight > 0 ? 760 : height!;
 
       return Container(
         padding:
