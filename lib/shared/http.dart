@@ -88,7 +88,6 @@ class HttpService {
     request.files.add(await http.MultipartFile.fromPath(
       'file', // 서버에서 기대하는 필드 이름
       imageFile.path,
-      contentType: MediaType('image', 'png'), // 필요에 따라 MIME 타입 설정
     ));
 
     // 요청 보내기
