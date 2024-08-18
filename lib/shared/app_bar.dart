@@ -18,25 +18,21 @@ Map<LeftIconType, String> leftIconAsset = {
 class AppBarLeft {
   final String? label;
   final LeftIconType? iconType;
-  final Color? iconColor;
   final VoidCallback? onTap;
 
   AppBarLeft({
     this.label,
     this.iconType = LeftIconType.BACK,
-    this.iconColor,
     this.onTap,
   });
 }
 
 class AppBarCenter {
   final String label;
-  final Color? labelColor;
   final String? caption;
 
   AppBarCenter({
     required this.label,
-    this.labelColor,
     this.caption,
   });
 }
@@ -96,11 +92,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: SvgPicture.asset(iconAsset,
                     colorFilter: leftOptions?.iconType == LeftIconType.LOGO
                         ? null
-                        : leftOptions?.iconColor != null
-                            ? ColorFilter.mode(
-                                leftOptions!.iconColor!, BlendMode.srcIn)
-                            : ColorFilter.mode(
-                                ThemeColor.gray4, BlendMode.srcIn)),
+                        : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
               ),
       ),
     );
@@ -132,7 +124,6 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Body1(
           value: centerOptions!.label,
           bold: true,
-          color: centerOptions!.labelColor,
         )),
       ),
       //child: Center(),
