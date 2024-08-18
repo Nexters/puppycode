@@ -41,6 +41,13 @@ class _ReactionContentsState extends State<ReactionContents> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: ThemeColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: const Offset(2, 2),
+                      blurRadius: 20,
+                      color: ThemeColor.black.withOpacity(0.08),
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,6 +81,8 @@ class _ReactionContentsState extends State<ReactionContents> {
                   'assets/icons/emoji.svg',
                   colorFilter:
                       ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                  width: 20,
+                  height: 20,
                 ),
                 const SizedBox(width: 3),
                 Body3(value: '이모지', bold: true, color: ThemeColor.gray4),
@@ -81,29 +90,191 @@ class _ReactionContentsState extends State<ReactionContents> {
                 Body3(value: '0', color: ThemeColor.gray4)
               ],
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1, color: ThemeColor.gray2),
+            ShaderMask(
+              shaderCallback: (bounds) {
+                return LinearGradient(
+                  colors: [
+                    ThemeColor.white.withOpacity(0.2),
+                    Colors.transparent,
+                    ThemeColor.white.withOpacity(0.8),
+                  ],
+                  stops: const [-1, 0.9, 1],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.dstOut,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1, color: ThemeColor.gray2),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.only(top: 12, bottom: 20),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    key: emojiKey,
-                    onTap: () {
-                      onSetEmoji(context, emojiKey);
-                    },
-                    child: Column(
-                      children: [
-                        SvgPicture.asset('assets/icons/emoji_empty.svg'),
-                        const SizedBox(height: 4),
-                        const Caption(value: '공감하기'),
-                      ],
-                    ),
-                  )
-                ],
+                padding: const EdgeInsets.only(top: 12, bottom: 20),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        key: emojiKey,
+                        onTap: () {
+                          onSetEmoji(context, emojiKey);
+                        },
+                        child: Column(
+                          children: [
+                            SvgPicture.asset('assets/icons/emoji_empty.svg'),
+                            const SizedBox(height: 4),
+                            const Caption(value: '공감하기'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/emoji_happy.svg',
+                            width: 40,
+                            height: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Caption(value: '푸름이', color: ThemeColor.gray5)
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
             )
           ],
