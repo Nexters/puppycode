@@ -60,6 +60,7 @@ class AppBarRight {
 class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
+  final Color? color;
   final AppBarLeft? leftOptions;
   final AppBarCenter? centerOptions;
   final AppBarRight? rightOptions;
@@ -68,6 +69,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.bottom,
     this.actions,
+    this.color,
     this.leftOptions,
     this.centerOptions,
     this.rightOptions,
@@ -145,7 +147,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Body2(
                     value: rightOptions!.label!,
                     bold: true,
-                    color: rightOptions!.labelColor))
+                    color: rightOptions!.labelColor),
+              )
             : Wrap(
                 spacing: 16,
                 children: rightOptions!.icons!

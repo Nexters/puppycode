@@ -67,5 +67,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+  <key>NSPhotoLibraryUsageDescription</key>
+<string>앨범 접근</string>
+<key>NSCameraUsageDescription</key>
+<string>오산완 인증을 위해 카메라 권한이 필요해요!</string>
 </dict>
 </plist>

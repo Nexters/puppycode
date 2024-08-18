@@ -26,6 +26,7 @@ dependencies:
   flutter_secure_storage: ^9.0.1
   firebase_messaging: ^14.7.10
   firebase_core: ^2.32.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

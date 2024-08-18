@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
 import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/home/home.dart';
@@ -111,14 +112,32 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
   }
 }
 
-class WriteFloatingButton extends StatelessWidget {
+class WriteFloatingButton extends StatefulWidget {
   const WriteFloatingButton({
     super.key,
   });
 
+  @override
+  State<WriteFloatingButton> createState() => _WriteFloatingButtonState();
+}
+
+class _WriteFloatingButtonState extends State<WriteFloatingButton> {
+  XFile? _image;
+
+  final ImagePicker picker = ImagePicker();
+
+  Future getImage(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _image = XFile(pickedFile.path);
+      });
+    }
+  }
+
   _onButtonClick(bool hasWritten) {
     if (hasWritten) return;
-    Get.toNamed('/camera');
+    getImage(ImageSource.camera);
   }
 
   @override

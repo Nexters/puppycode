@@ -73,6 +73,8 @@ class _FeedFriendsState extends State<FeedFriends> {
                     name: '포포',
                     hasWalked: true,
                     isMine: true,
+                    profileImageUrl:
+                        'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg',
                     focusedUserId: widget.focusedUserId,
                     onClick: (int? id) => {widget.onSelect(null)},
                   ),
@@ -80,6 +82,7 @@ class _FeedFriendsState extends State<FeedFriends> {
                         id: friend.id,
                         name: friend.name,
                         hasWalked: friend.hasWalked,
+                        profileImageUrl: friend.profileUrl,
                         focusedUserId: widget.focusedUserId,
                         onClick: widget.onSelect,
                       )),
@@ -98,6 +101,7 @@ class FeedUserStatus extends StatelessWidget {
     required this.name,
     required this.hasWalked,
     required this.onClick,
+    required this.profileImageUrl,
     this.focusedUserId,
     this.isLast = false,
     this.isMine = false,
@@ -106,6 +110,7 @@ class FeedUserStatus extends StatelessWidget {
   final int id;
   final String name;
   final bool hasWalked;
+  final String profileImageUrl;
   final bool isLast;
   final void Function(int?) onClick;
 
@@ -143,9 +148,7 @@ class FeedUserStatus extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      isMine
-                          ? 'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg'
-                          : 'https://image.fnnews.com/resource/media/image/2024/05/31/202405310911189673_l.jpg',
+                      profileImageUrl,
                       fit: BoxFit.cover,
                       colorBlendMode: BlendMode.colorDodge,
                       color:
