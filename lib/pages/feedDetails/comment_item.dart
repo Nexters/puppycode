@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -17,6 +18,28 @@ class ReactionCommentListItem extends StatelessWidget {
     required this.comment,
     this.isFeedWriter = false,
   });
+
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () {
+              Get.back();
+            },
+            child: Body2(
+                value: isFeedWriter ? '삭제하기' : '신고하기', color: ThemeColor.error),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+            onPressed: () {
+              Get.back();
+            },
+            child: Body2(value: '취소하기', color: ThemeColor.blue)),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +76,16 @@ class ReactionCommentListItem extends StatelessWidget {
               )
             ],
           ),
-          SvgPicture.asset(
-            'assets/icons/details.svg',
-            colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
-            width: 20,
-            height: 20,
+          GestureDetector(
+            onTap: () {
+              _showActionSheet(context);
+            },
+            child: SvgPicture.asset(
+              'assets/icons/details.svg',
+              colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+              width: 20,
+              height: 20,
+            ),
           ),
         ],
       ),

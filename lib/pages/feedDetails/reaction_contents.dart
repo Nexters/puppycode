@@ -59,10 +59,13 @@ class _ReactionContentsState extends State<ReactionContents> {
             ],
           ),
           const SizedBox(height: 4),
-          const Expanded(
-            child: Scrollbar(
+          Expanded(
+            child: RawScrollbar(
+              thumbColor:
+                  ThemeColor.scroll, // 등록된 색상이 없어서 .. ScrollBar 색상으로 등록해뒀어용
+              radius: const Radius.circular(100),
               thickness: 4,
-              child: SingleChildScrollView(
+              child: const SingleChildScrollView(
                 child: Column(
                   children: [
                     ReactionCommentListItem(
