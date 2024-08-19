@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feedDetails/feed_details.dart';
 import 'package:puppycode/pages/calendar/page.dart';
+import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/setting/setting.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
     GetPage(name: '/login', page: () => const LoginPage()),
     GetPage(name: '/signup', page: () => const OnboardingPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
+    GetPage(name: '/create/success', page: () => const FeedCreateSuccessPage()),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(
         name: '/camera',
