@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -47,17 +48,17 @@ class ReactionCommentListItem extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               SizedBox(
-                width: MediaQuery.of(context).size.width - 90,
+                width: MediaQuery.of(context).size.width - 120,
                 child: Body3(value: comment),
-                // softWrap 써도 너비는 지정해줘야하는 듯..
-                // child: Text(
-                //   comment,
-                //   softWrap: true,
-                //   style: BodyTextStyle.getBody3Style(),
-                // ),
               )
             ],
-          )
+          ),
+          SvgPicture.asset(
+            'assets/icons/details.svg',
+            colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+            width: 20,
+            height: 20,
+          ),
         ],
       ),
     );

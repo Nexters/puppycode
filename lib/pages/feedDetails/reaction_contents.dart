@@ -60,22 +60,29 @@ class _ReactionContentsState extends State<ReactionContents> {
           ),
           const SizedBox(height: 4),
           const Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                ],
+            child: Scrollbar(
+              thickness: 4,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    ReactionCommentListItem(
+                        userName: '푸름이',
+                        comment: '우리집 강아지가 젤 귀여움 ☀︎',
+                        isFeedWriter: true),
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    ReactionCommentListItem(
+                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                  ],
+                ),
               ),
             ),
           ),
