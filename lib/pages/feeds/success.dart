@@ -11,8 +11,9 @@ class FeedCreateSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isFromFeed = Get.arguments['from'] == 'feed';
-    var feedId = Get.arguments['feedId'];
+    var isFromFeed =
+        Get.arguments != null ? Get.arguments['from'] == 'feed' : false;
+    var feedId = Get.arguments != null ? Get.arguments['feedId'] : null;
 
     return Scaffold(
       body: Center(
@@ -29,20 +30,10 @@ class FeedCreateSuccessPage extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 40, bottom: 12),
               height: 190,
-              color: Colors.black12,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/images/create_success.png'))),
             ),
-            FilledButton(
-                style: FilledButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(228, 234, 238, 0.4)),
-                onPressed: () => {
-                      // 에피소드 적기
-                    },
-                child: const Body2(
-                  value: '에피소드 적기',
-                ))
           ],
         ),
       )),
@@ -62,7 +53,11 @@ class FeedCreateSuccessPage extends StatelessWidget {
               Expanded(
                   child: DefaultTextButton(
                       text: '산책일지 보러가기',
-                      onPressed: () => {Get.toNamed('/feed/$feedId')})),
+                      onPressed: () => {
+                            feedId != null
+                                ? Get.toNamed('/feed/$feedId')
+                                : Get.offAndToNamed('/')
+                          })),
             ],
           ),
         ),
