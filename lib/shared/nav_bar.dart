@@ -21,7 +21,7 @@ enum NavTab { feed, home, my }
 
 class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     with WidgetsBindingObserver {
-  NavTab _currentTab = NavTab.my;
+  NavTab _currentTab = NavTab.feed;
   static const List<NavTab> _allowedRoutes = [
     NavTab.feed,
     NavTab.home,
@@ -122,15 +122,17 @@ class WriteFloatingButton extends StatefulWidget {
 }
 
 class _WriteFloatingButtonState extends State<WriteFloatingButton> {
-  XFile? _image;
+  //XFile? _image;
 
   final ImagePicker picker = ImagePicker();
 
   Future getImage(ImageSource imageSource) async {
     final XFile? pickedFile = await picker.pickImage(source: imageSource);
+
     if (pickedFile != null) {
-      setState(() {
-        _image = XFile(pickedFile.path);
+      Get.toNamed('/create', arguments: {
+        'photoPath': pickedFile.path,
+        'from': NavTab.feed.toString()
       });
     }
   }

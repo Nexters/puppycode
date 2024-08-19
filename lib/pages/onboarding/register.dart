@@ -85,7 +85,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   void _signup() async {
     if (authToken.isEmpty) return;
     try {
-      Map<String, dynamic> result = await HttpService.post('auth/signup', {
+      Map<String, dynamic> result =
+          await HttpService.post('auth/signup', body: {
         'oauthIdentifier': authToken,
         'nickname': _nameController.text,
         'profileUrl': profileUrl ?? '',
