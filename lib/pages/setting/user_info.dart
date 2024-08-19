@@ -2,30 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:puppycode/apis/models/user.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:puppycode/shared/user.dart';
 import 'package:share/share.dart';
-
-class User {
-  User(dynamic userItem) {
-    id = userItem['id'];
-    nickname = userItem['nickname'];
-    profileImageUrl = userItem['profileImageUrl'];
-    code = userItem['code'];
-    createdAt = userItem['createdAt'];
-  }
-
-  late int id;
-  late String profileImageUrl;
-  late String nickname;
-  late String code;
-  late String createdAt;
-}
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({super.key});
@@ -41,6 +28,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   bool _isValidName = false;
   late final TextEditingController _editingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  final userController = Get.find<UserController>();
 
   XFile? _image;
   final ImagePicker picker = ImagePicker();
@@ -75,7 +63,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
       if (_image != null) {
         Map<String, dynamic> result = await HttpService.patchProfileImage(
-            'users/profile-image', File(_image!.path));
+            'users/profile-image', File(_image!.path),
+            onPatch: () => userController.refreshData());
       }
     } catch (err) {
       print('edit Error: $err');
@@ -105,9 +94,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   Future<void> _fetchUser() async {
     try {
-      final userData = await HttpService.getOne('users');
-
-      User user = User(userData);
+      User user = userController.user.value as User;
 
       setState(() {
         code = user.code;

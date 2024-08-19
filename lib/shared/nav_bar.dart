@@ -155,7 +155,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
         borderRadius: BorderRadius.circular(100),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.13),
+            color: ThemeColor.black.withOpacity(0.13),
             blurRadius: 30,
             offset: const Offset(0, 2),
           ),
@@ -164,7 +164,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
       child: FloatingActionButton(
         elevation: 0,
         onPressed: () => {_onButtonClick(hasWritten)},
-        backgroundColor: hasWritten ? Colors.white : floatingButtonColor,
+        backgroundColor: hasWritten ? ThemeColor.white : floatingButtonColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),

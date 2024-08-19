@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/feed.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -60,8 +61,8 @@ class _FeedItemState extends State<FeedItem> {
                     isListView: widget.isListView, photoUrl: feed.photoUrl),
                 if (widget.isListView)
                   Container(
+                    height: height,
                     decoration: BoxDecoration(
-                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         gradient: LinearGradient(
                             begin: FractionalOffset.topCenter,
@@ -123,10 +124,9 @@ class FeedPhoto extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Image.network(
-        photoUrl ??
-            'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png', // TODO: errorBuilder
-        fit: BoxFit.cover,
+      child: SharedNetworkImage(
+        url: photoUrl ??
+            'https://dispatch.cdnser.be/wp-content/uploads/2018/09/eb93160db25faf9577d57c2f308e8c18.png',
         width: width,
         height: height,
       ),
