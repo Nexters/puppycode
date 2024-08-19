@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:puppycode/config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -15,6 +15,16 @@ class HttpService {
     if (Config.isLocal) token = 'Bearer ${Config.TOKEN}';
     var authToken = (await storage.read(key: 'authToken'))!;
     token = 'Bearer $authToken';
+  }
+
+  static _handleError(http.Response res) async {
+    if (res.statusCode == 401) {
+      await storage.delete(key: 'authToken');
+      Get.offNamed('/login');
+    }
+    var message = json.decode(utf8.decode(res.bodyBytes))['message'];
+    print(message);
+    throw res.statusCode;
   }
 
   static Future<List<dynamic>> get(String endPoint,
@@ -31,12 +41,38 @@ class HttpService {
       List<dynamic> items = body['items'];
       return items;
     } else {
-      throw res.statusCode;
+      _handleError(res);
+      throw 'err';
     }
   }
 
-  static Future<Map<String, dynamic>> post(
-      String endPoint, Map<String, dynamic> body) async {
+  static Future<Map<String, dynamic>> postMultipartForm(String endPoint,
+      {required Map<String, dynamic> body,
+      required String imagePath,
+      Map<String, dynamic>? headers}) async {
+    if (token.isEmpty) await _setToken();
+
+    try {
+      final url = Uri.http(baseUrl, '/api/$endPoint');
+      var request = http.MultipartRequest('POST', url);
+      final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
+      var jsonBody = http.MultipartFile.fromBytes(
+        'request',
+        utf8.encode(jsonEncode(body)),
+      );
+      request.files.add(jsonBody);
+      request.files.add(httpImage);
+      request.headers.addAll({'Authorization': token});
+      await request.send();
+      return {'success': true};
+    } catch (err) {
+      return {'success': false};
+    }
+  }
+
+  static Future<Map<String, dynamic>> post(String endPoint,
+      {required Map<String, dynamic> body,
+      Map<String, dynamic>? headers}) async {
     if (token.isEmpty) await _setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint');
@@ -88,7 +124,6 @@ class HttpService {
     request.files.add(await http.MultipartFile.fromPath(
       'file', // 서버에서 기대하는 필드 이름
       imageFile.path,
-      contentType: MediaType('image', 'png'), // 필요에 따라 MIME 타입 설정
     ));
 
     // 요청 보내기
@@ -115,7 +150,8 @@ class HttpService {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       return body; // 단일 객체
     } else {
-      throw res.statusCode;
+      _handleError(res);
+      throw 'err';
     }
   }
 }

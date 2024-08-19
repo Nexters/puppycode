@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 class PhotoItem extends StatefulWidget {
-  const PhotoItem({
-    super.key,
-  });
+  const PhotoItem(
+      {super.key,
+      required this.photoPath,
+      required this.titleController,
+      required this.onChange});
+
+  final String photoPath;
+  final TextEditingController titleController;
+  final VoidCallback onChange;
 
   @override
   State<PhotoItem> createState() => _PhotoItemState();
@@ -43,7 +51,12 @@ class _PhotoItemState extends State<PhotoItem> {
       margin: const EdgeInsets.only(bottom: 20),
       height: (MediaQuery.of(context).size.width - 40) * 1.33,
       decoration: BoxDecoration(
-          color: overlayColor, borderRadius: BorderRadius.circular(20)),
+          image: DecorationImage(
+            image: FileImage(File(widget.photoPath)),
+            //colorFilter: ColorFilter.mode(
+            //    Colors.black.withOpacity(0.4), BlendMode.srcIn)),
+          ),
+          borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: <Widget>[
           Positioned.fill(
@@ -52,6 +65,8 @@ class _PhotoItemState extends State<PhotoItem> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
+                    onChanged: (text) => {widget.onChange()},
+                    controller: widget.titleController,
                     focusNode: focusNode,
                     decoration: const InputDecoration(
                         hintText: '개떡아 오늘 산책은 어땠어?',
