@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:puppycode/config.dart';
@@ -114,7 +115,8 @@ class HttpService {
   }
 
   static Future<Map<String, dynamic>> patchProfileImage(
-      String endPoint, File imageFile) async {
+      String endPoint, File imageFile,
+      {VoidCallback? onPatch}) async {
     final url = Uri.http(baseUrl, '/api/$endPoint');
 
     var request = http.MultipartRequest('PATCH', url);
@@ -135,6 +137,7 @@ class HttpService {
     // 응답 처리
     if (response.statusCode == 200) {
       var responseData = await http.Response.fromStream(response);
+      if (onPatch != null) onPatch();
       return json.decode(utf8.decode(responseData.bodyBytes));
     } else {
       throw Exception('Failed to update profile image: ${response.statusCode}');
