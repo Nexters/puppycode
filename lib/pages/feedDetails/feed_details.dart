@@ -23,6 +23,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
   String tmpLink = 'abcd';
   bool isWriter = false; // 상상코딩이 되지 않아요 ..
 
+  final feedId = Get.parameters['id'];
+
+  Future<void> fetchFeedDetails() async {}
+
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
@@ -31,7 +35,6 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           if (isWriter)
             CupertinoActionSheetAction(
               onPressed: () {
-                // 수정하기
                 Get.back();
               },
               child: Body2(value: '수정하기', color: ThemeColor.blue),
