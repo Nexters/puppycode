@@ -99,7 +99,7 @@ class WeatherGuide extends StatelessWidget {
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: ThemeColor.white,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: ThemeColor.gray2)),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
