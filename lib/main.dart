@@ -14,13 +14,14 @@ import './config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeNotification();
 
   final String configString = await rootBundle.loadString('assets/config.json');
   Map<String, dynamic> config = json.decode(configString);
 
+  // initialize
   Config(config);
   KakaoSdk.init(nativeAppKey: config['KAKAO_SDK_KEY']);
+  initializeNotification();
 
   final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
@@ -31,9 +32,8 @@ void initializeNotification() async {
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   String? _fcmToken = await messaging.getToken();
-  print(_fcmToken);
 
-  if(Platform.isIOS) {
+  if (Platform.isIOS) {
     await messaging.requestPermission();
   }
   await messaging.setAutoInitEnabled(true);
