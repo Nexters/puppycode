@@ -28,8 +28,11 @@ class FeedCreateSuccessPage extends StatelessWidget {
             ]),
             Container(
               margin: const EdgeInsets.only(top: 40, bottom: 12),
-              height: 50,
+              height: 190,
               color: Colors.black12,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/create_success.png'))),
             ),
             FilledButton(
                 style: FilledButton.styleFrom(

@@ -27,6 +27,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
   late String photoPath;
   late String from;
 
+  bool isLoading = false;
+  bool isError = false;
+
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
 
   @override
@@ -77,6 +80,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
 
   void _createFeed() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       var result = await HttpService.postMultipartForm('walk-logs',
           body: {
             'title': titleController.text,
@@ -84,16 +90,29 @@ class _FeedWritePageState extends State<FeedWritePage> {
             'walkTime': selectedTime,
           },
           imagePath: photoPath);
+      setState(() {
+        isLoading = false;
+      });
+      isLoading = false;
       if (result['success'] == true) {
         Get.toNamed('/create/success', arguments: {from: from, 'feedId': '1'});
+      } else {
+        isError = true;
       }
     } catch (err) {
-      print(err);
+      isLoading = false;
+      isError = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading)
+      return Container(
+        child: Body2(
+          value: '로딩중',
+        ),
+      );
     return Scaffold(
         appBar: SharedAppBar(
           leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),

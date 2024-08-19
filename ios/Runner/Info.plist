@@ -43,6 +43,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>오산완 인증을 위해 카메라 권한이 필요해요!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>앨범 접근</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -67,11 +69,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-  <key>NSPhotoLibraryUsageDescription</key>
-<string>앨범 접근</string>
 </dict>
 </plist>
