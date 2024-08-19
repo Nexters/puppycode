@@ -95,7 +95,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       isLoading = false;
       if (result['success'] == true) {
-        Get.toNamed('/create/success', arguments: {from: from, 'feedId': '1'});
+        Get.offAndToNamed('/create/success',
+            arguments: {from: from, 'feedId': '1'});
       } else {
         isError = true;
       }
