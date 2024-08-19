@@ -52,7 +52,7 @@ class _FeedFriendsState extends State<FeedFriends> {
     final userController = Get.find<UserController>();
     final user = userController.user.value;
 
-    if (user == null) const CupertinoActivityIndicator();
+    if (user == null) return const CupertinoActivityIndicator();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
