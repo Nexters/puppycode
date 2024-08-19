@@ -11,10 +11,13 @@ class HttpService {
   static String token = '';
   static const storage = FlutterSecureStorage();
 
-  static _setToken() async {
-    if (Config.isLocal) token = 'Bearer ${Config.TOKEN}';
-    var authToken = (await storage.read(key: 'authToken'))!;
-    token = 'Bearer $authToken';
+  static setToken() async {
+    if (Config.isLocal) {
+      token = 'Bearer ${Config.TOKEN}';
+    } else {
+      var authToken = (await storage.read(key: 'authToken'))!;
+      token = 'Bearer $authToken';
+    }
   }
 
   static _handleError(http.Response res) async {
@@ -29,7 +32,7 @@ class HttpService {
 
   static Future<List<dynamic>> get(String endPoint,
       {Map<String, dynamic>? params}) async {
-    if (token.isEmpty) await _setToken();
+    if (token.isEmpty) await setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res = await http.get(url, headers: {
@@ -50,7 +53,7 @@ class HttpService {
       {required Map<String, dynamic> body,
       required String imagePath,
       Map<String, dynamic>? headers}) async {
-    if (token.isEmpty) await _setToken();
+    if (token.isEmpty) await setToken();
 
     try {
       final url = Uri.http(baseUrl, '/api/$endPoint');
@@ -73,7 +76,7 @@ class HttpService {
   static Future<Map<String, dynamic>> post(String endPoint,
       {required Map<String, dynamic> body,
       Map<String, dynamic>? headers}) async {
-    if (token.isEmpty) await _setToken();
+    if (token.isEmpty) await setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint');
     http.Response res = await http.post(url,
@@ -92,7 +95,7 @@ class HttpService {
 
   static Future<Map<String, dynamic>> patch(String endPoint,
       {Map<String, dynamic>? params, Map<String, dynamic>? body}) async {
-    if (token.isEmpty) await _setToken();
+    if (token.isEmpty) await setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res = await http.patch(
@@ -140,7 +143,7 @@ class HttpService {
 
   static Future<Map<String, dynamic>> getOne(String endPoint,
       {Map<String, dynamic>? params}) async {
-    if (token.isEmpty) await _setToken();
+    if (token.isEmpty) await setToken();
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res = await http.get(url, headers: {
       'Content-Type': 'application/json',

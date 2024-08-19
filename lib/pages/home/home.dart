@@ -47,8 +47,7 @@ class HomeContent extends StatelessWidget {
             width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
             height: 56,
             bottom: 0,
-            child:
-                DefaultTextButton(
+            child: DefaultTextButton(
                 text: '',
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +64,7 @@ class HomeContent extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () => {Get.toNamed('/create')}))
+                onPressed: () => {Get.toNamed('/camera')}))
       ],
     );
   }
@@ -81,8 +80,8 @@ class WeatherGuide extends StatelessWidget {
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(color: ThemeColor.gray2)),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: Row(
@@ -97,7 +96,7 @@ class WeatherGuide extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: ThemeColor.gray2)),
               child: SvgPicture.asset('assets/icons/weather_cloudy.svg'),
-              ),
+            ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

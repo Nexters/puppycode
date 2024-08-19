@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/user.dart';
 
 class FeedFriends extends StatefulWidget {
   const FeedFriends({
@@ -22,7 +24,7 @@ class FeedFriends extends StatefulWidget {
 }
 
 class _FeedFriendsState extends State<FeedFriends> {
-  List<Friend>? friendList;
+  List<Friend> friendList = [];
 
   @override
   void initState() {
@@ -40,7 +42,6 @@ class _FeedFriendsState extends State<FeedFriends> {
       setState(() {
         friendList = friends;
       });
-      print(friendList);
     } catch (error) {
       print(error);
     }
@@ -48,14 +49,17 @@ class _FeedFriendsState extends State<FeedFriends> {
 
   @override
   Widget build(BuildContext context) {
-    if (friendList == null) return Container(); // isLoading
+    final userController = Get.find<UserController>();
+    final user = userController.user.value;
+
+    if (user == null) const CupertinoActivityIndicator();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (friendList!.isEmpty)
+          if (friendList.isEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: SharedBanner(
@@ -68,17 +72,17 @@ class _FeedFriendsState extends State<FeedFriends> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  FeedUserStatus(
-                    id: 1,
-                    name: '포포',
-                    hasWalked: true,
-                    isMine: true,
-                    profileImageUrl:
-                        'https://img.segye.com/content/image/2018/12/07/20181207794966.jpg',
-                    focusedUserId: widget.focusedUserId,
-                    onClick: (int? id) => {widget.onSelect(null)},
-                  ),
-                  ...friendList!.map((friend) => FeedUserStatus(
+                  if (user != null)
+                    FeedUserStatus(
+                      id: user.id,
+                      name: user.nickname,
+                      hasWalked: true,
+                      isMine: true,
+                      profileImageUrl: user.profileImageUrl,
+                      focusedUserId: widget.focusedUserId,
+                      onClick: (int? id) => {widget.onSelect(null)},
+                    ),
+                  ...friendList.map((friend) => FeedUserStatus(
                         id: friend.id,
                         name: friend.name,
                         hasWalked: friend.hasWalked,

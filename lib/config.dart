@@ -1,3 +1,5 @@
+import 'package:puppycode/shared/http.dart';
+
 class Config {
   static String env = 'production';
   static bool isLocal = false;
@@ -9,6 +11,8 @@ class Config {
       env = 'local';
       isLocal = true;
       TOKEN = config['TEST_TOKEN'];
+    } else {
+      HttpService.setToken();
     }
   }
 }
