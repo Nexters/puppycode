@@ -9,7 +9,6 @@ import 'package:puppycode/pages/setting/user_info.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/login.dart';
 import 'package:puppycode/pages/feeds/write.dart';
-import 'package:puppycode/shared/album.dart';
 import 'package:puppycode/shared/camera.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 
@@ -24,10 +23,6 @@ class AppRoutes {
     GetPage(
         name: '/camera',
         page: () => const CameraScreen(),
-        transition: Transition.downToUp),
-    GetPage(
-        name: '/album',
-        page: () => const AlbumScreen(),
         transition: Transition.downToUp),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),
