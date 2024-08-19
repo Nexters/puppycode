@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:puppycode/shared/user.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,21 +16,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      child: Column(
+      child: const Column(
+        mainAxisSize: MainAxisSize.max,
         children: [
-          const HomeTitle(),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(top: 24, bottom: 20),
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 20),
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(228, 234, 238, 0.6),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            height: 400,
-            child: const HomeContent(),
-          ),
+          HomeTitle(),
+          SizedBox(height: 20),
+          Expanded(child: HomeContent()),
         ],
       ),
     );
@@ -39,15 +33,35 @@ class HomeContent extends StatelessWidget {
     super.key,
   });
 
+  Future getImage(ImageSource imageSource) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      Get.toNamed('/create', arguments: {
+        'photoPath': pickedFile.path,
+        'from': 'home',
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userController = Get.find<UserController>();
+    final user = userController.user.value;
+    final hasWalkDone = user?.walkDone == true;
+
     return Stack(
       children: [
+        SharedNetworkImage(
+            url: user?.mainScreenImageUrl ?? 'assets/images/empty'),
         Positioned(
-            width: MediaQuery.of(context).size.width - 16 * 2 - 20 * 2,
+            left: 0,
+            right: 0,
             height: 56,
-            bottom: 0,
+            bottom: 32,
             child: DefaultTextButton(
+                disabled: hasWalkDone,
                 text: '',
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,15 +70,20 @@ class HomeContent extends StatelessWidget {
                     SvgPicture.asset('assets/icons/paw_small.svg',
                         width: 20,
                         colorFilter: ColorFilter.mode(
-                            ThemeColor.black, BlendMode.srcIn)),
+                            hasWalkDone ? ThemeColor.gray4 : ThemeColor.gray6,
+                            BlendMode.srcIn)),
                     const SizedBox(width: 6),
-                    const Body1(
-                      value: '오늘 산책 인증하기',
+                    Body1(
+                      value: hasWalkDone ? '오늘도 산책 완료!' : '오늘 산책 인증하기',
                       bold: true,
+                      color: hasWalkDone ? ThemeColor.gray4 : ThemeColor.gray6,
                     )
                   ],
                 ),
-                onPressed: () => {Get.toNamed('/camera')}))
+                onPressed: () {
+                  if (hasWalkDone) return;
+                  getImage(ImageSource.camera);
+                }))
       ],
     );
   }

@@ -5,6 +5,8 @@ class User {
     profileImageUrl = userItem['profileImageUrl'];
     code = userItem['code'];
     createdAt = userItem['createdAt'];
+    walkDone = userItem['walkDone'];
+    mainScreenImageUrl = userItem['mainScreenImageUrl'];
   }
 
   late int id;
@@ -12,4 +14,6 @@ class User {
   late String nickname;
   late String code;
   late String createdAt;
+  late String mainScreenImageUrl;
+  late bool walkDone;
 }
