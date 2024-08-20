@@ -1,20 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/apis/models/comment.dart';
+import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/comment_item.dart';
 import 'package:puppycode/pages/feedDetails/emoji_item.dart';
 import 'package:puppycode/pages/feedDetails/reaction_tab_view.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
-class ReactionContents extends StatefulWidget {
-  const ReactionContents({super.key});
+class ReactionContents extends StatelessWidget {
+  final List<Comment> comments;
+  final List<Reaction> reactions;
 
-  @override
-  State<ReactionContents> createState() => _ReactionContentsState();
-}
+  ReactionContents({
+    super.key,
+    required this.comments,
+    required this.reactions,
+  });
 
-class _ReactionContentsState extends State<ReactionContents> {
   final TextEditingController _commentController = TextEditingController();
 
   @override
@@ -61,29 +65,16 @@ class _ReactionContentsState extends State<ReactionContents> {
           const SizedBox(height: 4),
           Expanded(
             child: RawScrollbar(
-              thumbColor:
-                  ThemeColor.scroll, // 등록된 색상이 없어서 .. ScrollBar 색상으로 등록해뒀어용
+              thumbColor: ThemeColor.scroll,
               radius: const Radius.circular(100),
               thickness: 4,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '푸름이',
-                        comment: '우리집 강아지가 젤 귀여움 ☀︎',
-                        isFeedWriter: true),
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
+                    for (var comment in comments)
+                      ReactionCommentListItem(
+                          userName: comment.writerName,
+                          comment: comment.content),
                   ],
                 ),
               ),

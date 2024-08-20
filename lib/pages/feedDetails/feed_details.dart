@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/apis/models/feed.dart';
+import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/reaction_contents.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/app_bar.dart';
@@ -22,8 +24,8 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
-  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소
-  bool isWriter = false; // 상상코딩이 되지 않아요 ..
+  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
+  bool isWriter = false; // ? 서버에서 오는 값이 없어요 작성자 닉네임밖에 안왕
 
   Feed? feed;
 
@@ -40,7 +42,6 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       setState(() {
         feed = Feed(feedItems);
       });
-      print(feed!.episode);
     } catch (error) {
       print('error: $error');
     }
@@ -110,9 +111,9 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                 Row(
                   children: [
                     FeedReactionButton(
-                        idx: 0, svg: 'emoji', count: feed!.comments.length),
-                    FeedReactionButton(
-                        idx: 1, svg: 'talk', count: feed!.reactions.length),
+                      comments: feed!.comments,
+                      reactions: feed!.reactions,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -131,36 +132,40 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 }
 
 class FeedReactionButton extends StatelessWidget {
-  final int idx;
-  final String svg;
-  final int count;
+  final List<Comment> comments;
+  final List<Reaction> reactions;
 
   const FeedReactionButton({
-    required this.idx,
-    required this.svg,
-    required this.count,
+    required this.comments,
+    required this.reactions,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: GestureDetector(
-        onTap: () {
-          sharedModalBottomSheet(context, const ReactionContents(), null,
-              height: 640);
-        },
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/$svg.svg',
-              colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
-            ),
-            const SizedBox(width: 2),
-            Body4(value: '$count', color: ThemeColor.gray4),
-          ],
-        ),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        sharedModalBottomSheet(context,
+            ReactionContents(comments: comments, reactions: reactions), null,
+            height: 640);
+      },
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            'assets/icons/emoji.svg',
+            colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+          ),
+          const SizedBox(width: 2),
+          Body4(value: reactions.length.toString(), color: ThemeColor.gray4),
+          const SizedBox(width: 16),
+          SvgPicture.asset(
+            'assets/icons/talk.svg',
+            colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+          ),
+          const SizedBox(width: 2),
+          Body4(value: comments.length.toString(), color: ThemeColor.gray4),
+        ],
       ),
     );
   }
