@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,23 +107,43 @@ class WeatherGuide extends StatefulWidget {
 class _WeatherGuideState extends State<WeatherGuide> {
   late int temp = 0;
   late String weather = '';
-  late LOCATION? locationKey = LOCATION.SEOUL;
+  late LOCATION? locationKey = widget.city.toLocation();
+  static const storage = FlutterSecureStorage();
 
   Future<void> _fetchWeather(location) async {
     try {
+      final savedWeatherString = await storage.read(key: 'weather') ?? '';
+      if (savedWeatherString.isNotEmpty) {
+        // ignore: no_leading_underscores_for_local_identifiers
+        final [_temp, _weather, _savedDate] = savedWeatherString.split(';');
+        final savedDate = DateTime.parse(_savedDate);
+        if (savedDate.difference(DateTime.now()).inDays < 1) {
+          setState(() {
+            temp = int.parse(_temp);
+            weather = _weather;
+          });
+        }
+        return;
+      }
+
       final weatherItem =
           await HttpService.getOne('weather', params: {'city': location});
 
       Weather weatherData = Weather(weatherItem);
+      storage.write(
+          key: 'weather',
+          value: [
+            weatherData.temp,
+            weatherData.weather,
+            DateTime.now().toString()
+          ].join(';'));
 
       setState(() {
         temp = weatherData.temp;
         weather = weatherData.weather;
-        locationKey = widget.city.toLocation();
       });
-    } catch (error) {
-      print(error);
-    }
+      // ignore: empty_catches
+    } catch (error) {}
   }
 
   @override
