@@ -45,7 +45,7 @@ class ReactionContents extends StatelessWidget {
               Body3(value: reactions.length.toString(), color: ThemeColor.gray4)
             ],
           ),
-          const ReactionEmojiListItem(),
+          ReactionEmojiList(reactions: reactions),
           const SizedBox(height: 20),
           Row(
             children: [
@@ -73,8 +73,10 @@ class ReactionContents extends StatelessWidget {
                   children: [
                     for (var comment in comments)
                       ReactionCommentListItem(
-                          userName: comment.writerName,
-                          comment: comment.content),
+                        userName: comment.writerName,
+                        comment: comment.content,
+                        profileUrl: comment.writerProfileUrl,
+                      ),
                   ],
                 ),
               ),
