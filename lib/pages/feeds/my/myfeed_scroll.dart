@@ -32,7 +32,6 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
           params: {'userId': '1', 'year': '2024', 'month': '$cursor'});
 
       MyMontlyList monthlyList = MyMontlyList(monthlyItem);
-      //List<Feed> feedItems = monthlyList.items;
 
       final isLastPage = !monthlyList.hasNext;
       if (isLastPage) {

@@ -3,7 +3,7 @@ class Reaction {
     id = commentItem['id'];
     writerName = commentItem['writerNickname'];
     writerProfileUrl = commentItem['writerProfileImageUrl'];
-    reactionType = commentItem['reactionType'];
+    reactionType = (commentItem['reactionType'] as String).toLowerCase();
     walkLogId = commentItem['walkLogId'];
     createdAt = commentItem['createdAt'];
   }
