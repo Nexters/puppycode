@@ -17,7 +17,7 @@ class ReactionCommentListItem extends StatelessWidget {
     required this.userName,
     required this.comment,
     required this.profileUrl,
-    this.isFeedWriter = false,
+    required this.isFeedWriter,
   });
 
   void _showActionSheet(BuildContext context) {

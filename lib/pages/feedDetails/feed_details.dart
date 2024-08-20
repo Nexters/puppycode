@@ -25,7 +25,6 @@ class FeedDetailPage extends StatefulWidget {
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
   String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
-  bool isWriter = false; // ? 서버에서 오는 값이 없어요 작성자 닉네임밖에 안왕
 
   Feed? feed;
 
@@ -42,6 +41,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       setState(() {
         feed = Feed(feedItems);
       });
+      // print(feedItems);
     } catch (error) {
       print('error: $error');
     }
@@ -52,7 +52,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          if (isWriter)
+          if (feed!.isWriter)
             CupertinoActionSheetAction(
               onPressed: () {
                 Get.back();
@@ -71,7 +71,8 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
               Get.back();
             },
             child: Body2(
-                value: isWriter ? '삭제하기' : '신고하기', color: ThemeColor.error),
+                value: feed!.isWriter ? '삭제하기' : '신고하기',
+                color: ThemeColor.error),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(

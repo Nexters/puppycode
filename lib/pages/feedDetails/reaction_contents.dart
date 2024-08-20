@@ -76,6 +76,7 @@ class ReactionContents extends StatelessWidget {
                         userName: comment.writerName,
                         comment: comment.content,
                         profileUrl: comment.writerProfileUrl,
+                        isFeedWriter: comment.isWriter,
                       ),
                   ],
                 ),

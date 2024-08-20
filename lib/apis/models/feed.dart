@@ -9,7 +9,7 @@ class Feed {
     episode = logItem['content'];
     walkTime = logItem['walkTime'];
     writerId = logItem['writerId'] ?? 0;
-    name = logItem['writerNickname'] ?? 'unknown';
+    name = logItem['writerNickname'];
     profileUrl = logItem['writerProfileUrl'];
     comments = (logItem['comments'] as List<dynamic>?)
             ?.map((comment) => Comment(comment))

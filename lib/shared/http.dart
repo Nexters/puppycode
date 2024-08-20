@@ -95,7 +95,9 @@ class HttpService {
   }
 
   static Future<Map<String, dynamic>> patch(String endPoint,
-      {Map<String, dynamic>? params, Map<String, dynamic>? body}) async {
+      {Map<String, dynamic>? params,
+      Map<String, dynamic>? body,
+      VoidCallback? onPatch}) async {
     if (token.isEmpty) await setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
@@ -108,6 +110,7 @@ class HttpService {
     );
     if (res.statusCode == 200) {
       Map<String, dynamic> result = json.decode(utf8.decode(res.bodyBytes));
+      if (onPatch != null) onPatch();
       return result;
     } else {
       throw res.statusCode;
