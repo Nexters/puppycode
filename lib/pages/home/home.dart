@@ -112,18 +112,26 @@ class _WeatherGuideState extends State<WeatherGuide> {
 
   Future<void> _fetchWeather(location) async {
     try {
-      final savedWeatherString = await storage.read(key: 'weather') ?? '';
-      if (savedWeatherString.isNotEmpty) {
-        // ignore: no_leading_underscores_for_local_identifiers
-        final [_temp, _weather, _savedDate] = savedWeatherString.split(';');
-        final savedDate = DateTime.parse(_savedDate);
-        if (savedDate.difference(DateTime.now()).inDays < 1) {
-          setState(() {
-            temp = int.parse(_temp);
-            weather = _weather;
-          });
+      try {
+        final savedWeatherString = await storage.read(key: 'weather') ?? '';
+        if (savedWeatherString.isNotEmpty) {
+          // ignore: no_leading_underscores_for_local_identifiers
+          final [_temp, _weather, _location, _savedDate] =
+              savedWeatherString.split(';');
+          final savedDate = DateTime.parse(_savedDate);
+          if (_location == widget.city &&
+              savedDate.difference(DateTime.now()).inDays < 1) {
+            setState(() {
+              temp = int.parse(_temp);
+              weather = _weather;
+            });
+            return;
+          } else {
+            storage.delete(key: 'weather');
+          }
         }
-        return;
+      } catch (e) {
+        storage.delete(key: 'weather');
       }
 
       final weatherItem =
@@ -135,6 +143,7 @@ class _WeatherGuideState extends State<WeatherGuide> {
           value: [
             weatherData.temp,
             weatherData.weather,
+            widget.city,
             DateTime.now().toString()
           ].join(';'));
 
