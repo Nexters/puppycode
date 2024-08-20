@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/feed.dart';
 import 'package:puppycode/pages/feedDetails/reaction_contents.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -20,12 +22,29 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
-  String tmpLink = 'abcd';
+  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소
   bool isWriter = false; // 상상코딩이 되지 않아요 ..
 
-  final feedId = Get.parameters['id'];
+  Feed? feed;
 
-  Future<void> fetchFeedDetails() async {}
+  @override
+  void initState() {
+    super.initState();
+    _fetchFeedDetails(Get.parameters['id']);
+  }
+
+  Future<void> _fetchFeedDetails(id) async {
+    try {
+      final feedItems = await HttpService.getOne('walk-logs/$id');
+
+      setState(() {
+        feed = Feed(feedItems);
+      });
+      print(feed!.episode);
+    } catch (error) {
+      print('error: $error');
+    }
+  }
 
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
@@ -65,33 +84,43 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (feed == null) return const Center(child: CircularProgressIndicator());
+
     return Scaffold(
       appBar: SharedAppBar(
         leftOptions: AppBarLeft(),
-        centerOptions: AppBarCenter(label: '포포', caption: '1시간 전 · 20분~40분 산책'),
+        centerOptions: AppBarCenter(
+            label: feed!.name,
+            caption: '${feed!.formattedCreatedAt} · ${feed!.walkTime}'),
         rightOptions: AppBarRight(icons: [
           RightIcon(name: 'more', onTap: () => _showActionSheet(context))
         ]),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FeedPhoto(),
-                SizedBox(height: 12),
+                FeedPhoto(
+                  photoUrl: feed!.photoUrl,
+                ),
+                const SizedBox(height: 12),
                 Row(
                   children: [
-                    FeedReactionButton(idx: 0, svg: 'emoji', count: 3),
-                    FeedReactionButton(idx: 1, svg: 'talk', count: 3),
+                    FeedReactionButton(
+                        idx: 0, svg: 'emoji', count: feed!.comments.length),
+                    FeedReactionButton(
+                        idx: 1, svg: 'talk', count: feed!.reactions.length),
                   ],
                 ),
-                SizedBox(height: 16),
-                Head3(value: '자다가 산책 가자니까 벌떡 일어나는거 봐'),
-                SizedBox(height: 16),
-                Episode()
+                const SizedBox(height: 16),
+                Head3(value: feed!.title),
+                const SizedBox(height: 16),
+                Episode(
+                  content: feed!.episode,
+                )
               ],
             ),
           ),

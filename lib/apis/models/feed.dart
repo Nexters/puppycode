@@ -9,6 +9,7 @@ class Feed {
     title = logItem['title'];
     createdAt = logItem['createdAt'];
     episode = logItem['content'];
+    walkTime = logItem['walkTime'];
     profileUrl = logItem['writerProfileUrl'];
     formattedCreatedAt = _formatCreatedAt(createdAt);
     comments = (logItem['comments'] as List<dynamic>?)
@@ -45,7 +46,8 @@ class Feed {
   late String title;
   late String createdAt;
   late String formattedCreatedAt;
-  String? episode;
+  late String walkTime;
+  late String episode;
   String? profileUrl;
   List<Comment> comments = [];
   List<Reaction> reactions = [];
