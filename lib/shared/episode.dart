@@ -8,12 +8,14 @@ class Episode extends StatelessWidget {
     super.key,
     this.isInput = false,
     this.controller,
+    this.content,
   });
 
   static const String _inputHintText = '오늘 산책하면서 생긴 에피소드를 공유해 보세요.';
 
   final bool isInput;
   final TextEditingController? controller;
+  final String? content;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class Episode extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -52,8 +55,7 @@ class Episode extends StatelessWidget {
                     ),
                   )
                 : Body3(
-                    value:
-                        '날이 너무 더워서 에어컨 틀어놓고 잠깐 나간 사이에 잠든 포포🐕 귀여워... 산책갈까? 하니까 바로 벌떡!!!ㅋㅋ',
+                    value: content!,
                     color: ThemeColor.gray5,
                   )
           ],

@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/comment.dart';
+import 'package:puppycode/apis/models/feed.dart';
+import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/reaction_contents.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -20,8 +24,28 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
-  String tmpLink = 'abcd';
-  bool isWriter = false; // 상상코딩이 되지 않아요 ..
+  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
+  bool isWriter = false; // ? 서버에서 오는 값이 없어요 작성자 닉네임밖에 안왕
+
+  Feed? feed;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFeedDetails(Get.parameters['id']);
+  }
+
+  Future<void> _fetchFeedDetails(id) async {
+    try {
+      final feedItems = await HttpService.getOne('walk-logs/$id');
+
+      setState(() {
+        feed = Feed(feedItems);
+      });
+    } catch (error) {
+      print('error: $error');
+    }
+  }
 
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
@@ -31,7 +55,6 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           if (isWriter)
             CupertinoActionSheetAction(
               onPressed: () {
-                // 수정하기
                 Get.back();
               },
               child: Body2(value: '수정하기', color: ThemeColor.blue),
@@ -62,33 +85,43 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (feed == null) return const Center(child: CircularProgressIndicator());
+
     return Scaffold(
       appBar: SharedAppBar(
         leftOptions: AppBarLeft(),
-        centerOptions: AppBarCenter(label: '포포', caption: '1시간 전 · 20분~40분 산책'),
+        centerOptions: AppBarCenter(
+            label: feed!.name,
+            caption: '${feed!.formattedCreatedAt} · ${feed!.walkTime}'),
         rightOptions: AppBarRight(icons: [
           RightIcon(name: 'more', onTap: () => _showActionSheet(context))
         ]),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FeedPhoto(),
-                SizedBox(height: 12),
+                FeedPhoto(
+                  photoUrl: feed!.photoUrl,
+                ),
+                const SizedBox(height: 12),
                 Row(
                   children: [
-                    FeedReactionButton(idx: 0, svg: 'emoji', count: 3),
-                    FeedReactionButton(idx: 1, svg: 'talk', count: 3),
+                    FeedReactionButton(
+                      comments: feed!.comments,
+                      reactions: feed!.reactions,
+                    ),
                   ],
                 ),
-                SizedBox(height: 16),
-                Head3(value: '자다가 산책 가자니까 벌떡 일어나는거 봐'),
-                SizedBox(height: 16),
-                Episode()
+                const SizedBox(height: 16),
+                Head3(value: feed!.title),
+                const SizedBox(height: 16),
+                Episode(
+                  content: feed!.episode,
+                )
               ],
             ),
           ),
@@ -99,36 +132,40 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 }
 
 class FeedReactionButton extends StatelessWidget {
-  final int idx;
-  final String svg;
-  final int count;
+  final List<Comment> comments;
+  final List<Reaction> reactions;
 
   const FeedReactionButton({
-    required this.idx,
-    required this.svg,
-    required this.count,
+    required this.comments,
+    required this.reactions,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: GestureDetector(
-        onTap: () {
-          sharedModalBottomSheet(context, const ReactionContents(), null,
-              height: 640);
-        },
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/$svg.svg',
-              colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
-            ),
-            const SizedBox(width: 2),
-            Body4(value: '$count', color: ThemeColor.gray4),
-          ],
-        ),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        sharedModalBottomSheet(context,
+            ReactionContents(comments: comments, reactions: reactions), null,
+            height: 640);
+      },
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            'assets/icons/emoji.svg',
+            colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+          ),
+          const SizedBox(width: 2),
+          Body4(value: reactions.length.toString(), color: ThemeColor.gray4),
+          const SizedBox(width: 16),
+          SvgPicture.asset(
+            'assets/icons/talk.svg',
+            colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+          ),
+          const SizedBox(width: 2),
+          Body4(value: comments.length.toString(), color: ThemeColor.gray4),
+        ],
       ),
     );
   }

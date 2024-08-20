@@ -16,4 +16,6 @@ class ThemeColor {
 
   static Color blue = const Color(0xFF007AFF);
   static Color error = const Color(0xFFFd6257);
+
+  static Color scroll = const Color(0xFFE4EAEE);
 }

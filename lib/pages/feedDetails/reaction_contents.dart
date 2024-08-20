@@ -1,20 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/apis/models/comment.dart';
+import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/comment_item.dart';
+import 'package:puppycode/pages/feedDetails/comment_textfield.dart';
 import 'package:puppycode/pages/feedDetails/emoji_item.dart';
-import 'package:puppycode/pages/feedDetails/reaction_tab_view.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
-class ReactionContents extends StatefulWidget {
-  const ReactionContents({super.key});
+class ReactionContents extends StatelessWidget {
+  final List<Comment> comments;
+  final List<Reaction> reactions;
 
-  @override
-  State<ReactionContents> createState() => _ReactionContentsState();
-}
+  ReactionContents({
+    super.key,
+    required this.comments,
+    required this.reactions,
+  });
 
-class _ReactionContentsState extends State<ReactionContents> {
   final TextEditingController _commentController = TextEditingController();
 
   @override
@@ -38,10 +42,10 @@ class _ReactionContentsState extends State<ReactionContents> {
               const SizedBox(width: 3),
               Body3(value: '이모지', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
-              Body3(value: '0', color: ThemeColor.gray4)
+              Body3(value: reactions.length.toString(), color: ThemeColor.gray4)
             ],
           ),
-          const ReactionEmojiListItem(),
+          ReactionEmojiList(reactions: reactions),
           const SizedBox(height: 20),
           Row(
             children: [
@@ -55,27 +59,26 @@ class _ReactionContentsState extends State<ReactionContents> {
               const SizedBox(width: 3),
               Body3(value: '댓글', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
-              Body3(value: '4', color: ThemeColor.gray4)
+              Body3(value: comments.length.toString(), color: ThemeColor.gray4)
             ],
           ),
           const SizedBox(height: 4),
-          const Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                  ReactionCommentListItem(
-                      userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                ],
+          Expanded(
+            child: RawScrollbar(
+              thumbColor: ThemeColor.scroll,
+              radius: const Radius.circular(100),
+              thickness: 4,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (var comment in comments)
+                      ReactionCommentListItem(
+                        userName: comment.writerName,
+                        comment: comment.content,
+                        profileUrl: comment.writerProfileUrl,
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
