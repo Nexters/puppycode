@@ -47,6 +47,18 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     }
   }
 
+  Future<void> _deleteFeed(id) async {
+    try {
+      await HttpService.delete('walk-logs/$id');
+    } catch (error) {
+      print('delete Feed erorr: $error');
+    }
+  }
+
+  void onReportFeed() {
+    // TODO : 신고하기
+  }
+
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
       context: context,
@@ -68,7 +80,9 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Get.back();
+              feed!.isWriter
+                  ? _deleteFeed(Get.parameters['id'])
+                  : onReportFeed();
             },
             child: Body2(
                 value: feed!.isWriter ? '삭제하기' : '신고하기',
@@ -82,6 +96,11 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             child: Body2(value: '취소하기', color: ThemeColor.blue)),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

@@ -163,4 +163,21 @@ class HttpService {
       throw 'err';
     }
   }
+
+  static Future<Map<String, dynamic>> delete(String endPoint,
+      {Map<String, dynamic>? params}) async {
+    final url = Uri.http(baseUrl, '/api/$endPoint', params);
+
+    http.Response res = await http.delete(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    });
+
+    if (res.statusCode == 204) {
+      Get.back(); // 홈으로 보낼까요 ? ^^
+      return {};
+    } else {
+      throw res.statusCode;
+    }
+  }
 }
