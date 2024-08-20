@@ -134,7 +134,7 @@ class EmojiReactionListItem extends StatelessWidget {
     return Column(
       children: [
         SvgPicture.asset(
-          'assets/icons/emoji_${reactionType.toLowerCase()}.svg',
+          'assets/icons/emoji_$reactionType.svg',
           width: 40,
           height: 40,
         ),
