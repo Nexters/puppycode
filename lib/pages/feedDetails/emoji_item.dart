@@ -13,7 +13,7 @@ class ReactionEmojiList extends StatelessWidget {
     required this.reactions,
   });
 
-  GlobalKey emojiKey = GlobalKey();
+  final GlobalKey emojiKey = GlobalKey();
 
   void onSetEmoji(BuildContext context, GlobalKey emojiKey) {
     final RenderBox button =

@@ -5,13 +5,12 @@ class Feed {
   Feed(dynamic logItem) {
     id = logItem['id'];
     photoUrl = logItem['photoUrl'];
-    name = logItem['writerNickname'] ?? 'unknown';
     title = logItem['title'];
-    createdAt = logItem['createdAt'];
     episode = logItem['content'];
     walkTime = logItem['walkTime'];
+    writerId = logItem['writerId'] ?? 0;
+    name = logItem['writerNickname'] ?? 'unknown';
     profileUrl = logItem['writerProfileUrl'];
-    formattedCreatedAt = _formatCreatedAt(createdAt);
     comments = (logItem['comments'] as List<dynamic>?)
             ?.map((comment) => Comment(comment))
             .toList() ??
@@ -20,6 +19,9 @@ class Feed {
             ?.map((reaction) => Reaction(reaction))
             .toList() ??
         [];
+    createdAt = logItem['createdAt'];
+    formattedCreatedAt = _formatCreatedAt(createdAt);
+    isWriter = logItem['me'] ?? false;
   }
 
   static String _formatCreatedAt(String dateString) {
@@ -42,13 +44,15 @@ class Feed {
 
   late int id;
   late String photoUrl;
-  late String name;
   late String title;
-  late String createdAt;
-  late String formattedCreatedAt;
-  late String walkTime;
   late String episode;
+  late String walkTime;
+  late int writerId;
+  late String name;
   String? profileUrl;
   List<Comment> comments = [];
   List<Reaction> reactions = [];
+  late String createdAt;
+  late String formattedCreatedAt;
+  late bool isWriter;
 }
