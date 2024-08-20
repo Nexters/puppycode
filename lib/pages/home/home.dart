@@ -218,14 +218,31 @@ class HomeTitle extends StatelessWidget {
     super.key,
   });
 
+  int calculateHoursUntilMidnight() {
+    DateTime now = DateTime.now();
+    DateTime midnight = DateTime(now.year, now.month, now.day + 1);
+    return midnight.difference(now).inHours;
+  }
+
+  String _generateTitle(bool walkDone) {
+    // 문구 수정될 것 같음
+    if (walkDone) return '오늘도 산책했군요 😎';
+    int remainHours = calculateHoursUntilMidnight();
+    return remainHours < 6
+        ? '$remainHours시간 남았어요! 얼른 나가요 🐾'
+        : '오늘도 산책하러 나갈 거죠? 🥹';
+  }
+
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
-    final city = userController.user.value!.location;
+    final user = userController.user.value;
+    final city = user!.location;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Head3(value: '1시간 남았어요! 얼른 나가요 🐾'),
+        Head3(value: _generateTitle(user.walkDone)),
         const SizedBox(height: 12),
         WeatherGuide(city: city),
       ],
