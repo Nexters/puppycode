@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/apis/models/reaction.dart';
@@ -62,6 +63,17 @@ class ReactionContents extends StatelessWidget {
               Body3(value: comments.length.toString(), color: ThemeColor.gray4)
             ],
           ),
+          if (comments.isEmpty)
+            Column(
+              children: [
+                const SizedBox(height: 20), // 가운데 못해..~
+                Image.asset(
+                  'assets/images/comment_nothing.png',
+                  width: 120,
+                ),
+                const Body3(value: '첫 댓글을 달아보세요!'),
+              ],
+            ),
           const SizedBox(height: 4),
           Expanded(
             child: RawScrollbar(
