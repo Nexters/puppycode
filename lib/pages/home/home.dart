@@ -133,6 +133,8 @@ class _WeatherGuideState extends State<WeatherGuide> {
 
   @override
   Widget build(BuildContext context) {
+    if (weather.isEmpty) return Container();
+
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
