@@ -1,3 +1,6 @@
+import 'package:puppycode/apis/models/comment.dart';
+import 'package:puppycode/apis/models/reaction.dart';
+
 class Feed {
   Feed(dynamic logItem) {
     id = logItem['id'];
@@ -8,6 +11,14 @@ class Feed {
     episode = logItem['content'];
     profileUrl = logItem['writerProfileUrl'];
     formattedCreatedAt = _formatCreatedAt(createdAt);
+    comments = (logItem['comments'] as List<dynamic>?)
+            ?.map((comment) => Comment(comment))
+            .toList() ??
+        [];
+    reactions = (logItem['reactions'] as List<dynamic>?)
+            ?.map((reaction) => Reaction(reaction))
+            .toList() ??
+        [];
   }
 
   static String _formatCreatedAt(String dateString) {
@@ -36,4 +47,6 @@ class Feed {
   late String formattedCreatedAt;
   String? episode;
   String? profileUrl;
+  List<Comment> comments = [];
+  List<Reaction> reactions = [];
 }
