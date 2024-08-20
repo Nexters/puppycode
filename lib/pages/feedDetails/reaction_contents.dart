@@ -85,6 +85,7 @@ class ReactionContents extends StatelessWidget {
                   children: [
                     for (var comment in comments)
                       ReactionCommentListItem(
+                        commentId: comment.id,
                         userName: comment.writerName,
                         comment: comment.content,
                         profileUrl: comment.writerProfileUrl,
