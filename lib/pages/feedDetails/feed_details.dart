@@ -36,10 +36,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   Future<void> _fetchFeedDetails(id) async {
     try {
-      final feedItems = await HttpService.getOne('walk-logs/$id');
+      final item = await HttpService.getOne('walk-logs/$id');
 
       setState(() {
-        feed = Feed(feedItems);
+        feed = Feed(item);
       });
       // print(feedItems);
     } catch (error) {

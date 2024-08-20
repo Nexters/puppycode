@@ -38,6 +38,12 @@ extension LocationExtension on LOCATION {
   String get name => toString().split('.').last;
 }
 
+extension StringExtension on String {
+  LOCATION? toLocation() {
+    return LOCATION.values.firstWhere((e) => e.name == this);
+  }
+}
+
 Map<LOCATION, String> locationNames = {
   LOCATION.SEOUL: "서울",
   LOCATION.BUSAN: "부산",

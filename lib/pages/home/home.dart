@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:puppycode/apis/models/weather.dart';
+import 'package:puppycode/pages/onboarding/register.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -89,13 +92,49 @@ class HomeContent extends StatelessWidget {
   }
 }
 
-class WeatherGuide extends StatelessWidget {
+class WeatherGuide extends StatefulWidget {
+  final String city;
   const WeatherGuide({
+    required this.city,
     super.key,
   });
 
   @override
+  State<WeatherGuide> createState() => _WeatherGuideState();
+}
+
+class _WeatherGuideState extends State<WeatherGuide> {
+  late int temp = 0;
+  late String weather = '';
+  late LOCATION? locationKey = LOCATION.SEOUL;
+
+  Future<void> _fetchWeather(location) async {
+    try {
+      final weatherItem =
+          await HttpService.getOne('weather', params: {'city': location});
+
+      Weather weatherData = Weather(weatherItem);
+
+      setState(() {
+        temp = weatherData.temp;
+        weather = weatherData.weather;
+        locationKey = widget.city.toLocation();
+      });
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  @override
+  void initState() {
+    _fetchWeather(widget.city);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (weather.isEmpty) return Container();
+
     return GestureDetector(
       child: Container(
         decoration: BoxDecoration(
@@ -106,15 +145,18 @@ class WeatherGuide extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              padding: const EdgeInsets.all(9),
-              decoration: BoxDecoration(
-                  color: ThemeColor.gray2,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: ThemeColor.gray2)),
-              child: SvgPicture.asset('assets/icons/weather_cloudy.svg'),
+            SizedBox(
+              width: 48,
+              height: 48,
+              child: weather.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: SvgPicture.asset(
+                        'assets/icons/weather_${weather.toLowerCase()}.svg',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
             ),
             const SizedBox(width: 10),
             Column(
@@ -122,7 +164,7 @@ class WeatherGuide extends StatelessWidget {
               children: [
                 const Body3(value: '나갈 때 물통을 챙겨주세요💦', bold: true),
                 Body4(
-                  value: '서울 31℃',
+                  value: '${locationNames[locationKey]} $temp℃',
                   color: ThemeColor.gray4,
                 )
               ],
@@ -141,12 +183,14 @@ class HomeTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    final userController = Get.find<UserController>();
+    final city = userController.user.value!.location;
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Head3(value: '1시간 남았어요! 얼른 나가요 🐾'),
-        SizedBox(height: 12),
-        WeatherGuide(),
+        const Head3(value: '1시간 남았어요! 얼른 나가요 🐾'),
+        const SizedBox(height: 12),
+        WeatherGuide(city: city),
       ],
     );
   }
