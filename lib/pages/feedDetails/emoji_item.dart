@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
-class ReactionEmojiListItem extends StatefulWidget {
-  const ReactionEmojiListItem({
+class ReactionEmojiList extends StatelessWidget {
+  final List<Reaction> reactions;
+
+  ReactionEmojiList({
     super.key,
+    required this.reactions,
   });
 
-  @override
-  State<ReactionEmojiListItem> createState() => _ReactionEmojiListItemState();
-}
-
-class _ReactionEmojiListItemState extends State<ReactionEmojiListItem> {
   GlobalKey emojiKey = GlobalKey();
 
   void onSetEmoji(BuildContext context, GlobalKey emojiKey) {
@@ -50,9 +49,9 @@ class _ReactionEmojiListItemState extends State<ReactionEmojiListItem> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SvgPicture.asset('assets/icons/emoji_happy.svg'),
-                    SvgPicture.asset('assets/icons/emoji_congrat.svg'),
-                    SvgPicture.asset('assets/icons/emoji_good.svg'),
+                    SvgPicture.asset('assets/icons/emoji_like.svg'),
+                    SvgPicture.asset('assets/icons/emoji_congratulation.svg'),
+                    SvgPicture.asset('assets/icons/emoji_impressive.svg'),
                     SvgPicture.asset('assets/icons/emoji_sad.svg'),
                     SvgPicture.asset('assets/icons/emoji_angry.svg'),
                   ],
@@ -108,21 +107,40 @@ class _ReactionEmojiListItemState extends State<ReactionEmojiListItem> {
                 ),
               ),
               const SizedBox(width: 12),
-              Column(
-                children: [
-                  SvgPicture.asset(
-                    'assets/icons/emoji_happy.svg',
-                    width: 40,
-                    height: 40,
-                  ),
-                  const SizedBox(height: 4),
-                  Caption(value: '푸름이', color: ThemeColor.gray5)
-                ],
-              ),
+              for (var reaction in reactions)
+                EmojiReactionListItem(
+                    reactionType: reaction.reactionType,
+                    writerName: reaction.writerName),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class EmojiReactionListItem extends StatelessWidget {
+  final String reactionType;
+  final String writerName;
+
+  const EmojiReactionListItem({
+    super.key,
+    required this.reactionType,
+    required this.writerName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SvgPicture.asset(
+          'assets/icons/emoji_${reactionType.toLowerCase()}.svg',
+          width: 40,
+          height: 40,
+        ),
+        const SizedBox(height: 4),
+        Caption(value: writerName, color: ThemeColor.gray5)
+      ],
     );
   }
 }

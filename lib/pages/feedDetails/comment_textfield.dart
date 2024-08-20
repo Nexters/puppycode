@@ -1,60 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/pages/feedDetails/comment_item.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
-
-class ReactionTabView extends StatefulWidget {
-  const ReactionTabView({
-    super.key,
-  });
-
-  @override
-  State<ReactionTabView> createState() => _ReactionTabViewState();
-}
-
-class _ReactionTabViewState extends State<ReactionTabView> {
-  final TextEditingController _commentController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 12,
-        bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 46,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Expanded(
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ReactionCommentListItem(
-                        userName: '푸름이', comment: 'ㅋㅋㅋ우리집 강아지도 산책만 들으면 환장을 함'),
-                    ReactionCommentListItem(
-                        userName: '샛별이', comment: '우리집 강아지가 젤 귀여움 ☀︎'),
-                    ReactionCommentListItem(
-                        userName: '샛별이', comment: '우리집 강아지가 젤 귀여움 ☀︎'),
-                    ReactionCommentListItem(
-                        userName: '푸름이',
-                        comment: '우리집 강아지가 젤 귀여움 ☀︎',
-                        isFeedWriter: true),
-                    ReactionCommentListItem(
-                        userName: '앙꼬',
-                        comment: '미쳤다 저정도 정전기라면 모든 것을 이겨낼 수 있지 않을까 캬캬캬캬캬캬캬캬캬캬')
-                  ],
-                ),
-              ),
-            ),
-          ),
-          CommentTextField(textFieldController: _commentController)
-        ],
-      ),
-    );
-  }
-}
 
 class CommentTextField extends StatefulWidget {
   const CommentTextField({
