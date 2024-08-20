@@ -7,6 +7,7 @@ class User {
     createdAt = userItem['createdAt'];
     walkDone = userItem['walkDone'];
     mainScreenImageUrl = userItem['mainScreenImageUrl'];
+    location = userItem['location'];
   }
 
   late int id;
@@ -16,4 +17,5 @@ class User {
   late String createdAt;
   late String mainScreenImageUrl;
   late bool walkDone;
+  late String location;
 }
