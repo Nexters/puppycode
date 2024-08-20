@@ -1,17 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
+import 'package:puppycode/shared/user.dart';
 
-class ReactionEmojiList extends StatelessWidget {
+class ReactionEmojiList extends StatefulWidget {
   final List<Reaction> reactions;
 
-  ReactionEmojiList({
+  const ReactionEmojiList({
     super.key,
     required this.reactions,
   });
+
+  @override
+  State<ReactionEmojiList> createState() => _ReactionEmojiListState();
+}
+
+class _ReactionEmojiListState extends State<ReactionEmojiList> {
+  bool isEmojiPosted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkEmojiPosted();
+  }
+
+  void checkEmojiPosted() {
+    final userController = Get.find<UserController>();
+    final user = userController.user.value;
+
+    //내 유저 아이디가 reactions.writerId랑 같은지 확인
+    for (var reaction in widget.reactions) {
+      if (reaction.writerId == user!.id) {
+        setState(() {
+          isEmojiPosted = true;
+        });
+        break;
+      }
+    }
+  }
 
   final GlobalKey emojiKey = GlobalKey();
 
@@ -93,21 +123,26 @@ class ReactionEmojiList extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              GestureDetector(
-                key: emojiKey,
-                onTap: () {
-                  onSetEmoji(context, emojiKey);
-                },
-                child: Column(
+              if (!isEmojiPosted)
+                Row(
                   children: [
-                    SvgPicture.asset('assets/icons/emoji_empty.svg'),
-                    const SizedBox(height: 4),
-                    const Caption(value: '공감하기'),
+                    GestureDetector(
+                      key: emojiKey,
+                      onTap: () {
+                        onSetEmoji(context, emojiKey);
+                      },
+                      child: Column(
+                        children: [
+                          SvgPicture.asset('assets/icons/emoji_empty.svg'),
+                          const SizedBox(height: 4),
+                          const Caption(value: '공감하기'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
                   ],
                 ),
-              ),
-              const SizedBox(width: 12),
-              for (var reaction in reactions)
+              for (var reaction in widget.reactions)
                 EmojiReactionListItem(
                     reactionType: reaction.reactionType,
                     writerName: reaction.writerName),
