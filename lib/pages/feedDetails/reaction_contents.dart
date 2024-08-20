@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/comment_item.dart';
+import 'package:puppycode/pages/feedDetails/comment_textfield.dart';
 import 'package:puppycode/pages/feedDetails/emoji_item.dart';
-import 'package:puppycode/pages/feedDetails/reaction_tab_view.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -42,7 +42,7 @@ class ReactionContents extends StatelessWidget {
               const SizedBox(width: 3),
               Body3(value: '이모지', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
-              Body3(value: '0', color: ThemeColor.gray4)
+              Body3(value: reactions.length.toString(), color: ThemeColor.gray4)
             ],
           ),
           const ReactionEmojiListItem(),
@@ -59,7 +59,7 @@ class ReactionContents extends StatelessWidget {
               const SizedBox(width: 3),
               Body3(value: '댓글', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
-              Body3(value: '4', color: ThemeColor.gray4)
+              Body3(value: comments.length.toString(), color: ThemeColor.gray4)
             ],
           ),
           const SizedBox(height: 4),
