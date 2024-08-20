@@ -13,6 +13,14 @@ import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:puppycode/shared/user.dart';
 
+bool isToday(DateTime date) {
+  DateTime today = DateTime.now();
+
+  return date.year == today.year &&
+      date.month == today.month &&
+      date.day == today.day;
+}
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -119,8 +127,7 @@ class _WeatherGuideState extends State<WeatherGuide> {
           final [_temp, _weather, _location, _savedDate] =
               savedWeatherString.split(';');
           final savedDate = DateTime.parse(_savedDate);
-          if (_location == widget.city &&
-              savedDate.difference(DateTime.now()).inDays < 1) {
+          if (_location == widget.city && isToday(savedDate)) {
             setState(() {
               temp = int.parse(_temp);
               weather = _weather;
