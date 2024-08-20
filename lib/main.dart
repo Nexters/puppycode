@@ -21,9 +21,9 @@ void main() async {
   Map<String, dynamic> config = json.decode(configString);
 
   // initialize
-  Config(config);
+  var fcmToken = await initializeNotification();
+  Config(config, fcmToken);
   KakaoSdk.init(nativeAppKey: config['KAKAO_SDK_KEY']);
-  initializeNotification();
 
   final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
@@ -32,7 +32,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-void initializeNotification() async {
+Future<String?> initializeNotification() async {
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   String? _fcmToken = await messaging.getToken();
@@ -47,4 +47,6 @@ void initializeNotification() async {
     badge: true,
     sound: true,
   );
+
+  return _fcmToken;
 }

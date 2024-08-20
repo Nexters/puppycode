@@ -13,11 +13,16 @@ class HttpService {
   static const storage = FlutterSecureStorage();
 
   static setToken() async {
-    if (Config.isLocal) {
-      token = 'Bearer ${Config.TOKEN}';
-    } else {
-      var authToken = (await storage.read(key: 'authToken'))!;
-      token = 'Bearer $authToken';
+    try {
+      if (Config.isLocal) {
+        token = 'Bearer ${Config.TOKEN}';
+      } else {
+        String? authToken = (await storage.read(key: 'authToken'));
+        if (authToken == null || authToken.isEmpty) throw 'no authToken';
+        token = 'Bearer $authToken';
+      }
+    } catch (err) {
+      return;
     }
   }
 
@@ -38,7 +43,7 @@ class HttpService {
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res = await http.get(url, headers: {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      if (token.isNotEmpty) 'Authorization': token,
     });
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
@@ -83,7 +88,7 @@ class HttpService {
     http.Response res = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token,
+          if (token.isNotEmpty) 'Authorization': token,
         },
         body: json.encode(body));
     if (res.statusCode == 200) {
@@ -103,7 +108,7 @@ class HttpService {
       url,
       headers: {
         if (params != null) 'Content-Type': 'application/json',
-        'Authorization': token,
+        if (token.isNotEmpty) 'Authorization': token,
       },
     );
     if (res.statusCode == 200) {
@@ -145,12 +150,15 @@ class HttpService {
   }
 
   static Future<Map<String, dynamic>> getOne(String endPoint,
-      {Map<String, dynamic>? params}) async {
-    if (token.isEmpty) await setToken();
+      {Map<String, dynamic>? params, bool shouldSkipLogin = true}) async {
+    if (token.isEmpty) {
+      await setToken();
+      if (token.isEmpty && shouldSkipLogin == false) throw 'no token';
+    }
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
     http.Response res = await http.get(url, headers: {
       'Content-Type': 'application/json',
-      'Authorization': token,
+      if (token.isNotEmpty) 'Authorization': token,
     });
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));

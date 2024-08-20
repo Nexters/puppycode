@@ -12,11 +12,15 @@ class UserController extends GetxController {
   }
 
   Future<void> fetchUserData() async {
-    final data = await HttpService.getOne('users');
-    user.value = User(data);
+    try {
+      final data = await HttpService.getOne('users', shouldSkipLogin: false);
+      user.value = User(data);
+    } catch (err) {
+      return;
+    }
   }
 
-  void refreshData() {
-    fetchUserData();
+  Future<void> refreshData() async {
+    await fetchUserData();
   }
 }
