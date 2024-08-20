@@ -18,6 +18,7 @@ class StartPage extends StatelessWidget {
         children: [
           Head1(value: name.isNotEmpty ? '$name와 오늘도\n산책하러 갈까요?' : '산책하러 갈까요?'),
           GestureDetector(
+            onTap: () => {Get.offAllNamed('/')},
             child: Padding(
                 padding: const EdgeInsets.all(90),
                 child: Image.asset('assets/images/pawpaw_hello.png')),
