@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_user.dart';
 import 'package:puppycode/config.dart';
-import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -25,10 +26,12 @@ class _LoginPageState extends State<LoginPage> {
 
   void _checkAuthToken() async {
     if (Config.isLocal) Get.offAllNamed('/');
-    String? value = await storage.read(key: 'authToken');
-    if (value != null) {
-      Get.offAllNamed('/');
-    }
+    try {
+      String? value = await storage.read(key: 'authToken');
+      if (value != null) {
+        Get.offAllNamed('/');
+      }
+    } catch (e) {}
   }
 
   void _onLogin(String token) async {
@@ -39,31 +42,49 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: TextButton(
-        child: const Text('register'),
-        onPressed: () {
-          Get.to(() => const RegistrationPage());
-        },
-      )),
-      bottomSheet: Container(
-        constraints: const BoxConstraints(maxHeight: 102),
-        margin: const EdgeInsets.fromLTRB(45, 0, 45, 75),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SignupButton(
-              text: '카카오로 시작하기',
-              type: SignupType.kakao,
-              onLogin: _onLogin,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          width: MediaQuery.of(context).size.width,
+          child: Stack(fit: StackFit.loose, children: [
+            Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset('assets/icons/logo.svg', width: 200),
+                  const SizedBox(height: 10),
+                  const Body2(value: '친구와 나누는 우리 강아지 산책 기록'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 80, horizontal: 60),
+                    child: Image.asset('assets/images/pawpaw_main.png'),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
-            SignupButton(
-              text: 'Continue with Apple',
-              type: SignupType.apple,
-              onLogin: _onLogin,
-            )
-          ],
+            Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Column(
+                  children: [
+                    SignupButton(
+                      text: '카카오로 시작하기',
+                      type: SignupType.kakao,
+                      onLogin: _onLogin,
+                    ),
+                    const SizedBox(height: 12),
+                    SignupButton(
+                      text: 'Continue with Apple',
+                      type: SignupType.apple,
+                      onLogin: _onLogin,
+                    )
+                  ],
+                ))
+          ]),
         ),
       ),
     );
@@ -109,27 +130,19 @@ class SignupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (type == SignupType.apple) {
-      return TextButton(
-        onPressed: () => {_login()},
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.black,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5)))),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 14.5,
-            color: Colors.white,
-          ),
-        ),
-      );
-    }
+    var width = MediaQuery.of(context).size.width - 40;
 
-    return Expanded(
-        child: Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/kakao.png'))),
-    ));
+    return GestureDetector(
+      onTap: () => {_login()},
+      child: SizedBox(
+        width: width,
+        height: width * 0.12,
+        child: SvgPicture.asset(
+            type == SignupType.kakao
+                ? 'assets/icons/kakao_login.svg'
+                : 'assets/icons/apple_login.svg',
+            width: width),
+      ),
+    );
   }
 }

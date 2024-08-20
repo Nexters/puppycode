@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,14 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:puppycode/shared/user.dart';
+
+bool isToday(DateTime date) {
+  DateTime today = DateTime.now();
+
+  return date.year == today.year &&
+      date.month == today.month &&
+      date.day == today.day;
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -106,23 +115,51 @@ class WeatherGuide extends StatefulWidget {
 class _WeatherGuideState extends State<WeatherGuide> {
   late int temp = 0;
   late String weather = '';
-  late LOCATION? locationKey = LOCATION.SEOUL;
+  late LOCATION? locationKey = widget.city.toLocation();
+  static const storage = FlutterSecureStorage();
 
   Future<void> _fetchWeather(location) async {
     try {
+      try {
+        final savedWeatherString = await storage.read(key: 'weather') ?? '';
+        if (savedWeatherString.isNotEmpty) {
+          // ignore: no_leading_underscores_for_local_identifiers
+          final [_temp, _weather, _location, _savedDate] =
+              savedWeatherString.split(';');
+          final savedDate = DateTime.parse(_savedDate);
+          if (_location == widget.city && isToday(savedDate)) {
+            setState(() {
+              temp = int.parse(_temp);
+              weather = _weather;
+            });
+            return;
+          } else {
+            storage.delete(key: 'weather');
+          }
+        }
+      } catch (e) {
+        storage.delete(key: 'weather');
+      }
+
       final weatherItem =
           await HttpService.getOne('weather', params: {'city': location});
 
       Weather weatherData = Weather(weatherItem);
+      storage.write(
+          key: 'weather',
+          value: [
+            weatherData.temp,
+            weatherData.weather,
+            widget.city,
+            DateTime.now().toString()
+          ].join(';'));
 
       setState(() {
         temp = weatherData.temp;
         weather = weatherData.weather;
-        locationKey = widget.city.toLocation();
       });
-    } catch (error) {
-      print(error);
-    }
+      // ignore: empty_catches
+    } catch (error) {}
   }
 
   @override
@@ -181,14 +218,31 @@ class HomeTitle extends StatelessWidget {
     super.key,
   });
 
+  int calculateHoursUntilMidnight() {
+    DateTime now = DateTime.now();
+    DateTime midnight = DateTime(now.year, now.month, now.day + 1);
+    return midnight.difference(now).inHours;
+  }
+
+  String _generateTitle(bool walkDone) {
+    // 문구 수정될 것 같음
+    if (walkDone) return '오늘도 산책했군요 😎';
+    int remainHours = calculateHoursUntilMidnight();
+    return remainHours < 6
+        ? '$remainHours시간 남았어요! 얼른 나가요 🐾'
+        : '오늘도 산책하러 나갈 거죠? 🥹';
+  }
+
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
-    final city = userController.user.value!.location;
+    final user = userController.user.value;
+    final city = user!.location;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Head3(value: '1시간 남았어요! 얼른 나가요 🐾'),
+        Head3(value: _generateTitle(user.walkDone)),
         const SizedBox(height: 12),
         WeatherGuide(city: city),
       ],
