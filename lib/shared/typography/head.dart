@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Head1 extends StatelessWidget {
-  const Head1({super.key, required this.value, this.color});
+  const Head1({super.key, required this.value, this.color, this.align});
 
   final String value;
   final Color? color;
+  final TextAlign? align;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       value,
+      textAlign: align ?? TextAlign.start,
       style: HeadTextStyle.getH1Style(color: color),
     );
   }

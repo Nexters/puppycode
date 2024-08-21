@@ -285,12 +285,9 @@ class _LocationInputWithBottomSheetState
                 color:
                     widget.value == null ? ThemeColor.gray4 : ThemeColor.gray6,
               ),
-              RotatedBox(
-                quarterTurns: 3,
-                child: SvgPicture.asset('assets/icons/chevron_left.svg',
-                    colorFilter:
-                        ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn)),
-              )
+              SvgPicture.asset('assets/icons/chevron_bottom.svg',
+                  colorFilter:
+                      ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn))
             ],
           ),
         ));

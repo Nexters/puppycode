@@ -7,7 +7,7 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String name = '';
+    String name = '코코';
     if (Get.arguments != null) {
       name = Get.arguments['name'] ?? '';
     }
@@ -16,7 +16,10 @@ class StartPage extends StatelessWidget {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Head1(value: name.isNotEmpty ? '$name와 오늘도\n산책하러 갈까요?' : '산책하러 갈까요?'),
+          Head1(
+            value: name.isNotEmpty ? '$name와 오늘도\n산책하러 갈까요?' : '산책하러 갈까요?',
+            align: TextAlign.center,
+          ),
           GestureDetector(
             onTap: () => {Get.offAllNamed('/')},
             child: Padding(
