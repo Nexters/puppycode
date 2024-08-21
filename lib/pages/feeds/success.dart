@@ -28,8 +28,9 @@ class FeedCreateSuccessPage extends StatelessWidget {
               Body1(value: '귀찮음을 이겨냈으니 100점 반려인이네요')
             ]),
             Container(
-              margin: const EdgeInsets.only(top: 40, bottom: 12),
-              height: 190,
+              margin: const EdgeInsets.only(top: 96),
+              width: 200,
+              height: 176,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/images/create_success.png'))),
@@ -43,14 +44,16 @@ class FeedCreateSuccessPage extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
+                  flex: 2,
                   child: DefaultCloseButton(
                       onPressed: () => {
                             Get.toNamed('/', arguments: {
                               'tab': isFromFeed ? NavTab.feed : NavTab.home
                             })
                           })),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Expanded(
+                  flex: 3,
                   child: DefaultTextButton(
                       text: '산책일지 보러가기',
                       onPressed: () => {
