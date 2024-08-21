@@ -12,7 +12,7 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:puppycode/shared/user.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({super.key});
@@ -103,6 +103,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     } catch (error) {
       print('fetchUser Error: $error');
     }
+  }
+
+  void _shareCode(code) async {
+    await Share.share(code, subject: 'Pawpaw');
   }
 
   @override
@@ -196,7 +200,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
               height: 8,
             ),
             TextButton(
-              onPressed: () => {Share.share(code)},
+              onPressed: () {
+                Share.share(code, subject: 'Pawpaw');
+              },
               style: ButtonStyle(
                 backgroundColor:
                     WidgetStateProperty.all<Color>(ThemeColor.gray2),

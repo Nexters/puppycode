@@ -14,7 +14,7 @@ import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FeedDetailPage extends StatefulWidget {
   const FeedDetailPage({super.key});
