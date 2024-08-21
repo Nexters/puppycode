@@ -27,7 +27,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   TextEditingController episodeController = TextEditingController();
   final userController = Get.find<UserController>();
   late String photoPath;
-  late String from;
+  String from = '';
 
   bool isLoading = false;
   bool isError = false;
@@ -37,8 +37,10 @@ class _FeedWritePageState extends State<FeedWritePage> {
   @override
   void initState() {
     super.initState();
-    photoPath = ''; // Get.arguments['photoPath'];
-    from = ''; //Get.arguments['from'];
+    if (Get.arguments != null) {
+      photoPath = Get.arguments['photoPath'];
+      from = Get.arguments['from'];
+    }
 
     var options = [];
     for (int i = 0; i < _kOptionCount; i++) {
@@ -111,12 +113,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading)
-      return Container(
-        child: Body2(
-          value: '로딩중',
-        ),
+    if (isLoading) {
+      return const Body2(
+        value: '로딩중',
       );
+    }
     return Scaffold(
         appBar: SharedAppBar(
           leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),

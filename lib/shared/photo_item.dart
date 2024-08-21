@@ -55,12 +55,11 @@ class _PhotoItemState extends State<PhotoItem> {
       height: (MediaQuery.of(context).size.width - 40) * 1.33,
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  'https://dispatch.cdnser.be/wp-content/uploads/2018/08/20180826214731_745ab6ce176fa4b59d1af29bc91fa409.png')
-              //FileImage(File(widget.photoPath)),
-              //colorFilter: ColorFilter.mode(
-              //    Colors.black.withOpacity(0.4), BlendMode.srcIn)),
-              ),
+            fit: BoxFit.fill,
+            image: FileImage(File(widget.photoPath)),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.4), BlendMode.srcIn),
+          ),
           borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: <Widget>[
