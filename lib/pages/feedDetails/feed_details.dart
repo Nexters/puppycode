@@ -34,6 +34,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     _fetchFeedDetails(Get.parameters['id']);
   }
 
+  void refetchData() {
+    _fetchFeedDetails(Get.parameters['id']);
+  }
+
   Future<void> _fetchFeedDetails(id) async {
     try {
       final item = await HttpService.getOne('walk-logs/$id');
@@ -131,6 +135,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                 Row(
                   children: [
                     FeedReactionButton(
+                      refetch: refetchData,
                       comments: feed!.comments,
                       reactions: feed!.reactions,
                     ),
@@ -154,8 +159,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 class FeedReactionButton extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
+  final Function refetch;
 
   const FeedReactionButton({
+    required this.refetch,
     required this.comments,
     required this.reactions,
     super.key,
@@ -166,8 +173,11 @@ class FeedReactionButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        sharedModalBottomSheet(context,
-            ReactionContents(comments: comments, reactions: reactions), null,
+        sharedModalBottomSheet(
+            context,
+            ReactionContents(
+                comments: comments, reactions: reactions, refetch: refetch),
+            null,
             height: 640);
       },
       child: Row(

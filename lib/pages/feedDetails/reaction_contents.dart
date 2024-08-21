@@ -13,9 +13,11 @@ import 'package:puppycode/shared/typography/body.dart';
 class ReactionContents extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
+  final Function refetch;
 
   ReactionContents({
     super.key,
+    required this.refetch,
     required this.comments,
     required this.reactions,
   });
@@ -85,6 +87,7 @@ class ReactionContents extends StatelessWidget {
                   children: [
                     for (var comment in comments)
                       ReactionCommentListItem(
+                        refetch: refetch,
                         commentId: comment.id,
                         userName: comment.writerName,
                         comment: comment.content,

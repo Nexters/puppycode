@@ -8,6 +8,7 @@ import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
 class ReactionCommentListItem extends StatelessWidget {
+  final Function refetch;
   final int commentId;
   final String userName;
   final String comment;
@@ -21,11 +22,15 @@ class ReactionCommentListItem extends StatelessWidget {
     required this.comment,
     required this.profileUrl,
     required this.isFeedWriter,
+    required this.refetch,
   });
 
   Future<void> _deleteComment(id) async {
     try {
-      await HttpService.delete('walk-logs/comments/$id');
+      await HttpService.delete(
+        'walk-logs/comments/$id',
+        onDelete: () => {refetch(), Get.back()},
+      );
     } catch (error) {
       print('delete comment erorr: $error');
     }

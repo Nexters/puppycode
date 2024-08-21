@@ -173,7 +173,7 @@ class HttpService {
   }
 
   static Future<Map<String, dynamic>> delete(String endPoint,
-      {Map<String, dynamic>? params}) async {
+      {Map<String, dynamic>? params, VoidCallback? onDelete}) async {
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
 
     http.Response res = await http.delete(url, headers: {
@@ -182,7 +182,7 @@ class HttpService {
     });
 
     if (res.statusCode == 204) {
-      Get.back(); // 홈으로 보낼까요 ? ^^
+      if (onDelete != null) onDelete();
       return {};
     } else {
       throw res.statusCode;
