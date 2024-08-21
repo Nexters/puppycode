@@ -71,7 +71,7 @@ class _CalendarPageState extends State<CalendarPage> {
               },
               mainText: '친구의 산책 소식이 도착했어요',
               subText: '오늘은 어떤 산책이었을지 확인해볼까요?',
-              iconName: 'folded_note',
+              iconName: 'news',
             ),
             const SizedBox(height: 30),
             CalendarTable(

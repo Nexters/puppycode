@@ -43,9 +43,12 @@ class SharedBanner extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: SvgPicture.asset(
-                'assets/icons/$iconName.svg',
-                width: 48,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SvgPicture.asset(
+                  'assets/icons/$iconName.svg',
+                  width: 48,
+                ),
               ),
             ),
             const SizedBox(width: 10),
