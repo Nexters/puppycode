@@ -8,7 +8,7 @@ class Feed {
     title = logItem['title'];
     episode = logItem['content'];
     walkTime = logItem['walkTime'];
-    writerId = logItem['writerId'] ?? 0;
+    writerId = logItem['writerId'];
     name = logItem['writerNickname'];
     profileUrl = logItem['writerProfileUrl'];
     comments = (logItem['comments'] as List<dynamic>?)
@@ -21,7 +21,7 @@ class Feed {
         [];
     createdAt = logItem['createdAt'];
     formattedCreatedAt = _formatCreatedAt(createdAt);
-    isWriter = logItem['me'] ?? false;
+    isWriter = logItem['me'];
   }
 
   static String _formatCreatedAt(String dateString) {
@@ -47,12 +47,12 @@ class Feed {
   late String title;
   late String episode;
   late String walkTime;
-  late int writerId;
+  int? writerId;
   late String name;
   String? profileUrl;
   List<Comment> comments = [];
   List<Reaction> reactions = [];
   late String createdAt;
   late String formattedCreatedAt;
-  late bool isWriter;
+  bool? isWriter;
 }
