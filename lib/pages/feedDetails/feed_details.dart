@@ -64,7 +64,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          if (feed!.isWriter)
+          if (feed!.isWriter!)
             CupertinoActionSheetAction(
               onPressed: () {
                 Get.back();
@@ -80,12 +80,12 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              feed!.isWriter
+              feed!.isWriter!
                   ? _deleteFeed(Get.parameters['id'])
                   : onReportFeed();
             },
             child: Body2(
-                value: feed!.isWriter ? '삭제하기' : '신고하기',
+                value: feed!.isWriter! ? '삭제하기' : '신고하기',
                 color: ThemeColor.error),
           ),
         ],
