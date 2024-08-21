@@ -228,6 +228,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
+                  destination: '/my',
+                  arguments: 'my',
                 ),
                 SettingListItem(
                   title: '산책 캘린더',
@@ -236,6 +238,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     Icons.arrow_forward_ios,
                     size: 16,
                   ),
+                  destination: '/calendar',
                 )
               ], title: ''),
           ],
