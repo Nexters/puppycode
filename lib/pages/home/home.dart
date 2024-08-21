@@ -246,7 +246,9 @@ class HomeTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
     final user = userController.user.value;
-    final city = user!.location;
+
+    if (user == null) return Container();
+    final city = user.location;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
