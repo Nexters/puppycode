@@ -24,9 +24,8 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
-  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
-
   Feed? feed;
+  String? tmpLink;
 
   @override
   void initState() {
@@ -46,6 +45,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
       setState(() {
         feed = Feed(item);
+        tmpLink = "http://175.106.99.165/feed/${feed!.id}"; // 이 경로가 맞나..
       });
       // print(feedItems);
     } catch (error) {
@@ -80,7 +80,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Share.share(tmpLink); // 무엇을 공유하지요? => 링크 ?
+              Share.share(tmpLink!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?
               Get.back();
             },
             child: Body2(value: '공유하기', color: ThemeColor.blue),
