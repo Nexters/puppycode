@@ -219,28 +219,42 @@ class _UserInfoPageState extends State<UserInfoPage> {
               ),
             ),
             const SizedBox(height: 32),
-            if (!_isEditing)
+            if (!_isEditing) ...[
               const SettingList(lists: [
                 SettingListItem(
                   title: '산책일지',
-                  widget: Icon(
-                    color: Color.fromRGBO(128, 128, 128, 0.55),
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                  ),
                   destination: '/my',
                   arguments: 'my',
                 ),
                 SettingListItem(
                   title: '산책 캘린더',
-                  widget: Icon(
-                    color: Color.fromRGBO(128, 128, 128, 0.55),
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                  ),
                   destination: '/calendar',
                 )
               ], title: ''),
+              Expanded(child: Container()),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: Body4(
+                      value: '로그아웃',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  GestureDetector(
+                    child: Body4(
+                      value: '회원탈퇴',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 57),
+                ],
+              ),
+            ],
           ],
         ),
       ),
