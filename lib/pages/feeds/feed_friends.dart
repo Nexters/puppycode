@@ -124,7 +124,7 @@ class FeedUserStatus extends StatelessWidget {
   _onFriendClick() async {
     if (hasWalked) return;
     try {
-      await HttpService.post("push/users/" + id.toString(), body: {});
+      await HttpService.post('push/users/' + id.toString(), body: {});
     } on FormatException {
       // ignore
     }catch (error) {
