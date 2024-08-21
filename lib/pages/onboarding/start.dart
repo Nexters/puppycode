@@ -7,7 +7,7 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String name = '코코';
+    String name = '';
     if (Get.arguments != null) {
       name = Get.arguments['name'] ?? '';
     }
