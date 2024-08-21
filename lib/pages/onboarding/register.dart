@@ -123,7 +123,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         leftOptions: AppBarLeft(),
       ),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -176,7 +176,7 @@ class GuideText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(0, 0, 0, 64),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 46),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

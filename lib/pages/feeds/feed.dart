@@ -30,7 +30,7 @@ class _FeedScreenState extends State<FeedScreen> {
         ),
         Expanded(
           child: Container(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: FeedListView(focusedUserId: focusedUserId)),
         )
       ],

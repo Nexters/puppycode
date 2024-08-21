@@ -206,7 +206,7 @@ class _CalendarTableState extends State<CalendarTable> {
                     child: Body4(
                         value: day,
                         color: ThemeColor.gray4,
-                        fontWeight: FontWeight.w500))))
+                        fontWeight: FontWeight.w400))))
             .toList());
   }
 

@@ -98,7 +98,10 @@ class _FeedItemState extends State<FeedItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 8),
-                  Body4(value: widget.item.title),
+                  Body4(
+                    value: widget.item.title,
+                    fontWeight: FontWeight.w600,
+                  ),
                   const SizedBox(height: 2),
                   Caption(value: widget.item.formattedCreatedAt)
                 ],
