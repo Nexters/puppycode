@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -41,11 +42,12 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
         setState(() {
           errorMessage = '';
         });
+        Get.toNamed('/friends');
       });
     } catch (error) {
       print('createFriend error: $error');
       setState(() {
-        errorMessage = '잘못된 코드입니다!';
+        errorMessage = '잘못된 코드입니다';
       });
     }
   }
@@ -57,7 +59,7 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
       _createFriend(code);
     } else {
       setState(() {
-        errorMessage = '잘못된 코드입니다~';
+        errorMessage = '잘못된 코드입니다';
       });
     }
   }
