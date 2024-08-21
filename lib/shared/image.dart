@@ -59,6 +59,12 @@ class UserNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget defaultImage = Image.asset(
+      'assets/images/profile.png',
+      width: width,
+      height: height,
+      fit: fit,
+    );
     return url.isNotEmpty
         ? Image.network(
             url,
@@ -67,12 +73,11 @@ class UserNetworkImage extends StatelessWidget {
             width: width,
             colorBlendMode: BlendMode.colorDodge,
             color: isDimmed ? ThemeColor.white.withOpacity(0.4) : null,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return defaultImage;
+            },
           )
-        : Image.asset(
-            'assets/images/profile.png',
-            width: width,
-            height: height,
-            fit: fit,
-          );
+        : defaultImage;
   }
 }
