@@ -35,7 +35,9 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
   }
 
   void refetchData() {
-    _fetchFeedDetails(Get.parameters['id']);
+    _fetchFeedDetails(Get.parameters['id']).then((_) {
+      print('fetch 성공');
+    });
   }
 
   Future<void> _fetchFeedDetails(id) async {
@@ -139,6 +141,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                       refetch: refetchData,
                       comments: feed!.comments,
                       reactions: feed!.reactions,
+                      walkLogId: feed!.id.toString(),
                     ),
                   ],
                 ),
@@ -161,11 +164,13 @@ class FeedReactionButton extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
   final Function refetch;
+  final String walkLogId;
 
   const FeedReactionButton({
     required this.refetch,
     required this.comments,
     required this.reactions,
+    required this.walkLogId,
     super.key,
   });
 
@@ -177,7 +182,11 @@ class FeedReactionButton extends StatelessWidget {
         sharedModalBottomSheet(
             context,
             ReactionContents(
-                comments: comments, reactions: reactions, refetch: refetch),
+              comments: comments,
+              reactions: reactions,
+              refetch: refetch,
+              walkLogId: walkLogId,
+            ),
             null,
             height: 640);
       },
