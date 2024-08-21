@@ -7,6 +7,7 @@ import 'package:puppycode/shared/photo_item.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/user.dart';
 
 class FeedWritePage extends StatefulWidget {
   const FeedWritePage({super.key});
@@ -24,6 +25,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   List<String> options = [];
   TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
+  final userController = Get.find<UserController>();
   late String photoPath;
   late String from;
 
@@ -95,8 +97,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       isLoading = false;
       if (result['success'] == true) {
+        await userController.refreshData();
         Get.offAndToNamed('/create/success',
-            arguments: {from: from, 'feedId': '1'});
+            arguments: {from: from, 'feedId': result['data']['id'] ?? ''});
       } else {
         isError = true;
       }
@@ -132,6 +135,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                           photoPath: photoPath,
                           titleController: titleController,
                           onChange: onTitleChange,
+                          name: userController.user.value!.nickname,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

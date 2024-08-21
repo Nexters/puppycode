@@ -1,16 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 class PhotoItem extends StatefulWidget {
   const PhotoItem(
       {super.key,
       required this.photoPath,
+      required this.name,
       required this.titleController,
       required this.onChange});
 
   final String photoPath;
+  final String name;
   final TextEditingController titleController;
   final VoidCallback onChange;
 
@@ -68,10 +71,10 @@ class _PhotoItemState extends State<PhotoItem> {
                     onChanged: (text) => {widget.onChange()},
                     controller: widget.titleController,
                     focusNode: focusNode,
-                    decoration: const InputDecoration(
-                        hintText: '개떡아 오늘 산책은 어땠어?',
+                    decoration: InputDecoration(
+                        hintText: '${widget.name}야 오늘 산책은 어땠어?',
                         hintStyle: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 0.4))),
+                            color: ThemeColor.white.withOpacity(0.4))),
                     style: HeadTextStyle.getH3Style(color: Colors.white),
                   ),
                 )),
