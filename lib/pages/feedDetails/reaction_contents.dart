@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/apis/models/reaction.dart';
@@ -12,9 +13,11 @@ import 'package:puppycode/shared/typography/body.dart';
 class ReactionContents extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
+  final Function refetch;
 
   ReactionContents({
     super.key,
+    required this.refetch,
     required this.comments,
     required this.reactions,
   });
@@ -62,6 +65,17 @@ class ReactionContents extends StatelessWidget {
               Body3(value: comments.length.toString(), color: ThemeColor.gray4)
             ],
           ),
+          if (comments.isEmpty)
+            Column(
+              children: [
+                const SizedBox(height: 20), // 가운데 못해..~
+                Image.asset(
+                  'assets/images/comment_nothing.png',
+                  width: 120,
+                ),
+                const Body3(value: '첫 댓글을 달아보세요!'),
+              ],
+            ),
           const SizedBox(height: 4),
           Expanded(
             child: RawScrollbar(
@@ -73,9 +87,12 @@ class ReactionContents extends StatelessWidget {
                   children: [
                     for (var comment in comments)
                       ReactionCommentListItem(
+                        refetch: refetch,
+                        commentId: comment.id,
                         userName: comment.writerName,
                         comment: comment.content,
                         profileUrl: comment.writerProfileUrl,
+                        isFeedWriter: comment.isWriter,
                       ),
                   ],
                 ),

@@ -25,13 +25,16 @@ class FeedDetailPage extends StatefulWidget {
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
   String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
-  bool isWriter = false; // ? 서버에서 오는 값이 없어요 작성자 닉네임밖에 안왕
 
   Feed? feed;
 
   @override
   void initState() {
     super.initState();
+    _fetchFeedDetails(Get.parameters['id']);
+  }
+
+  void refetchData() {
     _fetchFeedDetails(Get.parameters['id']);
   }
 
@@ -42,9 +45,23 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       setState(() {
         feed = Feed(item);
       });
+      // print(feedItems);
     } catch (error) {
       print('error: $error');
     }
+  }
+
+  Future<void> _deleteFeed(id) async {
+    try {
+      await HttpService.delete('walk-logs/$id',
+          onDelete: () => Get.offAndToNamed('/'));
+    } catch (error) {
+      print('delete Feed erorr: $error');
+    }
+  }
+
+  void onReportFeed() {
+    // TODO : 신고하기
   }
 
   void _showActionSheet(BuildContext context) {
@@ -52,7 +69,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          if (isWriter)
+          if (feed!.isWriter!)
             CupertinoActionSheetAction(
               onPressed: () {
                 Get.back();
@@ -68,10 +85,13 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Get.back();
+              feed!.isWriter!
+                  ? _deleteFeed(Get.parameters['id'])
+                  : onReportFeed();
             },
             child: Body2(
-                value: isWriter ? '삭제하기' : '신고하기', color: ThemeColor.error),
+                value: feed!.isWriter! ? '삭제하기' : '신고하기',
+                color: ThemeColor.error),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -81,6 +101,11 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             child: Body2(value: '취소하기', color: ThemeColor.blue)),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -111,6 +136,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                 Row(
                   children: [
                     FeedReactionButton(
+                      refetch: refetchData,
                       comments: feed!.comments,
                       reactions: feed!.reactions,
                     ),
@@ -134,8 +160,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 class FeedReactionButton extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
+  final Function refetch;
 
   const FeedReactionButton({
+    required this.refetch,
     required this.comments,
     required this.reactions,
     super.key,
@@ -146,8 +174,11 @@ class FeedReactionButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        sharedModalBottomSheet(context,
-            ReactionContents(comments: comments, reactions: reactions), null,
+        sharedModalBottomSheet(
+            context,
+            ReactionContents(
+                comments: comments, reactions: reactions, refetch: refetch),
+            null,
             height: 640);
       },
       child: Row(

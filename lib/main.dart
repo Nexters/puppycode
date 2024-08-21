@@ -35,7 +35,7 @@ void main() async {
 Future<String?> initializeNotification() async {
   await Firebase.initializeApp();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-  String? _fcmToken = await messaging.getToken();
+  String? fcmToken = await messaging.getToken();
 
   if (Platform.isIOS) {
     await messaging.requestPermission();
@@ -48,5 +48,5 @@ Future<String?> initializeNotification() async {
     sound: true,
   );
 
-  return _fcmToken;
+  return fcmToken;
 }

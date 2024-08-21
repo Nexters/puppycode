@@ -1,24 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
 class ReactionCommentListItem extends StatelessWidget {
+  final Function refetch;
+  final int commentId;
   final String userName;
   final String comment;
   final String profileUrl;
-  final bool isFeedWriter; // api 연결 후 수정
+  final bool isFeedWriter;
 
   const ReactionCommentListItem({
     super.key,
+    required this.commentId,
     required this.userName,
     required this.comment,
     required this.profileUrl,
-    this.isFeedWriter = false,
+    required this.isFeedWriter,
+    required this.refetch,
   });
+
+  Future<void> _deleteComment(id) async {
+    try {
+      await HttpService.delete(
+        'walk-logs/comments/$id',
+        onDelete: () => {refetch(), Get.back()},
+      );
+    } catch (error) {
+      print('delete comment erorr: $error');
+    }
+  }
+
+  void onReportComment() {
+    // TODO: 신고하기
+  }
 
   void _showActionSheet(BuildContext context) {
     showCupertinoModalPopup(
@@ -27,6 +47,7 @@ class ReactionCommentListItem extends StatelessWidget {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
+              isFeedWriter ? _deleteComment(commentId) : onReportComment();
               Get.back();
             },
             child: Body2(

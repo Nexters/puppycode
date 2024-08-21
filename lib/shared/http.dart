@@ -100,7 +100,9 @@ class HttpService {
   }
 
   static Future<Map<String, dynamic>> patch(String endPoint,
-      {Map<String, dynamic>? params, Map<String, dynamic>? body}) async {
+      {Map<String, dynamic>? params,
+      Map<String, dynamic>? body,
+      VoidCallback? onPatch}) async {
     if (token.isEmpty) await setToken();
 
     final url = Uri.http(baseUrl, '/api/$endPoint', params);
@@ -113,6 +115,7 @@ class HttpService {
     );
     if (res.statusCode == 200) {
       Map<String, dynamic> result = json.decode(utf8.decode(res.bodyBytes));
+      if (onPatch != null) onPatch();
       return result;
     } else {
       throw res.statusCode;
@@ -166,6 +169,23 @@ class HttpService {
     } else {
       _handleError(res);
       throw 'err';
+    }
+  }
+
+  static Future<Map<String, dynamic>> delete(String endPoint,
+      {Map<String, dynamic>? params, VoidCallback? onDelete}) async {
+    final url = Uri.http(baseUrl, '/api/$endPoint', params);
+
+    http.Response res = await http.delete(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    });
+
+    if (res.statusCode == 204) {
+      if (onDelete != null) onDelete();
+      return {};
+    } else {
+      throw res.statusCode;
     }
   }
 }

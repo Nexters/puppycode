@@ -54,6 +54,7 @@ class FeedListViewState extends State<FeedListView> {
         _pagingController.appendPage(feedItems, nextCursor);
       }
     } catch (error) {
+      print(error);
       _pagingController.error = error;
     }
   }
