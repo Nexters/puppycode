@@ -150,7 +150,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: rightOptions!.labelColor),
               )
             : Wrap(
-                spacing: 16,
+                spacing: 20,
                 children: rightOptions!.icons!
                     .map((asset) => GestureDetector(
                           onTap: asset.onTap,

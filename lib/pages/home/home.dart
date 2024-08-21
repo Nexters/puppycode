@@ -27,12 +27,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
       child: const Column(
         mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           HomeTitle(),
-          SizedBox(height: 20),
+          SizedBox(height: 40),
           Expanded(child: HomeContent()),
         ],
       ),
@@ -65,8 +66,13 @@ class HomeContent extends StatelessWidget {
 
     return Stack(
       children: [
-        SharedNetworkImage(
-            url: user?.mainScreenImageUrl ?? 'assets/images/empty'),
+        Align(
+          alignment: Alignment.topCenter,
+          child: SharedNetworkImage(
+            url: user?.mainScreenImageUrl ?? 'assets/images/empty',
+            width: 288,
+          ),
+        ),
         Positioned(
             left: 0,
             right: 0,
@@ -199,7 +205,10 @@ class _WeatherGuideState extends State<WeatherGuide> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Body3(value: '나갈 때 물통을 챙겨주세요💦', bold: true),
+                Body2(
+                    value: '나갈 때 물통을 챙겨주세요💦',
+                    bold: true,
+                    color: ThemeColor.gray5),
                 Body4(
                   value: '${locationNames[locationKey]} $temp℃',
                   color: ThemeColor.gray4,
@@ -242,7 +251,7 @@ class HomeTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Head3(value: _generateTitle(user.walkDone)),
+        Head2(value: _generateTitle(user.walkDone)),
         const SizedBox(height: 12),
         WeatherGuide(city: city),
       ],

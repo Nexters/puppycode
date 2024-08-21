@@ -41,7 +41,7 @@ class DefaultTextButton extends TextButton {
     Widget? child,
     Color? color,
   }) : super(
-          onPressed: onPressed,
+          onPressed: disabled == true ? null : onPressed,
           style: style ?? getStyle(disabled: disabled),
           child: child ??
               Body1(

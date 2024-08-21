@@ -92,21 +92,26 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       floatingActionButton:
           _currentTab == NavTab.feed ? const WriteFloatingButton() : null,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 5.5),
         decoration: BoxDecoration(
-            border: Border(top: BorderSide(color: ThemeColor.gray2, width: 1))),
-        child: BottomNavigationBar(
-          currentIndex: _allowedRoutes.indexOf(_currentTab),
-          onTap: (index) => _changeTab(index),
-          selectedItemColor: ThemeColor.gray6,
-          selectedLabelStyle: labelStyle,
-          unselectedItemColor: ThemeColor.gray4,
-          unselectedLabelStyle: labelStyle,
-          items: [
-            _createBottomNavigationBarItem('feed', '산책피드'),
-            _createBottomNavigationBarItem('home', '홈'),
-            _createBottomNavigationBarItem('diary', '내 일지'),
-          ],
+            borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(20), right: Radius.circular(20)),
+            border: Border.all(color: ThemeColor.gray2, width: 1)),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(20), right: Radius.circular(20)),
+          child: BottomNavigationBar(
+            currentIndex: _allowedRoutes.indexOf(_currentTab),
+            onTap: (index) => _changeTab(index),
+            selectedItemColor: ThemeColor.gray6,
+            selectedLabelStyle: labelStyle,
+            unselectedItemColor: ThemeColor.gray4,
+            unselectedLabelStyle: labelStyle,
+            items: [
+              _createBottomNavigationBarItem('feed', '산책피드'),
+              _createBottomNavigationBarItem('home', '홈'),
+              _createBottomNavigationBarItem('diary', '내 일지'),
+            ],
+          ),
         ),
       ),
     );
