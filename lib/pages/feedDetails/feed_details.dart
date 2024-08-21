@@ -53,7 +53,8 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   Future<void> _deleteFeed(id) async {
     try {
-      await HttpService.delete('walk-logs/$id');
+      await HttpService.delete('walk-logs/$id',
+          onDelete: () => Get.offAndToNamed('/'));
     } catch (error) {
       print('delete Feed erorr: $error');
     }
