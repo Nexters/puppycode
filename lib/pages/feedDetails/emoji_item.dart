@@ -20,7 +20,7 @@ class ReactionEmojiList extends StatefulWidget {
 }
 
 class _ReactionEmojiListState extends State<ReactionEmojiList> {
-  bool isEmojiPosted = false;
+  bool hasMyEmoji = false;
 
   @override
   void initState() {
@@ -33,14 +33,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
     final user = userController.user.value;
 
     //내 유저 아이디가 reactions.writerId랑 같은지 확인
-    for (var reaction in widget.reactions) {
-      if (reaction.writerId == user!.id) {
-        setState(() {
-          isEmojiPosted = true;
-        });
-        break;
-      }
-    }
+    hasMyEmoji = widget.reactions.any((item) => item.writerId == user!.id);
   }
 
   final GlobalKey emojiKey = GlobalKey();
@@ -123,7 +116,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              if (!isEmojiPosted)
+              if (!hasMyEmoji)
                 Row(
                   children: [
                     GestureDetector(
