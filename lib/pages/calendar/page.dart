@@ -254,18 +254,22 @@ class _CalendarTableState extends State<CalendarTable> {
           decoration: BoxDecoration(
               color: isToday ? ThemeColor.primary : ThemeColor.gray2,
               borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                  image: NetworkImage(dateFeedItem.photoUrl),
-                  fit: BoxFit.cover)),
+              image: isToday
+                  ? null
+                  : DecorationImage(
+                      image: NetworkImage(dateFeedItem.photoUrl),
+                      fit: BoxFit.cover)),
           child: Center(
             child: Body4(
               value: cellDate.toString(),
               fontWeight: FontWeight.w500,
               color: ThemeColor.white,
-              textShadow: Shadow(
-                blurRadius: 5,
-                color: ThemeColor.black.withOpacity(0.3),
-              ),
+              textShadow: isToday
+                  ? null
+                  : Shadow(
+                      blurRadius: 5,
+                      color: ThemeColor.black.withOpacity(0.3),
+                    ),
             ),
           ),
         ),
