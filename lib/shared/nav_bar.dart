@@ -31,7 +31,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
 
   final Map<NavTab, Widget> _pages = {
     NavTab.feed: const FeedScreen(),
-    NavTab.home: const HomePage(),
+    NavTab.home: HomePage(),
     NavTab.my: const MyFeedScreen(),
   };
 

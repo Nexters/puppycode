@@ -80,6 +80,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
     String iconAsset = leftOptions?.iconType != null
         ? leftIconAsset[leftOptions?.iconType]!
         : '';
+    bool isLogo = leftOptions?.iconType == LeftIconType.LOGO;
     return Positioned(
       left: 0,
       height: 50,
@@ -93,7 +94,8 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
             : GestureDetector(
                 onTap: leftOptions?.onTap ?? () => {Get.back()},
                 child: SvgPicture.asset(iconAsset,
-                    colorFilter: leftOptions?.iconType == LeftIconType.LOGO
+                    width: isLogo ? 116 : null,
+                    colorFilter: isLogo
                         ? null
                         : ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn)),
               ),

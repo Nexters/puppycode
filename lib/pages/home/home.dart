@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:puppycode/apis/models/user.dart';
 import 'package:puppycode/apis/models/weather.dart';
 import 'package:puppycode/pages/onboarding/register.dart';
 import 'package:puppycode/shared/http.dart';
@@ -22,20 +23,26 @@ bool isToday(DateTime date) {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+  final userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-      child: const Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          HomeTitle(),
-          SizedBox(height: 40),
-          Expanded(child: HomeContent()),
-        ],
+    return GetX<UserController>(
+      builder: (controller) => Container(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            HomeTitle(user: controller.user.value),
+            const SizedBox(height: 40),
+            Expanded(
+                child: HomeContent(
+              user: controller.user.value,
+            )),
+          ],
+        ),
       ),
     );
   }
@@ -44,7 +51,10 @@ class HomePage extends StatelessWidget {
 class HomeContent extends StatelessWidget {
   const HomeContent({
     super.key,
+    this.user,
   });
+
+  final User? user;
 
   Future getImage(ImageSource imageSource) async {
     final ImagePicker picker = ImagePicker();
@@ -60,9 +70,16 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.find<UserController>();
-    final user = userController.user.value;
-    final hasWalkDone = user?.walkDone == true;
+    if (user == null) {
+      return Center(
+        child: Head3(
+          value: '오늘의 데이터를 가져오고 있어요!',
+          color: ThemeColor.gray3,
+        ),
+      );
+    }
+
+    final hasWalkDone = user!.walkDone == true;
 
     return Stack(
       children: [
@@ -225,7 +242,10 @@ class _WeatherGuideState extends State<WeatherGuide> {
 class HomeTitle extends StatelessWidget {
   const HomeTitle({
     super.key,
+    this.user,
   });
+
+  final User? user;
 
   int calculateHoursUntilMidnight() {
     DateTime now = DateTime.now();
@@ -244,16 +264,13 @@ class HomeTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.find<UserController>();
-    final user = userController.user.value;
-
     if (user == null) return Container();
-    final city = user.location;
+    final city = user!.location;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Head2(value: _generateTitle(user.walkDone)),
+        Head2(value: _generateTitle(user!.walkDone)),
         const SizedBox(height: 12),
         WeatherGuide(city: city),
       ],
