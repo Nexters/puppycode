@@ -36,9 +36,18 @@ class _FriendsListPageState extends State<FriendsListPage> {
         friendList = friends;
       });
 
-      print(friendList![0].profileUrl);
+      //print(friendList![0].profileUrl);
     } catch (error) {
       print(error);
+    }
+  }
+
+  Future<void> _deleteFriend(int friendUserId) async {
+    try {
+      await HttpService.delete('friends/$friendUserId');
+      _fetchFriends();
+    } catch (error) {
+      print('delete friend error: $error');
     }
   }
 
@@ -60,8 +69,11 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   mainText: '친구 코드 입력하기',
                   subText: '함께 산책 공유할 친구를 추가해 보세요',
                   iconName: 'code',
-                  onClick: () => {
-                    Get.toNamed('/friends/code'),
+                  onClick: () async {
+                    final result = await Get.toNamed('/friends/code');
+                    if (result == true) {
+                      _fetchFriends();
+                    }
                   },
                 ),
               ],
@@ -76,6 +88,9 @@ class _FriendsListPageState extends State<FriendsListPage> {
                         FriendsList(
                           userName: friend.name,
                           profileImageUrl: friend.profileUrl,
+                          onDelete: () {
+                            _deleteFriend(friend.id);
+                          },
                         ),
                     ],
                   ),
@@ -110,10 +125,12 @@ class _FriendsListPageState extends State<FriendsListPage> {
 class FriendsList extends StatelessWidget {
   final String userName;
   final String profileImageUrl;
+  final VoidCallback onDelete;
 
   const FriendsList({
     required this.userName,
     required this.profileImageUrl,
+    required this.onDelete,
     super.key,
   });
 
@@ -131,6 +148,7 @@ class FriendsList extends StatelessWidget {
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () {
+                    onDelete();
                     Get.back();
                   },
                   isDestructiveAction: true,
@@ -175,17 +193,17 @@ class FriendsList extends StatelessWidget {
               Body1(value: userName, bold: true),
             ],
           ),
-          IconButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               _showActionSheet(context);
             },
-            icon: SvgPicture.asset(
-              'assets/icons/details.svg',
+            child: SvgPicture.asset(
+              'assets/icons/more.svg',
               colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
               height: 24,
               width: 24,
             ),
-          )
+          ),
         ],
       ),
     );

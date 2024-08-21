@@ -56,12 +56,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
   //프로필 변경
   void _editProfile() async {
     try {
-      Map<String, dynamic> res = await HttpService.patch('users/nickname',
+      await HttpService.patch('users/nickname',
           params: {'nickname': _editingController.text},
           onPatch: () => userController.refreshData());
 
       if (_image != null) {
-        Map<String, dynamic> result = await HttpService.patchProfileImage(
+        await HttpService.patchProfileImage(
             'users/profile-image', File(_image!.path),
             onPatch: () => userController.refreshData());
       }

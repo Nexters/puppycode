@@ -42,7 +42,7 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
         setState(() {
           errorMessage = '';
         });
-        Get.toNamed('/friends');
+        Get.back(result: true);
       });
     } catch (error) {
       print('createFriend error: $error');
