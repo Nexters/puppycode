@@ -8,6 +8,7 @@ import 'package:puppycode/apis/models/user.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -134,21 +135,20 @@ class _UserInfoPageState extends State<UserInfoPage> {
               child: Stack(
                 children: [
                   ClipOval(
-                    child: _image != null
-                        ? SizedBox(
-                            height: 128,
-                            width: 128,
-                            child: Image.file(
+                      child: _image != null
+                          ? SizedBox(
+                              height: 128,
+                              width: 128,
+                              child: Image.file(
+                                fit: BoxFit.cover,
+                                File(_image!.path),
+                              ),
+                            )
+                          : UserNetworkImage(
+                              url: profileImageUrl,
                               fit: BoxFit.cover,
-                              File(_image!.path),
-                            ),
-                          )
-                        : profileImageUrl.isNotEmpty
-                            ? Image.network(profileImageUrl,
-                                fit: BoxFit.cover, height: 128, width: 128)
-                            : Image.asset('assets/images/profile.png',
-                                fit: BoxFit.cover, height: 128, width: 128),
-                  ),
+                              height: 128,
+                              width: 128)),
                   if (_isEditing)
                     Positioned(
                       bottom: 0,
