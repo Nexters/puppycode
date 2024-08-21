@@ -60,11 +60,10 @@ class DefaultCloseButton extends DefaultTextButton {
     required super.onPressed,
   }) : super(
             text: '닫기',
-            style: TextButtonStyle.getStyle(
-                backgroundColor: const Color(0xFFE4EAEE)),
+            style: TextButtonStyle.getStyle(backgroundColor: ThemeColor.gray2),
             child: const Body1(
               value: '닫기',
-              color: Color(0xFF72757A),
+              bold: true,
             ));
 }
 
