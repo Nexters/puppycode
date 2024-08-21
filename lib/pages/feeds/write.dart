@@ -37,8 +37,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
   @override
   void initState() {
     super.initState();
-    photoPath = Get.arguments['photoPath'];
-    from = Get.arguments['from'];
+    photoPath = ''; // Get.arguments['photoPath'];
+    from = ''; //Get.arguments['from'];
 
     var options = [];
     for (int i = 0; i < _kOptionCount; i++) {
@@ -132,11 +132,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
                     child: Column(
                       children: [
                         PhotoItem(
-                          photoPath: photoPath,
-                          titleController: titleController,
-                          onChange: onTitleChange,
-                          name: userController.user.value!.nickname,
-                        ),
+                            photoPath: photoPath,
+                            titleController: titleController,
+                            onChange: onTitleChange,
+                            name: '코코' // userController.user.value!.nickname,
+                            ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.max,

@@ -84,7 +84,13 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       appBar: SharedAppBar(
         leftOptions: _getAppBarLeft(),
         rightOptions: AppBarRight(icons: [
-          RightIcon(name: 'calendar', onTap: () => {Get.toNamed('/calendar')}),
+          RightIcon(
+              name: _currentTab == NavTab.feed ? 'friend' : 'calendar',
+              onTap: () => {
+                    Get.toNamed(_currentTab == NavTab.feed
+                        ? '/friends/code'
+                        : '/calendar')
+                  }),
           RightIcon(name: 'setting', onTap: () => {Get.toNamed('/settings')})
         ]),
       ),
