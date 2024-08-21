@@ -25,6 +25,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   List<String> options = [];
   TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
+  final userController = Get.find<UserController>();
   late String photoPath;
   late String from;
 
@@ -96,7 +97,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       isLoading = false;
       if (result['success'] == true) {
-        var userController = Get.find<UserController>();
         await userController.refreshData();
         Get.offAndToNamed('/create/success',
             arguments: {from: from, 'feedId': result['data']['id'] ?? ''});
@@ -135,6 +135,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                           photoPath: photoPath,
                           titleController: titleController,
                           onChange: onTitleChange,
+                          name: userController.user.value!.nickname,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
