@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
@@ -13,6 +12,7 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:puppycode/shared/user.dart';
 
 enum LOCATION {
   SEOUL,
@@ -77,6 +77,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late String authToken;
   late String provider;
   late String? profileUrl;
+  final userController = Get.find<UserController>();
 
   @override
   void initState() {
@@ -107,9 +108,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
       const storage = FlutterSecureStorage();
       await storage.write(key: 'authToken', value: token);
-      Get.to(() => const StartPage());
+      await userController.refreshData();
+      Get.toNamed('/start', arguments: {'name': _nameController.text});
     } catch (err) {
-      print(err);
+      return;
     }
   }
 
@@ -251,15 +253,14 @@ class _LocationInputWithBottomSheetState
                 )));
   }
 
+  void onComplete() {
+    setState(() {
+      _isFocused = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.value);
-    onComplete() {
-      setState(() {
-        _isFocused = false;
-      });
-    }
-
     return GestureDetector(
         onTap: () => {
               setState(() {

@@ -39,6 +39,7 @@ class DefaultTextButton extends TextButton {
     bool? disabled,
     ButtonStyle? style,
     Widget? child,
+    Color? color,
   }) : super(
           onPressed: onPressed,
           style: style ?? getStyle(disabled: disabled),
@@ -46,6 +47,7 @@ class DefaultTextButton extends TextButton {
               Body1(
                 value: text,
                 bold: true,
+                color: color,
               ),
         );
 
