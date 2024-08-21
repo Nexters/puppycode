@@ -121,8 +121,15 @@ class FeedUserStatus extends StatelessWidget {
   final int? focusedUserId;
   final bool isMine;
 
-  _onFriendClick() {
+  _onFriendClick() async {
     if (hasWalked) return;
+    try {
+      await HttpService.post('push/users/' + id.toString(), body: {});
+    } on FormatException {
+      // ignore
+    }catch (error) {
+      print('push api erorr: $error');
+    }
   }
 
   @override
