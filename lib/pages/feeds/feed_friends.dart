@@ -151,13 +151,16 @@ class FeedUserStatus extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      profileImageUrl,
-                      fit: BoxFit.cover,
-                      colorBlendMode: BlendMode.colorDodge,
-                      color:
-                          isDimmed ? ThemeColor.white.withOpacity(0.4) : null,
-                    ),
+                    child: profileImageUrl.isNotEmpty
+                        ? Image.network(
+                            profileImageUrl,
+                            fit: BoxFit.cover,
+                            colorBlendMode: BlendMode.colorDodge,
+                            color: isDimmed
+                                ? ThemeColor.white.withOpacity(0.4)
+                                : null,
+                          )
+                        : Image.asset('assets/images/profile.png'),
                   ),
                 ),
                 if (isMine)
