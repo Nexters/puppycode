@@ -6,6 +6,8 @@ import 'package:puppycode/config.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:puppycode/shared/user.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -35,7 +37,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onLogin(String token) async {
+    final userController = Get.find<UserController>();
     await storage.write(key: 'authToken', value: token);
+    await userController.refreshData();
     Get.offAllNamed('/');
   }
 
@@ -105,26 +109,52 @@ class SignupButton extends StatelessWidget {
   final SignupType type;
   final void Function(String) onLogin;
 
-  void _login() async {
-    if (type != SignupType.kakao) return;
+  void _checkUserRegistration(String oauthIdentifier, String provider,
+      {Map<String, String>? additionalInfo}) async {
+    try {
+      var loginResult = await HttpService.getOne('/auth/login', params: {
+        'oauthIdentifier': oauthIdentifier,
+        'deviceToken': Config.FIREBASE_TOKEN
+      });
+      String token = loginResult['token'] ?? '';
+      if (token.isNotEmpty) onLogin(token);
+    } catch (err) {
+      Get.toNamed('/signup', arguments: {
+        'oAauthToken': oauthIdentifier,
+        'provider': provider,
+        ...?additionalInfo,
+      });
+    }
+  }
+
+  void _appleLogin() async {
+    try {
+      AuthorizationCredentialAppleID user =
+          await SignInWithApple.getAppleIDCredential(scopes: []);
+      if (user.userIdentifier == null) return;
+      _checkUserRegistration(user.userIdentifier!, 'APPLE');
+    } catch (err) {
+      return;
+    }
+  }
+
+  void _kakaoLogin() async {
     try {
       await UserApi.instance.loginWithKakaoTalk();
       var me = await UserApi.instance.me();
-      try {
-        var loginResult = await HttpService.getOne('/auth/login',
-            params: {'oauthIdentifier': me.id.toString()});
-        String token = loginResult['token'] ?? '';
-        if (token.isEmpty) return;
-        onLogin(token);
-      } catch (err) {
-        Get.toNamed('/signup', arguments: {
-          'oAauthToken': me.id.toString(),
-          'profileUrl': me.kakaoAccount?.profile?.profileImageUrl ?? '',
-          'provider': 'KAKAO'
-        });
-      }
+      _checkUserRegistration(me.id.toString(), 'KAKAO', additionalInfo: {
+        'profileUrl': me.kakaoAccount?.profile?.profileImageUrl ?? '',
+      });
     } catch (err) {
       //
+    }
+  }
+
+  void _login() async {
+    if (type == SignupType.apple) {
+      _appleLogin();
+    } else {
+      _kakaoLogin();
     }
   }
 
