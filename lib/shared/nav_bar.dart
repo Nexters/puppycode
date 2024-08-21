@@ -9,6 +9,7 @@ import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/home/home.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/user.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});
@@ -122,8 +123,7 @@ class WriteFloatingButton extends StatefulWidget {
 }
 
 class _WriteFloatingButtonState extends State<WriteFloatingButton> {
-  //XFile? _image;
-
+  final userController = Get.find<UserController>();
   final ImagePicker picker = ImagePicker();
 
   Future getImage(ImageSource imageSource) async {
@@ -144,7 +144,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
 
   @override
   Widget build(BuildContext context) {
-    var hasWritten = false;
+    var hasWritten = userController.user.value!.walkDone;
     var floatingButtonColor =
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
@@ -164,7 +164,8 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
       child: FloatingActionButton(
         elevation: 0,
         onPressed: () => {_onButtonClick(hasWritten)},
-        backgroundColor: hasWritten ? ThemeColor.white : floatingButtonColor,
+        backgroundColor:
+            hasWritten == true ? ThemeColor.white : floatingButtonColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),

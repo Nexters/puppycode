@@ -72,8 +72,16 @@ class HttpService {
       request.files.add(jsonBody);
       request.files.add(httpImage);
       request.headers.addAll({'Authorization': token});
-      await request.send();
-      return {'success': true};
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        var responseData = await http.Response.fromStream(response);
+        return {
+          'success': true,
+          'data': json.decode(utf8.decode(responseData.bodyBytes))
+        };
+      }
+      throw 'post failed';
     } catch (err) {
       return {'success': false};
     }
