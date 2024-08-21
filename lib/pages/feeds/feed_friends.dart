@@ -65,7 +65,7 @@ class _FeedFriendsState extends State<FeedFriends> {
               child: SharedBanner(
                   mainText: '친구를 찾아 떠나볼까요?',
                   subText: '친구와 함께 강아지의 일상을 공유해 보아요!',
-                  iconName: 'hello',
+                  iconName: 'friends',
                   onClick: () => {Get.toNamed('/friends/code')}),
             ),
           SingleChildScrollView(
