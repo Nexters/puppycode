@@ -14,7 +14,7 @@ class FeedEmpty extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Image.asset('assets/images/empty.png', width: 160),
+          Image.asset('assets/images/empty.png', width: 140),
           Body2(
             value: '피드가 텅 비어 있어요.',
             color: ThemeColor.gray3,
