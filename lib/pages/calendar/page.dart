@@ -125,8 +125,7 @@ class _CalendarTableState extends State<CalendarTable> {
     try {
       final response = await HttpService.getOne('walk-logs/calendar', params: {
         'year': widget.year.toString(),
-        'month': widget.month.toString(),
-        'userId': '1'
+        'month': widget.month.toString()
       });
       Map<String, dynamic> items = response['items'];
       setState(() {

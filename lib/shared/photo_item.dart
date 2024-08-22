@@ -55,9 +55,10 @@ class _PhotoItemState extends State<PhotoItem> {
       height: (MediaQuery.of(context).size.width - 40) * 1.33,
       decoration: BoxDecoration(
           image: DecorationImage(
+            fit: BoxFit.fill,
             image: FileImage(File(widget.photoPath)),
-            //colorFilter: ColorFilter.mode(
-            //    Colors.black.withOpacity(0.4), BlendMode.srcIn)),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.4), BlendMode.srcIn),
           ),
           borderRadius: BorderRadius.circular(20)),
       child: Stack(

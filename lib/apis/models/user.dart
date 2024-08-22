@@ -2,7 +2,7 @@ class User {
   User(dynamic userItem) {
     id = userItem['id'];
     nickname = userItem['nickname'];
-    profileImageUrl = userItem['profileImageUrl'];
+    profileImageUrl = userItem['profileImageUrl'] ?? '';
     code = userItem['code'];
     createdAt = userItem['createdAt'];
     walkDone = userItem['walkDone'];

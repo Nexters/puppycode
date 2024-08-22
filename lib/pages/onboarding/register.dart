@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/config.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
@@ -98,7 +99,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'nickname': _nameController.text,
         'profileUrl': profileUrl ?? '',
         'city': _location?.name ?? '',
-        'provider': provider
+        'provider': provider,
+        'deviceToken': Config.FIREBASE_TOKEN,
       });
 
       String? token = result['token'];
@@ -111,7 +113,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       await userController.refreshData();
       Get.toNamed('/start', arguments: {'name': _nameController.text});
     } catch (err) {
-      return;
+      Get.back();
     }
   }
 

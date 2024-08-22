@@ -181,6 +181,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return SafeArea(
         child: Container(
+      color: ThemeColor.white,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 50,
       child: Stack(

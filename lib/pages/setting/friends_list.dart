@@ -7,6 +7,7 @@ import 'package:puppycode/apis/models/friends.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -187,7 +188,7 @@ class FriendsList extends StatelessWidget {
                   child: SizedBox(
                       height: 48,
                       width: 48,
-                      child: Image.network(profileImageUrl)),
+                      child: UserNetworkImage(url: profileImageUrl)),
                 ),
               ),
               const SizedBox(

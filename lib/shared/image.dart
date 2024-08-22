@@ -40,3 +40,44 @@ class SharedNetworkImage extends StatelessWidget {
     );
   }
 }
+
+class UserNetworkImage extends StatelessWidget {
+  final String url;
+  final bool isDimmed;
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+
+  const UserNetworkImage({
+    super.key,
+    this.url = '',
+    this.width,
+    this.height,
+    this.isDimmed = false,
+    this.fit = BoxFit.cover,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget defaultImage = Image.asset(
+      'assets/images/profile.png',
+      width: width,
+      height: height,
+      fit: fit,
+    );
+    return url.isNotEmpty
+        ? Image.network(
+            url,
+            fit: fit,
+            height: height,
+            width: width,
+            colorBlendMode: BlendMode.colorDodge,
+            color: isDimmed ? ThemeColor.white.withOpacity(0.4) : null,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return defaultImage;
+            },
+          )
+        : defaultImage;
+  }
+}
