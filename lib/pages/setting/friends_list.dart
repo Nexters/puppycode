@@ -96,24 +96,27 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   ),
                 )
               : Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        alignment: Alignment.bottomRight,
-                        child: Image.asset('assets/images/friends_empty.png'),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 100), // 이렇게 되네.. ㅋㅋㅋ
-                          child: Body2(
-                            value: '친구를 기다리고 있어요!',
-                            color: ThemeColor.gray3,
-                            bold: true,
+                  child: Container(
+                    alignment: Alignment.bottomRight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Body2(
+                          value: '친구를 기다리고 있어요!',
+                          color: ThemeColor.gray3,
+                          bold: true,
+                        ),
+                        const SizedBox(height: 48),
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          padding: const EdgeInsets.only(bottom: 48),
+                          child: Image.asset(
+                            'assets/images/friends_nothing.png',
+                            width: 180,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
         ],
