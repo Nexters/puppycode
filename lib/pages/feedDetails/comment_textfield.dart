@@ -10,11 +10,13 @@ class CommentTextField extends StatefulWidget {
     required TextEditingController textFieldController,
     required this.walkLogId,
     required this.onSubmitted,
+    required this.refetch,
   }) : _commentController = textFieldController;
 
   final TextEditingController _commentController;
   final String walkLogId;
   final Function onSubmitted;
+  final Function refetch;
 
   @override
   State<CommentTextField> createState() => _CommentTextFieldState();

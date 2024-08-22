@@ -45,6 +45,7 @@ class _ReactionContentsState extends State<ReactionContents> {
         'walk-logs/$id/comments',
         body: {'content': text},
       );
+
       if (response.isNotEmpty) {
         final newComment = Comment({
           'id': 0, // 임시 id
@@ -59,6 +60,7 @@ class _ReactionContentsState extends State<ReactionContents> {
         setState(() {
           newComments.add(newComment);
         });
+        widget.refetch();
       }
     } catch (error) {
       print('create comment error: $error');
@@ -110,8 +112,7 @@ class _ReactionContentsState extends State<ReactionContents> {
               Body3(value: '댓글', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
               Body3(
-                  value: widget.comments.length.toString(),
-                  color: ThemeColor.gray4)
+                  value: newComments.length.toString(), color: ThemeColor.gray4)
             ],
           ),
           if (widget.comments.isEmpty)
@@ -153,6 +154,7 @@ class _ReactionContentsState extends State<ReactionContents> {
             walkLogId: widget.walkLogId,
             onSubmitted: () =>
                 _createComment(widget.walkLogId, _commentController.text),
+            refetch: widget.refetch,
           ),
         ],
       ),
