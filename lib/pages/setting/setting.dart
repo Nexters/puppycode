@@ -163,7 +163,9 @@ class SettingListItem extends StatelessWidget {
           if (onTab != null) {
             onTab!();
           }
-          if (destination != null) Get.toNamed(destination!);
+          if (destination != null) {
+            Get.toNamed(destination!);
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
