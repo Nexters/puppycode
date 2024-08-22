@@ -8,14 +8,14 @@ class Episode extends StatelessWidget {
     super.key,
     this.isInput = false,
     this.controller,
-    this.content,
+    this.content = '',
   });
 
   static const String _inputHintText = '오늘 산책하면서 생긴 에피소드를 공유해 보세요.';
 
   final bool isInput;
   final TextEditingController? controller;
-  final String? content;
+  final String content;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,10 @@ class Episode extends StatelessWidget {
                     ),
                   )
                 : Body3(
-                    value: content!,
-                    color: ThemeColor.gray5,
+                    value: content.isEmpty ? '산책에서 생긴 에피소드를 기록해 보아요' : content,
+                    color: content.isNotEmpty
+                        ? ThemeColor.gray5
+                        : ThemeColor.gray4,
                   )
           ],
         ),

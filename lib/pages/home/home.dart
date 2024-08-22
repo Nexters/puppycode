@@ -87,7 +87,7 @@ class HomeContent extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: SharedNetworkImage(
             url: user?.mainScreenImageUrl ?? 'assets/images/empty',
-            width: 288,
+            width: 290,
           ),
         ),
         Positioned(
