@@ -15,7 +15,7 @@ class Comment {
   late int writerId;
   late String writerName;
   late String writerProfileUrl;
-  late int walkLogId; // 이건뭐징
+  late int walkLogId;
   late String createdAt;
   late bool isWriter;
 }

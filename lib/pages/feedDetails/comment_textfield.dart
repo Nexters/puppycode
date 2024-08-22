@@ -9,10 +9,12 @@ class CommentTextField extends StatefulWidget {
     super.key,
     required TextEditingController textFieldController,
     required this.walkLogId,
+    required this.onSubmitted,
   }) : _commentController = textFieldController;
 
   final TextEditingController _commentController;
   final String walkLogId;
+  final Function onSubmitted;
 
   @override
   State<CommentTextField> createState() => _CommentTextFieldState();
@@ -33,16 +35,16 @@ class _CommentTextFieldState extends State<CommentTextField> {
     });
   }
 
-  Future<void> _createComment(String id, String text) async {
-    try {
-      await HttpService.post(
-        'walk-logs/$id/comments',
-        body: {'content': text},
-      );
-    } catch (error) {
-      print('create comment error: $error');
-    }
-  }
+  // Future<void> _createComment(String id, String text) async {
+  //   try {
+  //     await HttpService.post(
+  //       'walk-logs/$id/comments',
+  //       body: {'content': text},
+  //     );
+  //   } catch (error) {
+  //     print('create comment error: $error');
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -83,8 +85,7 @@ class _CommentTextFieldState extends State<CommentTextField> {
             if (_isFocused &&
                 widget._commentController.text.isNotEmpty) // 댓글 입력하고 보내기
               {
-                _createComment(
-                    widget.walkLogId, widget._commentController.text),
+                widget.onSubmitted(),
                 widget._commentController.clear(),
                 _focusNode.unfocus()
               }
