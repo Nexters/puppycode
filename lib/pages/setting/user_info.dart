@@ -14,7 +14,7 @@ import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 import 'package:share_plus/share_plus.dart';
 
 class UserInfoPage extends StatefulWidget {

@@ -12,7 +12,7 @@ import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 bool isToday(DateTime date) {
   DateTime today = DateTime.now();

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
