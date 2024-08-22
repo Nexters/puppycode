@@ -10,6 +10,7 @@ import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/image.dart';
+import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
