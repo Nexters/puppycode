@@ -80,7 +80,7 @@ class ReactionCommentListItem extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: SharedNetworkImage(url: profileUrl),
+              child: UserNetworkImage(url: profileUrl, width: 42, height: 42),
             ),
           ),
           const SizedBox(width: 8),
