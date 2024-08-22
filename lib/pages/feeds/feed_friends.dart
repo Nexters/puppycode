@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/friends.dart';
 import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/http.dart';
@@ -157,18 +158,11 @@ class FeedUserStatus extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: profileImageUrl.isNotEmpty
-                        ? Image.network(
-                            profileImageUrl,
-                            fit: BoxFit.cover,
-                            colorBlendMode: BlendMode.colorDodge,
-                            color: isDimmed
-                                ? ThemeColor.white.withOpacity(0.4)
-                                : null,
-                          )
-                        : Image.asset('assets/images/profile.png'),
-                  ),
+                      borderRadius: BorderRadius.circular(20),
+                      child: UserNetworkImage(
+                        url: profileImageUrl,
+                        isDimmed: isDimmed,
+                      )),
                 ),
                 if (isMine)
                   Positioned.fill(

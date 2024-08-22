@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/setting/time_button.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -141,6 +142,7 @@ class SettingListItem extends StatelessWidget {
   final String title;
   final String? subTitle;
   final String? destination;
+  final String? arguments;
   final Widget? widget;
 
   const SettingListItem({
@@ -149,6 +151,7 @@ class SettingListItem extends StatelessWidget {
     this.subTitle,
     this.widget,
     this.destination,
+    this.arguments,
   });
 
   @override
@@ -158,7 +161,10 @@ class SettingListItem extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          if (destination != null) Get.toNamed(destination!);
+          if (destination != null) {
+            Get.toNamed(destination!,
+                arguments: arguments ?? {'tab': NavTab.my});
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -8,6 +8,7 @@ import 'package:puppycode/apis/models/user.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -134,21 +135,20 @@ class _UserInfoPageState extends State<UserInfoPage> {
               child: Stack(
                 children: [
                   ClipOval(
-                    child: _image != null
-                        ? SizedBox(
-                            height: 128,
-                            width: 128,
-                            child: Image.file(
+                      child: _image != null
+                          ? SizedBox(
+                              height: 128,
+                              width: 128,
+                              child: Image.file(
+                                fit: BoxFit.cover,
+                                File(_image!.path),
+                              ),
+                            )
+                          : UserNetworkImage(
+                              url: profileImageUrl,
                               fit: BoxFit.cover,
-                              File(_image!.path),
-                            ),
-                          )
-                        : profileImageUrl.isNotEmpty
-                            ? Image.network(profileImageUrl,
-                                fit: BoxFit.cover, height: 128, width: 128)
-                            : Image.asset('assets/images/profile.png',
-                                fit: BoxFit.cover, height: 128, width: 128),
-                  ),
+                              height: 128,
+                              width: 128)),
                   if (_isEditing)
                     Positioned(
                       bottom: 0,
@@ -219,25 +219,42 @@ class _UserInfoPageState extends State<UserInfoPage> {
               ),
             ),
             const SizedBox(height: 32),
-            if (!_isEditing)
+            if (!_isEditing) ...[
               const SettingList(lists: [
                 SettingListItem(
                   title: '산책일지',
-                  widget: Icon(
-                    color: Color.fromRGBO(128, 128, 128, 0.55),
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                  ),
+                  destination: '/my',
+                  arguments: 'my',
                 ),
                 SettingListItem(
                   title: '산책 캘린더',
-                  widget: Icon(
-                    color: Color.fromRGBO(128, 128, 128, 0.55),
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                  ),
+                  destination: '/calendar',
                 )
               ], title: ''),
+              Expanded(child: Container()),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: Body4(
+                      value: '로그아웃',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  GestureDetector(
+                    child: Body4(
+                      value: '회원탈퇴',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 57),
+                ],
+              ),
+            ],
           ],
         ),
       ),

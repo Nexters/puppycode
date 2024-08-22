@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:puppycode/pages/feedDetails/feed_details.dart';
 import 'package:puppycode/pages/calendar/page.dart';
+import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/feeds/success.dart';
 import 'package:puppycode/pages/onboarding/start.dart';
 import 'package:puppycode/pages/setting/friends_code.dart';
@@ -33,5 +34,6 @@ class AppRoutes {
     GetPage(name: '/create', page: () => const FeedWritePage()),
     GetPage(name: '/feed/:id', page: () => const FeedDetailPage()),
     GetPage(name: '/calendar', page: () => const CalendarPage()),
+    GetPage(name: '/my', page: () => const MyFeedScreen()),
   ];
 }
