@@ -105,7 +105,10 @@ class ReactionContents extends StatelessWidget {
               ),
             ),
           ),
-          CommentTextField(textFieldController: _commentController),
+          CommentTextField(
+            textFieldController: _commentController,
+            walkLogId: walkLogId,
+          ),
         ],
       ),
     );
