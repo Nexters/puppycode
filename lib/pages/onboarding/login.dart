@@ -6,7 +6,7 @@ import 'package:puppycode/config.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/typography/body.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginPage extends StatefulWidget {

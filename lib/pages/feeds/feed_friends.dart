@@ -8,7 +8,7 @@ import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/http.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 class FeedFriends extends StatefulWidget {
   const FeedFriends({
@@ -73,16 +73,15 @@ class _FeedFriendsState extends State<FeedFriends> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  if (user != null)
-                    FeedUserStatus(
-                      id: user.id,
-                      name: user.nickname,
-                      hasWalked: true,
-                      isMine: true,
-                      profileImageUrl: user.profileImageUrl,
-                      focusedUserId: widget.focusedUserId,
-                      onClick: (int? id) => {widget.onSelect(null)},
-                    ),
+                  FeedUserStatus(
+                    id: user.id,
+                    name: user.nickname,
+                    hasWalked: true,
+                    isMine: true,
+                    profileImageUrl: user.profileImageUrl,
+                    focusedUserId: widget.focusedUserId,
+                    onClick: (int? id) => {widget.onSelect(null)},
+                  ),
                   ...friendList.map((friend) => FeedUserStatus(
                         id: friend.id,
                         name: friend.name,
@@ -125,10 +124,10 @@ class FeedUserStatus extends StatelessWidget {
   _onFriendClick() async {
     if (hasWalked) return;
     try {
-      await HttpService.post('push/users/' + id.toString(), body: {});
+      await HttpService.post('push/users/$id', body: {});
     } on FormatException {
       // ignore
-    }catch (error) {
+    } catch (error) {
       print('push api erorr: $error');
     }
   }

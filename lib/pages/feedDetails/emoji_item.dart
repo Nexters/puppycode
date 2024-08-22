@@ -6,7 +6,7 @@ import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 class ReactionEmojiList extends StatefulWidget {
   final List<Reaction> reactions;
@@ -52,7 +52,8 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
     try {
       await HttpService.post('walk-logs/${widget.walkLogId}/reaction',
           body: {'reactionType': emoji.toUpperCase()}).then((_) {
-        widget.refetch;
+        widget.refetch();
+        initState();
       });
     } catch (error) {
       print('create Emoji error: $error');
