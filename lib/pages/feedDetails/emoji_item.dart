@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/reaction.dart';
-import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/states/user.dart';
@@ -12,12 +11,14 @@ class ReactionEmojiList extends StatefulWidget {
   final List<Reaction> reactions;
   final String walkLogId;
   final Function refetch;
+  final Function onSubmitted;
 
   const ReactionEmojiList({
     super.key,
     required this.reactions,
     required this.walkLogId,
     required this.refetch,
+    required this.onSubmitted,
   });
 
   @override
@@ -46,18 +47,6 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
 
     //내 유저 아이디가 reactions.writerId랑 같은지 확인
     hasMyEmoji = widget.reactions.any((item) => item.writerId == user!.id);
-  }
-
-  Future<void> _createEmoji(String emoji) async {
-    try {
-      await HttpService.post('walk-logs/${widget.walkLogId}/reaction',
-          body: {'reactionType': emoji.toUpperCase()}).then((_) {
-        widget.refetch();
-        initState();
-      });
-    } catch (error) {
-      print('create Emoji error: $error');
-    }
   }
 
   final GlobalKey emojiKey = GlobalKey();
@@ -99,7 +88,10 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                     return EmojiButton(
                         emoji: emoji,
                         onPressed: () {
-                          _createEmoji(emoji);
+                          widget.onSubmitted(emoji);
+                          setState(() {
+                            hasMyEmoji = true;
+                          });
                           Get.back();
                         });
                   }).toList(),

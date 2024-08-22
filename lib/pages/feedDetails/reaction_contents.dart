@@ -32,11 +32,13 @@ class ReactionContents extends StatefulWidget {
 class _ReactionContentsState extends State<ReactionContents> {
   final TextEditingController _commentController = TextEditingController();
   List<Comment> newComments = [];
+  List<Reaction> newReactions = [];
 
   @override
   void initState() {
     super.initState();
     newComments = widget.comments;
+    newReactions = widget.reactions;
   }
 
   Future<void> _createComment(String id, String text) async {
@@ -67,6 +69,35 @@ class _ReactionContentsState extends State<ReactionContents> {
     }
   }
 
+  Future<void> _createEmoji(String emoji) async {
+    try {
+      final response = await HttpService.post(
+          'walk-logs/${widget.walkLogId}/reaction',
+          body: {'reactionType': emoji.toUpperCase()});
+
+      if (response.isNotEmpty) {
+        final newReaction = Reaction({
+          'id': response['id'],
+          'writerId': 1, //userid
+          'writerNickname': response['writerNickname'],
+          'writerProfileImageUrl': response['writerProfileImageUrl'],
+          'reactionType': response['reactionType'].toLowerCase(),
+          'walkLogId': int.parse(widget.walkLogId),
+          'createdAt': DateTime.now().toString(),
+          'me': true,
+        });
+        setState(() {
+          newReactions.add(newReaction);
+        });
+        widget.refetch();
+      }
+
+      widget.refetch();
+    } catch (error) {
+      print('create Emoji error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,15 +120,15 @@ class _ReactionContentsState extends State<ReactionContents> {
               Body3(value: '이모지', bold: true, color: ThemeColor.gray4),
               const SizedBox(width: 3),
               Body3(
-                  value: widget.reactions.length.toString(),
+                  value: newReactions.length.toString(),
                   color: ThemeColor.gray4)
             ],
           ),
           ReactionEmojiList(
-            reactions: widget.reactions,
-            walkLogId: widget.walkLogId,
-            refetch: widget.refetch,
-          ),
+              reactions: widget.reactions,
+              walkLogId: widget.walkLogId,
+              refetch: widget.refetch,
+              onSubmitted: (emoji) => _createEmoji(emoji)),
           const SizedBox(height: 20),
           Row(
             children: [
