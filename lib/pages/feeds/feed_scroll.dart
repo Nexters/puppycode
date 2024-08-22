@@ -1,9 +1,12 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/apis/models/feed.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class FeedListView extends StatefulWidget {
   const FeedListView({super.key, this.focusedUserId});
@@ -42,7 +45,7 @@ class FeedListViewState extends State<FeedListView> {
       final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
         'cursorId': cursor == 0 ? null : '$cursor',
-        'userId': widget.focusedUserId?.toString(),
+        'userId': '1',
       });
       List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 
@@ -60,8 +63,36 @@ class FeedListViewState extends State<FeedListView> {
   }
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(
+  Widget build(BuildContext context) => CustomRefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        builder: (context, child, controller) {
+          print(controller.value);
+          return Stack(
+            alignment: Alignment.topCenter,
+            children: <Widget>[
+              if (controller.isLoading)
+                Positioned(
+                  top: 50.0 * controller.value,
+                  child: CircularProgressIndicator(),
+                ),
+              Positioned(
+                top: 20.0,
+                child: Opacity(
+                  opacity: 1,
+                  child: Image.network(
+                    'https://via.placeholder.com/100',
+                    width: 100.0,
+                    height: 100.0,
+                  ),
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(0, 100.0 * controller.value),
+                child: child,
+              ),
+            ],
+          );
+        },
         child: PagedListView<int, Feed>(
           shrinkWrap: true,
           pagingController: _pagingController,

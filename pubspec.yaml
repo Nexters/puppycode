@@ -28,6 +28,7 @@ dependencies:
   firebase_messaging: ^14.7.10
   firebase_core: ^2.32.0
   sign_in_with_apple: ^6.1.1
+  custom_refresh_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:
