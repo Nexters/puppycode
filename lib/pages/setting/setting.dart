@@ -142,6 +142,7 @@ class SettingListItem extends StatelessWidget {
   final String? subTitle;
   final String? destination;
   final Widget? widget;
+  final VoidCallback? onTab;
 
   const SettingListItem({
     super.key,
@@ -149,6 +150,7 @@ class SettingListItem extends StatelessWidget {
     this.subTitle,
     this.widget,
     this.destination,
+    this.onTab,
   });
 
   @override
@@ -158,6 +160,9 @@ class SettingListItem extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
+          if (onTab != null) {
+            onTab!();
+          }
           if (destination != null) Get.toNamed(destination!);
         },
         child: Row(
