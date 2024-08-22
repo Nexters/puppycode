@@ -36,10 +36,13 @@ void main() async {
 
 Future<String?> initializeNotification() async {
   await Firebase.initializeApp();
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+
+  if(Config.env != 'LOCAL') {
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   String? fcmToken = await messaging.getToken();
