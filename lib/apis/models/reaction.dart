@@ -4,7 +4,7 @@ class Reaction {
     writerId = reactionItem['writerId'];
     writerName = reactionItem['writerNickname'];
     writerProfileUrl = reactionItem['writerProfileImageUrl'];
-    reactionType = reactionItem['reactionType'];
+    reactionType = reactionItem['reactionType'].toLowerCase();
     walkLogId = reactionItem['walkLogId'];
     createdAt = reactionItem['createdAt'];
     isWriter = reactionItem['me'];
@@ -15,7 +15,7 @@ class Reaction {
   late String writerName;
   late String writerProfileUrl;
   late String reactionType;
-  late int walkLogId; // 이건뭐징
+  late int walkLogId;
   late String createdAt;
   late bool isWriter;
 }

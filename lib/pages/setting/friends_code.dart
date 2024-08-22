@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -15,6 +17,7 @@ class FriendsCodePage extends StatefulWidget {
 class _FriendsCodePageState extends State<FriendsCodePage> {
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
+  String errorMessage = '';
 
   void _handleInputChange(int index, String value) {
     if (value.length == 1) {
@@ -30,6 +33,34 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
     for (int i = 0; i < value.length && i < 6; i++) {
       _controllers[i].text = value[i];
       _handleInputChange(i, value[i]);
+    }
+  }
+
+  Future<void> _createFriend(String code) async {
+    try {
+      await HttpService.post('friends', body: {"code": code}).then((_) {
+        setState(() {
+          errorMessage = '';
+        });
+        Get.back(result: true);
+      });
+    } catch (error) {
+      print('createFriend error: $error');
+      setState(() {
+        errorMessage = '잘못된 코드입니다';
+      });
+    }
+  }
+
+  void _onSubmit() {
+    String code = _controllers.map((controller) => controller.text).join('');
+
+    if (code.length == 6) {
+      _createFriend(code);
+    } else {
+      setState(() {
+        errorMessage = '잘못된 코드입니다';
+      });
     }
   }
 
@@ -54,15 +85,24 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
               children: List.generate(
                 6,
                 (index) => CodeTextField(
-                  controller: _controllers[index],
-                  onChanged: (value) {
-                    _handleInputChange(index, value);
-                  },
-                  onPaste: (value) {
-                    _handlePaste(value);
-                  },
-                ),
+                    controller: _controllers[index],
+                    onChanged: (value) {
+                      _handleInputChange(index, value);
+                    },
+                    onPaste: (value) {
+                      _handlePaste(value);
+                    },
+                    onSubmitted: (value) {
+                      _onSubmit();
+                    }),
               ),
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: Body4(
+                  value: errorMessage,
+                  color: ThemeColor.error,
+                  fontWeight: FontWeight.w500),
             )
           ],
         ),
@@ -75,11 +115,13 @@ class CodeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final ValueChanged<String> onPaste;
   final TextEditingController controller;
+  final ValueChanged<String> onSubmitted;
 
   const CodeTextField({
     required this.onChanged,
     required this.onPaste,
     required this.controller,
+    required this.onSubmitted,
     super.key,
   });
 
@@ -97,6 +139,9 @@ class CodeTextField extends StatelessWidget {
         cursorHeight: 18,
         onChanged: (value) {
           onChanged(value);
+        },
+        onSubmitted: (value) {
+          onSubmitted(value);
         },
         decoration: InputDecoration(
           filled: true,

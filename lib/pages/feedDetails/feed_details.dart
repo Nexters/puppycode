@@ -14,7 +14,7 @@ import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FeedDetailPage extends StatefulWidget {
   const FeedDetailPage({super.key});
@@ -24,9 +24,8 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
-  String tmpLink = 'abcd'; // 공유할 현재 스크린 주소 => ?
-
   Feed? feed;
+  String? tmpLink;
 
   @override
   void initState() {
@@ -35,7 +34,9 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
   }
 
   void refetchData() {
-    _fetchFeedDetails(Get.parameters['id']);
+    _fetchFeedDetails(Get.parameters['id']).then((_) {
+      print('fetch 성공');
+    });
   }
 
   Future<void> _fetchFeedDetails(id) async {
@@ -44,6 +45,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
       setState(() {
         feed = Feed(item);
+        tmpLink = "http://175.106.99.165/feed/${feed!.id}"; // 이 경로가 맞나..
       });
       // print(feedItems);
     } catch (error) {
@@ -78,7 +80,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Share.share(tmpLink); // 무엇을 공유하지요? => 링크 ?
+              Share.share(tmpLink!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?
               Get.back();
             },
             child: Body2(value: '공유하기', color: ThemeColor.blue),
@@ -139,6 +141,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                       refetch: refetchData,
                       comments: feed!.comments,
                       reactions: feed!.reactions,
+                      walkLogId: feed!.id.toString(),
                     ),
                   ],
                 ),
@@ -161,11 +164,13 @@ class FeedReactionButton extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
   final Function refetch;
+  final String walkLogId;
 
   const FeedReactionButton({
     required this.refetch,
     required this.comments,
     required this.reactions,
+    required this.walkLogId,
     super.key,
   });
 
@@ -177,7 +182,11 @@ class FeedReactionButton extends StatelessWidget {
         sharedModalBottomSheet(
             context,
             ReactionContents(
-                comments: comments, reactions: reactions, refetch: refetch),
+              comments: comments,
+              reactions: reactions,
+              refetch: refetch,
+              walkLogId: walkLogId,
+            ),
             null,
             height: 640);
       },

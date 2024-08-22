@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/reaction.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/user.dart';
 
 class ReactionEmojiList extends StatefulWidget {
   final List<Reaction> reactions;
+  final String walkLogId;
+  final Function refetch;
 
   const ReactionEmojiList({
     super.key,
     required this.reactions,
+    required this.walkLogId,
+    required this.refetch,
   });
 
   @override
@@ -21,6 +26,13 @@ class ReactionEmojiList extends StatefulWidget {
 
 class _ReactionEmojiListState extends State<ReactionEmojiList> {
   bool hasMyEmoji = false;
+  final List<String> emojis = [
+    'like',
+    'congratulation',
+    'impressive',
+    'sad',
+    'angry',
+  ];
 
   @override
   void initState() {
@@ -34,6 +46,17 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
 
     //내 유저 아이디가 reactions.writerId랑 같은지 확인
     hasMyEmoji = widget.reactions.any((item) => item.writerId == user!.id);
+  }
+
+  Future<void> _createEmoji(String emoji) async {
+    try {
+      await HttpService.post('walk-logs/${widget.walkLogId}/reaction',
+          body: {'reactionType': emoji.toUpperCase()}).then((_) {
+        widget.refetch;
+      });
+    } catch (error) {
+      print('create Emoji error: $error');
+    }
   }
 
   final GlobalKey emojiKey = GlobalKey();
@@ -71,13 +94,14 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset('assets/icons/emoji_like.svg'),
-                    SvgPicture.asset('assets/icons/emoji_congratulation.svg'),
-                    SvgPicture.asset('assets/icons/emoji_impressive.svg'),
-                    SvgPicture.asset('assets/icons/emoji_sad.svg'),
-                    SvgPicture.asset('assets/icons/emoji_angry.svg'),
-                  ],
+                  children: emojis.map((emoji) {
+                    return EmojiButton(
+                        emoji: emoji,
+                        onPressed: () {
+                          _createEmoji(emoji);
+                          Get.back();
+                        });
+                  }).toList(),
                 ),
               ),
             ),
@@ -147,6 +171,24 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
   }
 }
 
+class EmojiButton extends StatelessWidget {
+  final String emoji;
+  final VoidCallback onPressed;
+
+  const EmojiButton({
+    super.key,
+    required this.emoji,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: onPressed,
+        child: SvgPicture.asset('assets/icons/emoji_$emoji.svg'));
+  }
+}
+
 class EmojiReactionListItem extends StatelessWidget {
   final String reactionType;
   final String writerName;
@@ -162,7 +204,7 @@ class EmojiReactionListItem extends StatelessWidget {
     return Column(
       children: [
         SvgPicture.asset(
-          'assets/icons/emoji_${reactionType.toLowerCase()}.svg',
+          'assets/icons/emoji_$reactionType.svg',
           width: 40,
           height: 40,
         ),

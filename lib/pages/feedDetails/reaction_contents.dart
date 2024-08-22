@@ -14,12 +14,14 @@ class ReactionContents extends StatelessWidget {
   final List<Comment> comments;
   final List<Reaction> reactions;
   final Function refetch;
+  final String walkLogId;
 
   ReactionContents({
     super.key,
     required this.refetch,
     required this.comments,
     required this.reactions,
+    required this.walkLogId,
   });
 
   final TextEditingController _commentController = TextEditingController();
@@ -48,7 +50,11 @@ class ReactionContents extends StatelessWidget {
               Body3(value: reactions.length.toString(), color: ThemeColor.gray4)
             ],
           ),
-          ReactionEmojiList(reactions: reactions),
+          ReactionEmojiList(
+            reactions: reactions,
+            walkLogId: walkLogId,
+            refetch: refetch,
+          ),
           const SizedBox(height: 20),
           Row(
             children: [
