@@ -1,9 +1,11 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/apis/models/monthly.dart';
 import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/shared/feed.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -55,8 +57,15 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
   }
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(
+  Widget build(BuildContext context) => CustomRefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        builder: (context, child, controller) => PawpawRefreshBuilder(
+          context,
+          child,
+          controller,
+          text: '내 일지를 불러오고 있어요!',
+          threshold: 0.2,
+        ),
         child: PagedListView<int, MyMontlyList>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MyMontlyList>(
