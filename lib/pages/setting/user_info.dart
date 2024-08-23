@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +25,8 @@ class UserInfoPage extends StatefulWidget {
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
+  static const storage = FlutterSecureStorage();
+
   late String code = '';
   late String profileImageUrl = '';
   bool _isEditing = false;
@@ -81,6 +84,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
     });
 
     return _isValidName;
+  }
+
+  void logout() async {
+    await storage.delete(key: 'authToken');
+    Get.offNamed('/login');
   }
 
   @override
@@ -265,6 +273,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
+                    onTap: () => logout(),
                     child: Body4(
                       value: '로그아웃',
                       color: ThemeColor.gray4,
