@@ -15,10 +15,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get:
-  camera:
   flutter_svg: ^2.0.1
   share_plus: ^10.0.0
-  badges: ^3.1.2
   infinite_scroll_pagination: ^4.0.0
   http: ^1.2.2
   image_picker: ^1.1.2

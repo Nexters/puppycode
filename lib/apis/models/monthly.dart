@@ -9,8 +9,8 @@ class MyMontlyList {
     count = response['count'];
     hasNext = response['hasNext'];
 
-    List<dynamic> _items = response['items'];
-    items = _items.map((item) => Feed(item)).toList();
+    List<dynamic> resItems = response['items'];
+    items = resItems.map((item) => Feed(item)).toList();
   }
 
   late int year;

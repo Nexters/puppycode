@@ -21,8 +21,10 @@ class Weather {
   Weather(dynamic weatherItem) {
     temp = weatherItem['temp'];
     weather = weatherItem['weather'];
+    message = weatherItem['weatherMessage'];
   }
 
   late int temp;
   late String weather;
+  late String message;
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/friends.dart';
+import 'package:puppycode/pages/feeds/feed_friends.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/http.dart';
@@ -86,9 +86,10 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   child: Column(
                     children: [
                       for (var friend in friendList!)
-                        FriendsList(
+                        FriendItem(
                           userName: friend.name,
                           profileImageUrl: friend.profileUrl,
+                          hasWalked: friend.hasWalked,
                           onDelete: () {
                             _deleteFriend(friend.id);
                           },
@@ -126,15 +127,17 @@ class _FriendsListPageState extends State<FriendsListPage> {
   }
 }
 
-class FriendsList extends StatelessWidget {
+class FriendItem extends StatelessWidget {
   final String userName;
   final String profileImageUrl;
   final VoidCallback onDelete;
+  final bool hasWalked;
 
-  const FriendsList({
+  const FriendItem({
     required this.userName,
     required this.profileImageUrl,
     required this.onDelete,
+    required this.hasWalked,
     super.key,
   });
 
@@ -177,24 +180,27 @@ class FriendsList extends StatelessWidget {
         children: [
           Row(
             children: [
-              badges.Badge(
-                position: badges.BadgePosition.bottomEnd(bottom: -4, end: -3),
-                badgeContent: SvgPicture.asset('assets/icons/foot_print.svg'),
-                badgeStyle: badges.BadgeStyle(
-                    badgeColor: ThemeColor.white,
-                    padding: const EdgeInsets.all(1)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: SizedBox(
-                      height: 48,
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: SizedBox(
                       width: 48,
-                      child: UserNetworkImage(url: profileImageUrl)),
-                ),
+                      height: 48,
+                      child: UserNetworkImage(url: profileImageUrl),
+                    ),
+                  ),
+                  if (hasWalked)
+                    const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: FeedFriendIcon(hasWalked: true)),
+                ],
               ),
               const SizedBox(
                 width: 14,
               ),
-              Body1(value: userName, bold: true),
+              Body1(value: userName, bold: true, maxLength: 10),
             ],
           ),
           GestureDetector(

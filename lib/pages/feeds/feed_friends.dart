@@ -6,6 +6,7 @@ import 'package:puppycode/apis/models/friends.dart';
 import 'package:puppycode/shared/banner.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/states/user.dart';
@@ -121,10 +122,11 @@ class FeedUserStatus extends StatelessWidget {
   final int? focusedUserId;
   final bool isMine;
 
-  _onFriendClick() async {
-    if (hasWalked) return;
+  _onFriendClick(BuildContext context) {
+    if (hasWalked || isMine) return;
     try {
-      await HttpService.post('push/users/$id', body: {});
+      Toast.show(context, '$name에게 찌르기 알림을 보냈어요');
+      HttpService.post('push/users/$id', body: {});
     } on FormatException {
       // ignore
     } catch (error) {
@@ -181,7 +183,7 @@ class FeedUserStatus extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: GestureDetector(
-                      onTap: () => {_onFriendClick()},
+                      onTap: () => {_onFriendClick(context)},
                       child: FeedFriendIcon(hasWalked: hasWalked),
                     ))
               ],
@@ -211,8 +213,8 @@ class FeedFriendIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 18,
-      height: 18,
+      width: hasWalked ? 22 : 18,
+      height: hasWalked ? 22 : 18,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
           boxShadow: hasWalked
