@@ -55,7 +55,7 @@ Future<String?> initializeNotification() async {
   try {
     await Firebase.initializeApp();
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     if (Config.env != 'LOCAL') {
       PlatformDispatcher.instance.onError = (error, stack) {
