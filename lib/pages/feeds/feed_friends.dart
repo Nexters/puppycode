@@ -76,7 +76,7 @@ class _FeedFriendsState extends State<FeedFriends> {
                   FeedUserStatus(
                     id: user.id,
                     name: user.nickname,
-                    hasWalked: true,
+                    hasWalked: user.walkDone,
                     isMine: true,
                     profileImageUrl: user.profileImageUrl,
                     focusedUserId: widget.focusedUserId,
