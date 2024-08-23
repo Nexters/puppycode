@@ -8,6 +8,7 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -19,6 +20,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
+  final Uri _url = Uri.parse(
+      'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4');
 
   void onWalkNotificationSwitched(bool value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
@@ -31,6 +34,12 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       isPushNotificationEnabled = value;
     });
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('could not launch $_url');
+    }
   }
 
   @override
@@ -71,13 +80,13 @@ class _SettingPageState extends State<SettingPage> {
                       onPressed: onWalkNotificationSwitched,
                       isNotificationEnabled: isWalkNotificationEnabled,
                     )),
-                SettingListItem(
-                  title: '찌르기 알림',
-                  widget: CustomCupertinoSwitch(
-                    onPressed: onPushNotificationSwitched,
-                    isNotificationEnabled: isPushNotificationEnabled,
-                  ),
-                ),
+                // SettingListItem(
+                //   title: '찌르기 알림',
+                //   widget: CustomCupertinoSwitch(
+                //     onPressed: onPushNotificationSwitched,
+                //     isNotificationEnabled: isPushNotificationEnabled,
+                //   ),
+                // ),
               ], title: '알림'),
               SettingList(lists: [
                 SettingListItem(
@@ -90,9 +99,11 @@ class _SettingPageState extends State<SettingPage> {
                 const SettingListItem(
                   title: '이용약관',
                 ),
-                const SettingListItem(
-                  title: '개인정보 처리방침',
-                ),
+                SettingListItem(
+                    title: '개인정보 처리방침',
+                    onTab: () {
+                      _launchUrl();
+                    }),
               ], title: '도움말'),
             ],
           ),
