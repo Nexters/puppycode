@@ -10,7 +10,6 @@ import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/image.dart';
-import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -59,6 +58,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
   //프로필 변경
   void _editProfile() async {
     try {
+      if (_editingController.text.isEmpty) {
+        _editingController.text = '포포';
+      }
       await HttpService.patch('users/nickname',
           params: {'nickname': _editingController.text},
           onPatch: () => userController.refreshData());
@@ -108,13 +110,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     }
   }
 
-  void _shareCode(code) async {
-    await Share.share(code, subject: 'Pawpaw');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: SharedAppBar(
           leftOptions: AppBarLeft(iconType: LeftIconType.BACK),
           centerOptions: AppBarCenter(label: '내 프로필'),
@@ -141,20 +140,21 @@ class _UserInfoPageState extends State<UserInfoPage> {
               child: Stack(
                 children: [
                   ClipOval(
-                      child: _image != null
-                          ? SizedBox(
-                              height: 128,
-                              width: 128,
-                              child: Image.file(
-                                fit: BoxFit.cover,
-                                File(_image!.path),
-                              ),
-                            )
-                          : UserNetworkImage(
-                              url: profileImageUrl,
+                    child: _image != null
+                        ? SizedBox(
+                            height: 128,
+                            width: 128,
+                            child: Image.file(
                               fit: BoxFit.cover,
-                              height: 128,
-                              width: 128)),
+                              File(_image!.path),
+                            ),
+                          )
+                        : UserNetworkImage(
+                            url: profileImageUrl,
+                            fit: BoxFit.cover,
+                            height: 128,
+                            width: 128),
+                  ),
                   if (_isEditing)
                     Positioned(
                       bottom: 0,
@@ -162,15 +162,24 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       child: Container(
                         width: 32,
                         height: 32,
-                        padding: const EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           color: ThemeColor.white,
                           borderRadius: BorderRadius.circular(100),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ThemeColor.black.withOpacity(0.13),
+                              blurRadius: 8,
+                            ),
+                          ],
                         ),
                         child: SvgPicture.asset(
-                          'assets/icons/plus.svg',
+                          'assets/icons/write.svg',
                           colorFilter: ColorFilter.mode(
-                              ThemeColor.primary, BlendMode.srcIn),
+                            ThemeColor.primary,
+                            BlendMode.srcIn,
+                          ),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     )
@@ -189,7 +198,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     border: const OutlineInputBorder(),
                     hintText: '포포',
                     hintStyle:
-                        HeadTextStyle.getH3Style(color: ThemeColor.gray4),
+                        HeadTextStyle.getH3Style(color: ThemeColor.gray3),
                   ),
                   style: HeadTextStyle.getH3Style(),
                   textAlign: TextAlign.center,
@@ -209,58 +218,69 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 backgroundColor:
                     WidgetStateProperty.all<Color>(ThemeColor.gray2),
                 padding: WidgetStateProperty.all<EdgeInsets>(
-                    const EdgeInsets.only(right: 14, left: 16)),
+                  const EdgeInsets.fromLTRB(16, 8, 14, 8),
+                ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Body4(value: '@$code'),
-                  const SizedBox(width: 4),
-                  SvgPicture.asset(
-                    'assets/icons/link.svg',
-                    height: 20,
-                    width: 20,
-                    colorFilter:
-                        ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
-                  ),
-                ],
+              child: SizedBox(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Body4(
+                      value: '@$code',
+                      fontWeight: FontWeight.w600,
+                      color: ThemeColor.gray5,
+                    ),
+                    const SizedBox(width: 4),
+                    SvgPicture.asset(
+                      'assets/icons/link.svg',
+                      height: 20,
+                      width: 20,
+                      colorFilter:
+                          ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 32),
-            if (!_isEditing)
-              SettingList(lists: [
-                SettingListItem(
-                  title: '산책일지',
-                  onTab: () => Get.toNamed('/', arguments: {'tab': NavTab.my}),
-                ),
-                const SettingListItem(
-                  destination: '/calendar',
-                  title: '산책 캘린더',
-                )
-              ], title: ''),
-            Expanded(child: Container()),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  child: Body4(
-                    value: '로그아웃',
-                    color: ThemeColor.gray4,
-                    fontWeight: FontWeight.w500,
+            if (!_isEditing) ...[
+              SingleChildScrollView(
+                child: SettingList(lists: [
+                  SettingListItem(
+                    title: '산책일지',
+                    onTab: () =>
+                        Get.toNamed('/', arguments: {'tab': NavTab.my}),
                   ),
-                ),
-                const SizedBox(width: 16),
-                GestureDetector(
-                  child: Body4(
-                    value: '회원탈퇴',
-                    color: ThemeColor.gray4,
-                    fontWeight: FontWeight.w500,
+                  const SettingListItem(
+                    destination: '/calendar',
+                    title: '산책 캘린더',
+                  )
+                ], title: ''),
+              ),
+              Expanded(child: Container()),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    child: Body4(
+                      value: '로그아웃',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 57),
-              ],
-            ),
+                  const SizedBox(width: 16),
+                  GestureDetector(
+                    child: Body4(
+                      value: '회원탈퇴',
+                      color: ThemeColor.gray4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 57),
+                ],
+              ),
+            ],
           ],
         ),
       ),

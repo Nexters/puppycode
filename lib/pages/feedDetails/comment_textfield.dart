@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -53,6 +52,7 @@ class _CommentTextFieldState extends State<CommentTextField> {
       cursorWidth: 2,
       cursorHeight: 16,
       cursorColor: ThemeColor.primary,
+      textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.only(top: 10, bottom: 10, left: 16, right: 8),
@@ -71,22 +71,30 @@ class _CommentTextFieldState extends State<CommentTextField> {
           minHeight: 28,
           minWidth: 28,
         ),
-        suffixIcon: GestureDetector(
-          onTap: () => {
-            if (_isFocused &&
-                widget._commentController.text.isNotEmpty) // 댓글 입력하고 보내기
-              {
-                widget.onSubmitted(),
-                widget._commentController.clear(),
-                _focusNode.unfocus()
-              }
-            else if (_isFocused && widget._commentController.text.isEmpty)
-              {widget._commentController.clear(), _focusNode.unfocus()}
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: SvgPicture.asset('assets/icons/upload.svg'),
-          ),
+        suffixIcon: Column(
+          children: [
+            GestureDetector(
+              onTap: () => {
+                if (_isFocused &&
+                    widget._commentController.text.isNotEmpty) // 댓글 입력하고 보내기
+                  {
+                    widget.onSubmitted(),
+                    widget._commentController.clear(),
+                    _focusNode.unfocus()
+                  }
+                else if (_isFocused && widget._commentController.text.isEmpty)
+                  {widget._commentController.clear(), _focusNode.unfocus()}
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: SvgPicture.asset(
+                  'assets/icons/upload.svg',
+                  width: 28,
+                  height: 28,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

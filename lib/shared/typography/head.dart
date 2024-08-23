@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
 class Head1 extends StatelessWidget {
   const Head1({super.key, required this.value, this.color, this.align});
@@ -62,7 +63,7 @@ class Head4 extends StatelessWidget {
   }
 }
 
-const _kDefaultTextColor = Color(0xFF1E2022);
+Color _kDefaultTextColor = ThemeColor.gray6;
 
 class HeadTextStyle {
   static getH1Style({Color? color}) {

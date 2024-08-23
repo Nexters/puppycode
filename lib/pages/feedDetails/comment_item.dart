@@ -69,7 +69,8 @@ class ReactionCommentListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       width: MediaQuery.of(context).size.width,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             width: 42,
@@ -83,14 +84,13 @@ class ReactionCommentListItem extends StatelessWidget {
               child: UserNetworkImage(url: profileUrl, width: 42, height: 42),
             ),
           ),
-          const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 children: [
-                  Body3(value: userName, bold: true),
+                  Body4(value: userName, fontWeight: FontWeight.w600),
                   const SizedBox(width: 6),
                   if (isFeedWriter) const Caption(value: '작성자'),
                 ],
@@ -107,7 +107,7 @@ class ReactionCommentListItem extends StatelessWidget {
               _showActionSheet(context);
             },
             child: SvgPicture.asset(
-              'assets/icons/details.svg',
+              'assets/icons/more.svg',
               colorFilter: ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
               width: 20,
               height: 20,
