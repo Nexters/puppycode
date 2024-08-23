@@ -123,7 +123,7 @@ class FeedUserStatus extends StatelessWidget {
   final bool isMine;
 
   _onFriendClick(BuildContext context) {
-    if (hasWalked) return;
+    if (hasWalked || isMine) return;
     try {
       Toast.show(context, '$name에게 찌르기 알림을 보냈어요');
       HttpService.post('push/users/$id', body: {});

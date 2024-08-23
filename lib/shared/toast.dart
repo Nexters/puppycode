@@ -21,7 +21,7 @@ class Toast {
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.8,
               ),
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 14, 12),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
