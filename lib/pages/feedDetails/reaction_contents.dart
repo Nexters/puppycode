@@ -154,6 +154,7 @@ class _ReactionContentsState extends State<ReactionContents> {
                   'assets/images/comment_nothing.png',
                   width: 120,
                 ),
+                const SizedBox(height: 16),
                 Body3(value: '첫 댓글을 달아보세요!', color: ThemeColor.gray4),
               ],
             ),
