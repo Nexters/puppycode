@@ -149,7 +149,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 3),
                   ],
                 ),
               for (var reaction in widget.reactions)
@@ -194,7 +194,8 @@ class EmojiReactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 3),
       width: 48,
       child: Column(
         children: [
