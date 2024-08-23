@@ -148,9 +148,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                 const SizedBox(height: 16),
                 Head3(value: feed!.title),
                 const SizedBox(height: 16),
-                Episode(
-                  content: feed!.episode,
-                )
+                if (feed?.episode.isNotEmpty == true || feed?.isWriter == true)
+                  Episode(
+                    content: feed!.episode,
+                  )
               ],
             ),
           ),
