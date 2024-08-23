@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -32,13 +34,28 @@ void main() async {
 
   Get.put(UserController());
   runApp(const MyApp());
+  _initDeepLinkListener();
+}
+
+Future<void> _initDeepLinkListener() async {
+  late AppLinks appLinks;
+  StreamSubscription<Uri>? linkSubscription;
+  appLinks = AppLinks();
+
+  linkSubscription = appLinks.uriLinkStream.listen((uri) {
+    debugPrint('onAppLink: $uri');
+    String id = uri.toString().split('/').last;
+    Get.toNamed('/feed/$id');
+  }, onError: (err) {
+    print('딥링크 에러 $err');
+  });
 }
 
 Future<String?> initializeNotification() async {
   try {
     await Firebase.initializeApp();
 
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     if (Config.env != 'LOCAL') {
       PlatformDispatcher.instance.onError = (error, stack) {

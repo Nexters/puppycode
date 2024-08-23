@@ -31,8 +31,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>pawpaw</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>pawpaw</string>
 				<string>kakaoaa77ed4fc65b65bf8f76219b7cbdf706</string>
 			</array>
 		</dict>

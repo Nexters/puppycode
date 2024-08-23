@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,7 +27,7 @@ class FeedDetailPage extends StatefulWidget {
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
   Feed? feed;
-  String? tmpLink;
+  static String? link;
 
   @override
   void initState() {
@@ -45,7 +47,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
       setState(() {
         feed = Feed(item);
-        tmpLink = "http://175.106.99.165/feed/${feed!.id}"; // 이 경로가 맞나..
+        link = 'Pawpaw://feed/$id';
       });
       // print(feedItems);
     } catch (error) {
@@ -71,16 +73,16 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          if (feed!.isWriter!)
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Get.back();
-              },
-              child: Body2(value: '수정하기', color: ThemeColor.blue),
-            ),
+          // if (feed!.isWriter!)
+          //   CupertinoActionSheetAction(
+          //     onPressed: () {
+          //       Get.back();
+          //     },
+          //     child: Body2(value: '수정하기', color: ThemeColor.blue),
+          //   ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Share.share(tmpLink!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?
+              Share.share(link!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?
               Get.back();
             },
             child: Body2(value: '공유하기', color: ThemeColor.blue),
