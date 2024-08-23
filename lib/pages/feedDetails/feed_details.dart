@@ -11,6 +11,7 @@ import 'package:puppycode/pages/feedDetails/reaction_contents.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
+import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -90,7 +91,20 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           CupertinoActionSheetAction(
             onPressed: () {
               feed!.isWriter!
-                  ? _deleteFeed(Get.parameters['id'])
+                  ? sharedAlertDialog(
+                      context,
+                      '산책일지를 삭제하시겠어요?',
+                      '삭제 후 해당 날짜의 일지를 되돌릴 수 없어요.',
+                      '취소',
+                      '삭제',
+                      () {
+                        Get.back();
+                      },
+                      () {
+                        _deleteFeed(Get.parameters['id']);
+                      },
+                      isDestructive: true,
+                    )
                   : onReportFeed();
             },
             child: Body2(

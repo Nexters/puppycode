@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:puppycode/shared/styles/color.dart';
 
 Future<dynamic> sharedAlertDialog(
     BuildContext context,
@@ -8,26 +8,36 @@ Future<dynamic> sharedAlertDialog(
     String leftActionTitle,
     String rightActionTitle,
     VoidCallback leftAction,
-    VoidCallback rightAction) {
+    VoidCallback rightAction,
+    {bool? isDestructive = false}) {
   return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-            title: const Text('로그아웃'),
-            content: const Text("\n'pawpaw'와 잠시 멀어져도 괜찮아요\n다시 돌아오실거죠?"),
+            title: Text(title),
+            content: Text(content),
             actions: <CupertinoDialogAction>[
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () {
-                  Get.back();
+                  leftAction();
                 },
-                child: const Text('취소'),
+                child: Text(
+                  leftActionTitle,
+                  style: TextStyle(color: ThemeColor.blue),
+                ),
               ),
               CupertinoDialogAction(
                 isDefaultAction: true,
+                isDestructiveAction: isDestructive!,
                 onPressed: () {
-                  Get.back();
+                  rightAction();
                 },
-                child: const Text('로그아웃'),
+                child: Text(
+                  rightActionTitle,
+                  style: isDestructive
+                      ? TextStyle(color: ThemeColor.error)
+                      : TextStyle(color: ThemeColor.blue),
+                ),
               )
             ],
           ));
