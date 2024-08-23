@@ -20,8 +20,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
-  final Uri _url = Uri.parse(
-      'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4');
+  static const String url =
+      'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4';
 
   void onWalkNotificationSwitched(bool value) {
     // 이렇게 길어도 갠차나염 ..? 🥲
@@ -37,8 +37,9 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _launchUrl() async {
-    if (!await launchUrl(_url)) {
-      throw Exception('could not launch $_url');
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('could not launch $uri');
     }
   }
 
