@@ -9,7 +9,7 @@ import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/home/home.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});

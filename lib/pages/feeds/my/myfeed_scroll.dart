@@ -9,7 +9,7 @@ import 'package:puppycode/shared/feed.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
-import 'package:puppycode/shared/user.dart';
+import 'package:puppycode/shared/states/user.dart';
 
 class MyFeedGridView extends StatefulWidget {
   const MyFeedGridView({super.key});

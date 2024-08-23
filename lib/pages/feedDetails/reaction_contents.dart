@@ -79,7 +79,7 @@ class ReactionContents extends StatelessWidget {
                   'assets/images/comment_nothing.png',
                   width: 120,
                 ),
-                const Body3(value: '첫 댓글을 달아보세요!'),
+                Body3(value: '첫 댓글을 달아보세요!', color: ThemeColor.gray4),
               ],
             ),
           const SizedBox(height: 4),
@@ -105,7 +105,10 @@ class ReactionContents extends StatelessWidget {
               ),
             ),
           ),
-          CommentTextField(textFieldController: _commentController),
+          CommentTextField(
+            textFieldController: _commentController,
+            walkLogId: walkLogId,
+          ),
         ],
       ),
     );

@@ -50,6 +50,7 @@ class _PhotoItemState extends State<PhotoItem> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.photoPath);
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       height: (MediaQuery.of(context).size.width - 40) * 1.33,
@@ -58,7 +59,7 @@ class _PhotoItemState extends State<PhotoItem> {
             fit: BoxFit.fill,
             image: FileImage(File(widget.photoPath)),
             colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.4), BlendMode.srcIn),
+                Colors.black.withOpacity(0.4), BlendMode.srcOver),
           ),
           borderRadius: BorderRadius.circular(20)),
       child: Stack(

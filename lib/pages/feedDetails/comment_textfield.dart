@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -7,9 +8,11 @@ class CommentTextField extends StatefulWidget {
   const CommentTextField({
     super.key,
     required TextEditingController textFieldController,
+    required this.walkLogId,
   }) : _commentController = textFieldController;
 
   final TextEditingController _commentController;
+  final String walkLogId;
 
   @override
   State<CommentTextField> createState() => _CommentTextFieldState();
@@ -28,6 +31,17 @@ class _CommentTextFieldState extends State<CommentTextField> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+  }
+
+  Future<void> _createComment(String id, String text) async {
+    try {
+      await HttpService.post(
+        'walk-logs/$id/comments',
+        body: {'content': text},
+      );
+    } catch (error) {
+      print('create comment error: $error');
+    }
   }
 
   @override
@@ -66,7 +80,15 @@ class _CommentTextFieldState extends State<CommentTextField> {
         ),
         suffixIcon: GestureDetector(
           onTap: () => {
-            if (_isFocused)
+            if (_isFocused &&
+                widget._commentController.text.isNotEmpty) // 댓글 입력하고 보내기
+              {
+                _createComment(
+                    widget.walkLogId, widget._commentController.text),
+                widget._commentController.clear(),
+                _focusNode.unfocus()
+              }
+            else if (_isFocused && widget._commentController.text.isEmpty)
               {widget._commentController.clear(), _focusNode.unfocus()}
           },
           child: Padding(
