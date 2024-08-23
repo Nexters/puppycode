@@ -15,6 +15,7 @@
 - `Camera`를 연결하여 오늘의 산책을 기록함
 - `Firebase`를 연동하여 친구와 상호적으로 산책 알림을 전송함
 - Kakao & Apple OAuth 로그인 기능 구현
+- AppBar 위젯을 추상화하여 모든 페이지의 케이스에 맞게 5줄 이내의 코드로 AppBar 주입
 
 ### State & Route
 
@@ -25,6 +26,7 @@
 
 - ThemeColor를 생성하여 앱 전체적으로 magic string이 없이 스타일 변수 관리
 - Typography 위젯으로 동일한 텍스트 스타일 관리
+- 에러가 발생할 수 있는 Network Image는 추상화된 위젯으로 관리
 
 ## dirs
 
