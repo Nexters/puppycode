@@ -18,7 +18,7 @@ class ReactionContents extends StatefulWidget {
   final List<Reaction> reactions;
   final Function refetch;
   final String walkLogId;
-  final String writerId;
+  final String feedWriterId;
 
   const ReactionContents({
     super.key,
@@ -26,7 +26,7 @@ class ReactionContents extends StatefulWidget {
     required this.comments,
     required this.reactions,
     required this.walkLogId,
-    required this.writerId,
+    required this.feedWriterId,
   });
 
   @override
@@ -62,9 +62,7 @@ class _ReactionContentsState extends State<ReactionContents> {
           'writerProfileImageUrl': response['writerProfileImageUrl'],
           'walkLogId': int.parse(widget.walkLogId),
           'createdAt': DateTime.now().toString(),
-          'me': widget.writerId == userController.user.value?.id.toString()
-              ? true
-              : false,
+          'me': true,
         });
         setState(() {
           newComments.add(newComment);
@@ -177,11 +175,8 @@ class _ReactionContentsState extends State<ReactionContents> {
                     for (var comment in widget.comments)
                       ReactionCommentListItem(
                         refetch: widget.refetch,
-                        commentId: comment.id,
-                        userName: comment.writerName,
-                        comment: comment.content,
-                        profileUrl: comment.writerProfileUrl,
-                        isFeedWriter: comment.isWriter,
+                        comment: comment,
+                        feedWriterId: widget.feedWriterId,
                       ),
                   ],
                 ),

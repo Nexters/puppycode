@@ -2,12 +2,12 @@ class Comment {
   Comment(dynamic commentItem) {
     id = commentItem['id'];
     content = commentItem['content'];
-    writerId = commentItem['writerId'];
+    writerId = commentItem['writerId']; // 댓글 작성자 아이디
     writerName = commentItem['writerNickname'];
     writerProfileUrl = commentItem['writerProfileImageUrl'];
     walkLogId = commentItem['walkLogId'];
     createdAt = commentItem['createdAt'];
-    isWriter = commentItem['me'];
+    isWriter = commentItem['me']; // 댓글 작성자
   }
 
   late int id;
