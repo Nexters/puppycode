@@ -194,20 +194,23 @@ class EmojiReactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgPicture.asset(
-          'assets/icons/emoji_$reactionType.svg',
-          width: 40,
-          height: 40,
-        ),
-        const SizedBox(height: 4),
-        Caption(
-          value: writerName,
-          color: ThemeColor.gray5,
-          maxLength: 3,
-        )
-      ],
+    return SizedBox(
+      width: 48,
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/icons/emoji_$reactionType.svg',
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(height: 4),
+          Caption(
+            value: writerName,
+            color: ThemeColor.gray5,
+            maxLength: 3,
+          )
+        ],
+      ),
     );
   }
 }
