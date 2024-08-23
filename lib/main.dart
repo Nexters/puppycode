@@ -35,31 +35,38 @@ void main() async {
 }
 
 Future<String?> initializeNotification() async {
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
 
-  await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
 
-  if (Config.env != 'LOCAL') {
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
+    if (Config.env != 'LOCAL') {
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? fcmToken = await messaging.getToken();
+
+    if (Platform.isIOS) {
+      await messaging.requestPermission();
+    }
+
+    await messaging.setAutoInitEnabled(true);
+
+    await messaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    return fcmToken;
+  } catch (err, errStack) {
+    try {
+      FirebaseCrashlytics.instance.recordError(err, errStack, fatal: true);
+    } catch (e) {}
   }
-
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  String? fcmToken = await messaging.getToken();
-
-  if (Platform.isIOS) {
-    await messaging.requestPermission();
-  }
-
-  await messaging.setAutoInitEnabled(true);
-
-  await messaging.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  return fcmToken;
+  return '';
 }
