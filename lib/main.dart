@@ -37,6 +37,8 @@ void main() async {
 Future<String?> initializeNotification() async {
   await Firebase.initializeApp();
 
+  await Future.delayed(Duration(seconds: 3));
+
   if(Config.env != 'LOCAL') {
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -50,6 +52,7 @@ Future<String?> initializeNotification() async {
   if (Platform.isIOS) {
     await messaging.requestPermission();
   }
+
   await messaging.setAutoInitEnabled(true);
 
   await messaging.setForegroundNotificationPresentationOptions(
