@@ -194,7 +194,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   controller: _editingController,
                   focusNode: _focusNode,
                   readOnly: !_isEditing,
+                  maxLength: 10,
                   decoration: InputDecoration(
+                    counterText: '',
                     border: const OutlineInputBorder(),
                     hintText: '포포',
                     hintStyle:

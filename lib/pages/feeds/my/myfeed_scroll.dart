@@ -69,11 +69,19 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
         child: PagedListView<int, MyMontlyList>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MyMontlyList>(
-            noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
+            noItemsFoundIndicatorBuilder: (context) => const Padding(
+              padding: EdgeInsets.symmetric(vertical: 80),
+              child: FeedEmpty(),
+            ),
             itemBuilder: (context, monthly, index) => Column(
               children: isLoaded &&
-                      _pagingController.itemList?.first.items.isEmpty == false
-                  ? [const FeedEmpty()]
+                      _pagingController.itemList?.first.items.isEmpty == true
+                  ? [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 80),
+                        child: FeedEmpty(),
+                      )
+                    ]
                   : [
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),

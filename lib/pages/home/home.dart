@@ -272,9 +272,12 @@ class HomeTitle extends StatelessWidget {
   }
 
   String _generateTitle(bool walkDone) {
-    // 문구 수정될 것 같음
-    if (walkDone) return '오늘도 산책했군요 😎';
+    if (walkDone) {
+      if (DateTime.now().minute / 2 == 0) return '산책 어렵지 않아요! 오.산.완 🙌';
+      return '역시 오늘도 산책했군요 😎';
+    }
     int remainHours = calculateHoursUntilMidnight();
+    if (remainHours == 0) return '끝날 때까지 끝난 게 아니에요 💪';
     return remainHours < 6
         ? '$remainHours시간 남았어요! 얼른 나가요 🐾'
         : '오늘도 산책하러 나갈 거죠? 🥹';

@@ -107,7 +107,7 @@ class _ReactionContentsState extends State<ReactionContents> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 46,
+        bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 30,
       ),
       child: Column(
         children: [
@@ -134,36 +134,6 @@ class _ReactionContentsState extends State<ReactionContents> {
               walkLogId: widget.walkLogId,
               refetch: widget.refetch,
               onSubmitted: (emoji) => _createEmoji(emoji)),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              SvgPicture.asset(
-                'assets/icons/comment.svg',
-                colorFilter:
-                    ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
-                width: 20,
-                height: 20,
-              ),
-              const SizedBox(width: 3),
-              Body3(value: '댓글', bold: true, color: ThemeColor.gray4),
-              const SizedBox(width: 3),
-              Body3(
-                  value: newComments.length.toString(), color: ThemeColor.gray4)
-            ],
-          ),
-          if (widget.comments.isEmpty)
-            Column(
-              children: [
-                const SizedBox(height: 20), // 가운데 못해..~
-                Image.asset(
-                  'assets/images/comment_nothing.png',
-                  width: 120,
-                ),
-                const SizedBox(height: 16),
-                Body3(value: '첫 댓글을 달아보세요!', color: ThemeColor.gray4),
-              ],
-            ),
-          const SizedBox(height: 4),
           Expanded(
             child: RawScrollbar(
               thumbColor: ThemeColor.scroll,
@@ -172,17 +142,53 @@ class _ReactionContentsState extends State<ReactionContents> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    for (var comment in widget.comments)
-                      ReactionCommentListItem(
-                        refetch: widget.refetch,
-                        comment: comment,
-                        feedWriterId: widget.feedWriterId,
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/comment.svg',
+                          colorFilter: ColorFilter.mode(
+                              ThemeColor.gray4, BlendMode.srcIn),
+                          width: 20,
+                          height: 20,
+                        ),
+                        const SizedBox(width: 3),
+                        Body3(value: '댓글', bold: true, color: ThemeColor.gray4),
+                        const SizedBox(width: 3),
+                        Body3(
+                            value: newComments.length.toString(),
+                            color: ThemeColor.gray4)
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    if (widget.comments.isEmpty)
+                      Column(
+                        children: [
+                          const SizedBox(height: 20), // 가운데 못해..~
+                          Image.asset(
+                            'assets/images/comment_nothing.png',
+                            width: 120,
+                          ),
+                          const SizedBox(height: 16),
+                          Body3(value: '첫 댓글을 달아보세요!', color: ThemeColor.gray4),
+                        ],
                       ),
+                    if (widget.comments.isNotEmpty)
+                      ...(widget.comments
+                          .map(
+                            (comment) => ReactionCommentListItem(
+                              refetch: widget.refetch,
+                              comment: comment,
+                              feedWriterId: widget.feedWriterId,
+                            ),
+                          )
+                          .toList()),
                   ],
                 ),
               ),
             ),
           ),
+          const SizedBox(height: 8),
           CommentTextField(
             textFieldController: _commentController,
             walkLogId: widget.walkLogId,

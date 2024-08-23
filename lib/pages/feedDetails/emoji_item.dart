@@ -149,7 +149,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 3),
                   ],
                 ),
               for (var reaction in widget.reactions)
@@ -194,16 +194,24 @@ class EmojiReactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgPicture.asset(
-          'assets/icons/emoji_$reactionType.svg',
-          width: 40,
-          height: 40,
-        ),
-        const SizedBox(height: 4),
-        Caption(value: writerName, color: ThemeColor.gray5)
-      ],
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 3),
+      width: 48,
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/icons/emoji_$reactionType.svg',
+            width: 40,
+            height: 40,
+          ),
+          const SizedBox(height: 4),
+          Caption(
+            value: writerName,
+            color: ThemeColor.gray5,
+            maxLength: 3,
+          )
+        ],
+      ),
     );
   }
 }

@@ -115,6 +115,7 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
             Body1(
               value: centerOptions!.label,
               bold: true,
+              maxLength: 15,
             ),
             Caption(value: centerOptions!.caption!)
           ],

@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({super.key});
+
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.offAllNamed('/');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

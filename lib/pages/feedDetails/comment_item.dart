@@ -96,8 +96,11 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
               Row(
                 children: [
                   Body4(
-                      value: widget.comment.writerName,
-                      fontWeight: FontWeight.w600),
+                    value: widget.comment.writerName,
+                    fontWeight: FontWeight.w600,
+                    maxLine: 1,
+                    maxLength: 10,
+                  ),
                   const SizedBox(width: 6),
                   if (widget.comment.writerId.toString() == widget.feedWriterId)
                     const Caption(value: '작성자'),

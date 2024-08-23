@@ -43,7 +43,9 @@ class FeedListViewState extends State<FeedListView> {
     try {
       final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
-        'cursorId': cursor == 0 ? null : '$cursor'
+        'cursorId': cursor == 0 ? null : '$cursor',
+        'userId':
+            widget.focusedUserId != null ? widget.focusedUserId.toString() : '',
       });
       List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 

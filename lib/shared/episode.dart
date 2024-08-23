@@ -33,6 +33,7 @@ class Episode extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   'assets/icons/episode.svg',
+                  width: 24,
                   colorFilter:
                       ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
                 ),
