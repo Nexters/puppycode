@@ -76,7 +76,7 @@ class _FeedFriendsState extends State<FeedFriends> {
                   FeedUserStatus(
                     id: user.id,
                     name: user.nickname,
-                    hasWalked: true,
+                    hasWalked: user.walkDone,
                     isMine: true,
                     profileImageUrl: user.profileImageUrl,
                     focusedUserId: widget.focusedUserId,
@@ -144,7 +144,7 @@ class FeedUserStatus extends StatelessWidget {
       onTap: () => {onClick(id)},
       child: Container(
         width: 48,
-        margin: EdgeInsets.only(right: isLast ? 0 : 6),
+        margin: EdgeInsets.only(right: isLast ? 0 : 12),
         child: Column(
           children: [
             Stack(

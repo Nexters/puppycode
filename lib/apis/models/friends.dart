@@ -5,7 +5,7 @@ class Friend {
     id = item['id'];
     name = item['nickname'];
     profileUrl = item['profileImageUrl'];
-    hasWalked = item['done'] ?? false;
+    hasWalked = item['walkDone'] ?? false;
   }
 
   late int id;

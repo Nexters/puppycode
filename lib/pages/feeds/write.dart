@@ -26,7 +26,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
   final userController = Get.find<UserController>();
-  late String photoPath;
+  String photoPath = '';
   String from = '';
 
   bool isLoading = false;
@@ -133,11 +133,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
                     child: Column(
                       children: [
                         PhotoItem(
-                            photoPath: photoPath,
-                            titleController: titleController,
-                            onChange: onTitleChange,
-                            name: '코코' // userController.user.value!.nickname,
-                            ),
+                          photoPath: photoPath,
+                          titleController: titleController,
+                          onChange: onTitleChange,
+                          name: userController.user.value!.nickname ?? '포포',
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.max,
