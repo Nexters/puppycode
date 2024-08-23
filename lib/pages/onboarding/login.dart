@@ -112,7 +112,7 @@ class SignupButton extends StatelessWidget {
   void _checkUserRegistration(String oauthIdentifier, String provider,
       {Map<String, String>? additionalInfo}) async {
     try {
-      var loginResult = await HttpService.getOne('/auth/login', params: {
+      var loginResult = await HttpService.getOne('auth/login', params: {
         'oauthIdentifier': oauthIdentifier,
         'deviceToken': Config.FIREBASE_TOKEN
       });
