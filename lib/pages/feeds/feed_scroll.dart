@@ -1,7 +1,9 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:puppycode/pages/feeds/empty.dart';
 import 'package:puppycode/pages/feeds/feed_item.dart';
+import 'package:puppycode/shared/feed.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/apis/models/feed.dart';
 
@@ -42,7 +44,7 @@ class FeedListViewState extends State<FeedListView> {
       final items = await HttpService.get('walk-logs', params: {
         'pageSize': '$_limit',
         'cursorId': cursor == 0 ? null : '$cursor',
-        'userId': widget.focusedUserId?.toString(),
+        'userId': '1',
       });
       List<Feed> feedItems = items.map((item) => Feed(item)).toList();
 
@@ -60,8 +62,11 @@ class FeedListViewState extends State<FeedListView> {
   }
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(
+  Widget build(BuildContext context) => CustomRefreshIndicator(
         onRefresh: () => Future.sync(() => _pagingController.refresh()),
+        builder: (context, child, controller) => PawpawRefreshBuilder(
+            context, child, controller,
+            text: '친구의 소식을 불러오고 있어요!'),
         child: PagedListView<int, Feed>(
           shrinkWrap: true,
           pagingController: _pagingController,
