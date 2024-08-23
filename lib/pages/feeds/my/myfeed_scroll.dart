@@ -75,7 +75,7 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
             ),
             itemBuilder: (context, monthly, index) => Column(
               children: isLoaded &&
-                      _pagingController.itemList?.first.items.isNotEmpty == true
+                      _pagingController.itemList?.first.items.isEmpty == true
                   ? [
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 80),
