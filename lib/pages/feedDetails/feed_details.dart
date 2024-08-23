@@ -201,7 +201,7 @@ class FeedReactionButton extends StatelessWidget {
           Body4(value: reactions.length.toString(), color: ThemeColor.gray4),
           const SizedBox(width: 16),
           SvgPicture.asset(
-            'assets/icons/talk.svg',
+            'assets/icons/comment.svg',
             colorFilter: ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
           ),
           const SizedBox(width: 2),

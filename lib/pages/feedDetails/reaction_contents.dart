@@ -133,7 +133,7 @@ class _ReactionContentsState extends State<ReactionContents> {
           Row(
             children: [
               SvgPicture.asset(
-                'assets/icons/talk.svg',
+                'assets/icons/comment.svg',
                 colorFilter:
                     ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
                 width: 20,
