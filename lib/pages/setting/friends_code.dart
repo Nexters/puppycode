@@ -127,9 +127,11 @@ class CodeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double textFieldWidth = MediaQuery.of(context).size.width / 6 - 10;
+
     return SizedBox(
-      height: 56,
-      width: 56,
+      height: textFieldWidth,
+      width: textFieldWidth,
       child: TextField(
         controller: controller,
         style: HeadTextStyle.getH1Style(color: ThemeColor.gray5),
