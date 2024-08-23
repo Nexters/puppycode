@@ -149,7 +149,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 6),
                   ],
                 ),
               for (var reaction in widget.reactions)
