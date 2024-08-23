@@ -50,7 +50,6 @@ class _PhotoItemState extends State<PhotoItem> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.photoPath);
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       height: (MediaQuery.of(context).size.width - 40) * 1.33,

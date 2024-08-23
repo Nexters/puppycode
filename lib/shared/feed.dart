@@ -15,7 +15,6 @@ class PawpawRefreshBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(controller.value);
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[

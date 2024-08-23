@@ -37,17 +37,6 @@ class _CommentTextFieldState extends State<CommentTextField> {
     });
   }
 
-  // Future<void> _createComment(String id, String text) async {
-  //   try {
-  //     await HttpService.post(
-  //       'walk-logs/$id/comments',
-  //       body: {'content': text},
-  //     );
-  //   } catch (error) {
-  //     print('create comment error: $error');
-  //   }
-  // }
-
   @override
   void dispose() {
     _focusNode.dispose();
