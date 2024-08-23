@@ -9,16 +9,21 @@ class Body1 extends StatelessWidget {
     required this.value,
     this.color,
     this.bold = false,
+    this.maxLength,
   });
 
   final Color? color;
   final String value;
   final bool bold;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
+    var text = maxLength != null && value.length > maxLength!
+        ? '${value.substring(0, maxLength)}...'
+        : value;
     return Text(
-      value,
+      text,
       style: BodyTextStyle.getBody1Style(color: color, bold: bold),
     );
   }
