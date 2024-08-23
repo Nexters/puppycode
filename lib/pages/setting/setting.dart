@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/setting/time_button.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -20,6 +21,27 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
+  int? time;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPushNotificationTime();
+  }
+
+  Future<void> _fetchPushNotificationTime() async {
+    try {
+      final res = await HttpService.getOne('users/push-notification');
+      print(res);
+
+      setState(() {
+        //time = res;
+      });
+    } catch (err) {
+      print('산책 루틴 알림 fetch error: $err');
+    }
+  }
+
   static const String url =
       'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4';
 
@@ -28,12 +50,25 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       isWalkNotificationEnabled = value;
     });
+
+    if (isWalkNotificationEnabled) {
+      //_setWalkNotificationAlert(time);
+    }
   }
 
   void onPushNotificationSwitched(value) {
     setState(() {
       isPushNotificationEnabled = value;
     });
+  }
+
+  Future<void> _setWalkNotificationAlert(value) async {
+    try {
+      await HttpService.patch('users/push-notification',
+          params: {'time': value});
+    } catch (err) {
+      print('산책 루틴 알림 set error: $err');
+    }
   }
 
   Future<void> _launchUrl() async {
