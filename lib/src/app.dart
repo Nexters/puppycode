@@ -11,6 +11,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
+          outlinedButtonTheme: OutlinedButtonThemeData(
+              style: ButtonStyle(
+                  overlayColor: WidgetStateProperty.resolveWith<Color?>(
+            (states) => Colors.transparent,
+          ))),
           cupertinoOverrideTheme: CupertinoThemeData(
             primaryColor: ThemeColor.primary,
           ),
