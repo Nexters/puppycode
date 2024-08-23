@@ -83,7 +83,9 @@ Future<String?> initializeNotification() async {
   } catch (err, errStack) {
     try {
       FirebaseCrashlytics.instance.recordError(err, errStack, fatal: true);
-    } catch (e) {}
+    } catch (e) {
+      return '';
+    }
   }
   return '';
 }

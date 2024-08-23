@@ -12,6 +12,7 @@ import 'package:puppycode/pages/home/home.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/states/user.dart';
+import 'package:puppycode/shared/typography/body.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});
@@ -33,9 +34,11 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
 
   final Map<NavTab, Widget> _pages = {
     NavTab.feed: const FeedScreen(),
-    NavTab.home: HomePage(),
+    NavTab.home: const HomePage(),
     NavTab.my: const MyFeedScreen(),
   };
+
+  final bool showTooltip = false;
 
   static const storage = FlutterSecureStorage();
 
@@ -153,6 +156,7 @@ class WriteFloatingButton extends StatefulWidget {
 class _WriteFloatingButtonState extends State<WriteFloatingButton> {
   final userController = Get.find<UserController>();
   final ImagePicker picker = ImagePicker();
+  late bool showTooltip = false;
 
   Future getImage(ImageSource imageSource) async {
     final XFile? pickedFile = await picker.pickImage(source: imageSource);
@@ -166,7 +170,18 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
   }
 
   _onButtonClick(bool hasWritten) {
-    if (hasWritten) return;
+    if (hasWritten) {
+      if (!showTooltip) {
+        setState(() {
+          showTooltip = true;
+          Future.delayed(Duration(seconds: 1), () {
+            showTooltip = false;
+            setState(() {});
+          });
+        });
+      }
+      return;
+    }
     getImage(ImageSource.camera);
   }
 
@@ -177,8 +192,9 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
     return Container(
-      width: 64,
-      height: 64,
+      margin: EdgeInsets.only(right: 4),
+      width: 155,
+      height: 117,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         boxShadow: [
@@ -189,22 +205,78 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
           ),
         ],
       ),
-      child: FloatingActionButton(
-        elevation: 0,
-        onPressed: () => {_onButtonClick(hasWritten)},
-        backgroundColor:
-            hasWritten == true ? ThemeColor.white : floatingButtonColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: SvgPicture.asset(
-          'assets/icons/write.svg',
-          colorFilter: hasWritten
-              ? ColorFilter.mode(floatingButtonColor!, BlendMode.srcIn)
-              : null,
-          width: 32,
-        ),
+      child: Stack(
+        fit: StackFit.loose,
+        children: [
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: SizedBox(
+              width: 64,
+              height: 64,
+              child: FloatingActionButton(
+                elevation: 0,
+                onPressed: () => {_onButtonClick(hasWritten)},
+                backgroundColor:
+                    hasWritten == true ? ThemeColor.gray3 : floatingButtonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/write.svg',
+                  colorFilter: hasWritten
+                      ? ColorFilter.mode(ThemeColor.gray2, BlendMode.srcIn)
+                      : null,
+                  width: 32,
+                ),
+              ),
+            ),
+          ),
+          if (showTooltip)
+            Positioned(
+                right: 0,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: ThemeColor.gray6,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Body4(
+                      value: '이미 산책을 완료했어요!',
+                      color: ThemeColor.white,
+                      fontWeight: FontWeight.w600),
+                )),
+          if (showTooltip)
+            Positioned(
+              top: 38,
+              right: 32,
+              child: CustomPaint(
+                painter: SpeechBubblePainter(),
+              ),
+            )
+        ],
       ),
     );
+  }
+}
+
+class SpeechBubblePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = ThemeColor.gray6
+      ..style = PaintingStyle.fill;
+
+    final Path path = Path();
+    path.lineTo(-7, 0);
+    path.lineTo(0, 8);
+    path.lineTo(7, 0);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(SpeechBubblePainter oldDelegate) {
+    return false;
   }
 }

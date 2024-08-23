@@ -156,6 +156,7 @@ class WeatherGuide extends StatefulWidget {
 class _WeatherGuideState extends State<WeatherGuide> {
   late int temp = 0;
   late String weather = '';
+  late String message = '';
   late LOCATION? locationKey = widget.city.toLocation();
   static const storage = FlutterSecureStorage();
 
@@ -165,13 +166,16 @@ class _WeatherGuideState extends State<WeatherGuide> {
         final savedWeatherString = await storage.read(key: 'weather') ?? '';
         if (savedWeatherString.isNotEmpty) {
           // ignore: no_leading_underscores_for_local_identifiers
-          final [_temp, _weather, _location, _savedDate] =
+          final [_temp, _weather, _location, _savedDate, _message] =
               savedWeatherString.split(';');
           final savedDate = DateTime.parse(_savedDate);
-          if (_location == widget.city && isToday(savedDate)) {
+          if (_location == widget.city &&
+              isToday(savedDate) &&
+              _message.isNotEmpty) {
             setState(() {
               temp = int.parse(_temp);
               weather = _weather;
+              message = _message;
             });
             return;
           } else {
@@ -192,12 +196,14 @@ class _WeatherGuideState extends State<WeatherGuide> {
             weatherData.temp,
             weatherData.weather,
             widget.city,
+            weatherData.message,
             DateTime.now().toString()
           ].join(';'));
 
       setState(() {
         temp = weatherData.temp;
         weather = weatherData.weather;
+        message = weatherData.message;
       });
       // ignore: empty_catches
     } catch (error) {}
@@ -240,10 +246,7 @@ class _WeatherGuideState extends State<WeatherGuide> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Body2(
-                    value: '나갈 때 물통을 챙겨주세요💦',
-                    bold: true,
-                    color: ThemeColor.gray5),
+                Body2(value: message, bold: true, color: ThemeColor.gray5),
                 Body4(
                   value: '${locationNames[locationKey]} $temp℃',
                   color: ThemeColor.gray4,
