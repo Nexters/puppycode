@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -22,10 +23,10 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
   void _handleInputChange(int index, String value) {
     if (value.length == 1) {
       if (index < 5) {
-        FocusScope.of(context).nextFocus(); // 다음 필드로 포커스 이동
+        FocusScope.of(context).nextFocus();
       }
     } else if (value.isEmpty && index > 0) {
-      FocusScope.of(context).previousFocus(); // 이전 필드로 포커스 이동
+      FocusScope.of(context).previousFocus();
     }
   }
 
@@ -33,6 +34,10 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
     for (int i = 0; i < value.length && i < 6; i++) {
       _controllers[i].text = value[i];
       _handleInputChange(i, value[i]);
+    }
+
+    for (int i = value.length; i < 6; i++) {
+      _controllers[i].clear();
     }
   }
 
@@ -85,16 +90,14 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
               children: List.generate(
                 6,
                 (index) => CodeTextField(
-                    controller: _controllers[index],
-                    onChanged: (value) {
-                      _handleInputChange(index, value);
-                    },
-                    onPaste: (value) {
-                      _handlePaste(value);
-                    },
-                    onSubmitted: (value) {
-                      _onSubmit();
-                    }),
+                  controller: _controllers[index],
+                  onChanged: (value) {
+                    _handleInputChange(index, value);
+                  },
+                  onPaste: (value) {
+                    _handlePaste(value);
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -103,8 +106,24 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
                   value: errorMessage,
                   color: ThemeColor.error,
                   fontWeight: FontWeight.w500),
-            )
+            ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 12,
+          ),
+          child: Visibility(
+            visible: MediaQuery.of(context).viewInsets.bottom == 0,
+            child: DefaultElevatedButton(
+              onPressed: () => {_onSubmit()},
+              text: '친구 추가하기 ',
+            ),
+          ),
         ),
       ),
     );
@@ -115,13 +134,11 @@ class CodeTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final ValueChanged<String> onPaste;
   final TextEditingController controller;
-  final ValueChanged<String> onSubmitted;
 
   const CodeTextField({
     required this.onChanged,
     required this.onPaste,
     required this.controller,
-    required this.onSubmitted,
     super.key,
   });
 
@@ -129,41 +146,41 @@ class CodeTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     double textFieldWidth = MediaQuery.of(context).size.width / 6 - 10;
 
-    return SizedBox(
-      height: textFieldWidth,
-      width: textFieldWidth,
-      child: TextField(
-        controller: controller,
-        style: HeadTextStyle.getH1Style(color: ThemeColor.gray5),
-        inputFormatters: [LengthLimitingTextInputFormatter(1)],
-        textAlign: TextAlign.center,
-        cursorColor: ThemeColor.primary,
-        cursorHeight: 18,
-        onChanged: (value) {
-          onChanged(value);
-        },
-        onSubmitted: (value) {
-          onSubmitted(value);
-        },
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: ThemeColor.gray2,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide.none,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onDoubleTap: () async {
+        final data = await Clipboard.getData(Clipboard.kTextPlain);
+        if (data?.text != null) {
+          onPaste(data!.text!); // 붙여넣기된 문자열 처리
+        }
+      },
+      child: SizedBox(
+        height: textFieldWidth,
+        width: textFieldWidth,
+        child: TextField(
+          controller: controller,
+          style: HeadTextStyle.getH1Style(color: ThemeColor.gray5),
+          inputFormatters: [LengthLimitingTextInputFormatter(1)],
+          textAlign: TextAlign.center,
+          cursorColor: ThemeColor.primary,
+          cursorHeight: 18,
+          onChanged: (value) {
+            onChanged(value);
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: ThemeColor.gray2,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 11.2),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 11.2),
         ),
-        onTap: () async {
-          final data = await Clipboard.getData(Clipboard.kTextPlain);
-          if (data?.text != null) {
-            onPaste(data!.text!); // 붙여넣기된 문자열 처리
-          }
-        },
       ),
     );
   }
