@@ -190,6 +190,8 @@ class SettingListItem extends StatelessWidget {
                     'assets/icons/chevron_right.svg',
                     colorFilter:
                         ColorFilter.mode(ThemeColor.gray3, BlendMode.srcIn),
+                    width: 20,
+                    height: 20,
                   ), // 기본값으로 SvgPicture 사용
             ),
           ],
