@@ -26,7 +26,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
   final userController = Get.find<UserController>();
-  late String photoPath;
+  String photoPath = '';
   String from = '';
 
   bool isLoading = false;

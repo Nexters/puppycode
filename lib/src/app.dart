@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
           )),
-      initialRoute: '/login',
+      initialRoute: '/',
       getPages: AppRoutes.routes,
     );
   }

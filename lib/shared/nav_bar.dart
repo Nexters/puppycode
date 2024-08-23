@@ -1,9 +1,11 @@
 // ignore_for_file: dead_code
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:puppycode/config.dart';
 import 'package:puppycode/pages/feeds/feed.dart';
 import 'package:puppycode/pages/feeds/my/myfeed.dart';
 import 'package:puppycode/pages/home/home.dart';
@@ -35,9 +37,14 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     NavTab.my: const MyFeedScreen(),
   };
 
+  static const storage = FlutterSecureStorage();
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuthToken();
+    });
     var argTab = Get.arguments == null ? null : Get.arguments['tab'];
 
     if (_allowedRoutes.contains(argTab)) {
@@ -45,6 +52,16 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
     }
 
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _checkAuthToken() async {
+    if (Config.isLocal) return;
+    try {
+      String? value = await storage.read(key: 'authToken');
+      if (value == null) {
+        Get.offAllNamed('/login');
+      }
+    } catch (e) {}
   }
 
   _changeTab(int index) {
