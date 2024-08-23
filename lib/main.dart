@@ -37,9 +37,9 @@ void main() async {
 Future<String?> initializeNotification() async {
   await Firebase.initializeApp();
 
-  await Future.delayed(Duration(seconds: 3));
+  await Future.delayed(Duration(seconds: 1));
 
-  if(Config.env != 'LOCAL') {
+  if (Config.env != 'LOCAL') {
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
