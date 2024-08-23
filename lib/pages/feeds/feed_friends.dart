@@ -144,7 +144,7 @@ class FeedUserStatus extends StatelessWidget {
       onTap: () => {onClick(id)},
       child: Container(
         width: 48,
-        margin: EdgeInsets.only(right: isLast ? 0 : 6),
+        margin: EdgeInsets.only(right: isLast ? 0 : 12),
         child: Column(
           children: [
             Stack(

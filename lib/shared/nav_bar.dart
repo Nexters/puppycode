@@ -160,8 +160,8 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
     return Container(
-      width: 65,
-      height: 65,
+      width: 64,
+      height: 64,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
         boxShadow: [
