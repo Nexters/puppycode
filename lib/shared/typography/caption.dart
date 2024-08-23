@@ -8,15 +8,20 @@ class Caption extends StatelessWidget {
     super.key,
     required this.value,
     this.color,
+    this.maxLength,
   });
 
   final Color? color;
   final String value;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
+    var text = maxLength != null && value.length > maxLength!
+        ? '${value.substring(0, maxLength)}...'
+        : value;
     return Text(
-      value,
+      text,
       style: CaptionTextStyle.getCaptionStyle(color: color),
     );
   }

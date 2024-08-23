@@ -67,22 +67,32 @@ class Body3 extends StatelessWidget {
 }
 
 class Body4 extends StatelessWidget {
-  const Body4(
-      {super.key,
-      required this.value,
-      this.color,
-      this.fontWeight,
-      this.textShadow});
+  const Body4({
+    super.key,
+    required this.value,
+    this.color,
+    this.fontWeight,
+    this.textShadow,
+    this.maxLine,
+    this.maxLength,
+  });
 
   final String value;
   final Color? color;
   final Shadow? textShadow;
   final FontWeight? fontWeight;
+  final int? maxLine;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
+    var text = maxLength != null && value.length > maxLength!
+        ? '${value.substring(0, maxLength)}...'
+        : value;
     return Text(
-      value,
+      text,
+      maxLines: maxLine,
+      overflow: TextOverflow.ellipsis,
       style: BodyTextStyle.getBody4Style(
           color: color, fontWeight: fontWeight, textShadow: textShadow),
     );

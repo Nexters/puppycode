@@ -191,6 +191,7 @@ class FeedUserStatus extends StatelessWidget {
               value: name,
               color: nameColor,
               fontWeight: isMeFocused ? FontWeight.w600 : FontWeight.w400,
+              maxLine: 1,
             )
           ],
         ),

@@ -202,7 +202,11 @@ class EmojiReactionListItem extends StatelessWidget {
           height: 40,
         ),
         const SizedBox(height: 4),
-        Caption(value: writerName, color: ThemeColor.gray5)
+        Caption(
+          value: writerName,
+          color: ThemeColor.gray5,
+          maxLength: 3,
+        )
       ],
     );
   }
