@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/route.dart';
@@ -10,6 +11,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
+          cupertinoOverrideTheme: CupertinoThemeData(
+            primaryColor: ThemeColor.primary,
+          ),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: ThemeColor.primary,
+            selectionColor: ThemeColor.primary.withOpacity(0.3),
+            selectionHandleColor: ThemeColor.primary.withOpacity(0.3),
+          ),
           fontFamily: 'Pretendard',
           scaffoldBackgroundColor: ThemeColor.white,
           appBarTheme: AppBarTheme(backgroundColor: ThemeColor.white),
