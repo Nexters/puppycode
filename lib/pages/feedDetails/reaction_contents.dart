@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/pages/feedDetails/comment_item.dart';
 import 'package:puppycode/pages/feedDetails/comment_textfield.dart';
 import 'package:puppycode/pages/feedDetails/emoji_item.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/states/user.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
@@ -16,6 +18,7 @@ class ReactionContents extends StatefulWidget {
   final List<Reaction> reactions;
   final Function refetch;
   final String walkLogId;
+  final String feedWriterId;
 
   const ReactionContents({
     super.key,
@@ -23,6 +26,7 @@ class ReactionContents extends StatefulWidget {
     required this.comments,
     required this.reactions,
     required this.walkLogId,
+    required this.feedWriterId,
   });
 
   @override
@@ -31,6 +35,7 @@ class ReactionContents extends StatefulWidget {
 
 class _ReactionContentsState extends State<ReactionContents> {
   final TextEditingController _commentController = TextEditingController();
+  final userController = Get.find<UserController>();
   List<Comment> newComments = [];
   List<Reaction> newReactions = [];
 
@@ -170,11 +175,8 @@ class _ReactionContentsState extends State<ReactionContents> {
                     for (var comment in widget.comments)
                       ReactionCommentListItem(
                         refetch: widget.refetch,
-                        commentId: comment.id,
-                        userName: comment.writerName,
-                        comment: comment.content,
-                        profileUrl: comment.writerProfileUrl,
-                        isFeedWriter: comment.isWriter,
+                        comment: comment,
+                        feedWriterId: widget.feedWriterId,
                       ),
                   ],
                 ),

@@ -8,7 +8,7 @@ class Feed {
     title = logItem['title'];
     episode = logItem['content'];
     walkTime = logItem['walkTime'];
-    writerId = logItem['writerId'];
+    writerId = logItem['writerId']; //피드 작성자 아이디
     name = logItem['writerNickname'];
     profileUrl = logItem['writerProfileUrl'];
     comments = (logItem['comments'] as List<dynamic>?)

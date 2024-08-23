@@ -1,35 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
-class ReactionCommentListItem extends StatelessWidget {
+class ReactionCommentListItem extends StatefulWidget {
   final Function refetch;
-  final int commentId;
-  final String userName;
-  final String comment;
-  final String profileUrl;
-  final bool isFeedWriter;
+  final Comment comment;
+  final String feedWriterId;
 
   const ReactionCommentListItem({
     super.key,
-    required this.commentId,
-    required this.userName,
-    required this.comment,
-    required this.profileUrl,
-    required this.isFeedWriter,
     required this.refetch,
+    required this.comment,
+    required this.feedWriterId,
   });
 
+  @override
+  State<ReactionCommentListItem> createState() =>
+      _ReactionCommentListItemState();
+}
+
+class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
   Future<void> _deleteComment(id) async {
     try {
       await HttpService.delete(
         'walk-logs/comments/$id',
-        onDelete: () => {refetch(), Get.back()},
+        onDelete: () => {widget.refetch(), Get.back()},
       );
     } catch (error) {
       print('delete comment erorr: $error');
@@ -47,11 +48,14 @@ class ReactionCommentListItem extends StatelessWidget {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
-              isFeedWriter ? _deleteComment(commentId) : onReportComment();
+              widget.comment.isWriter
+                  ? _deleteComment(widget.comment.id)
+                  : onReportComment();
               Get.back();
             },
             child: Body2(
-                value: isFeedWriter ? '삭제하기' : '신고하기', color: ThemeColor.error),
+                value: widget.comment.isWriter ? '삭제하기' : '신고하기',
+                color: ThemeColor.error),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -81,7 +85,8 @@ class ReactionCommentListItem extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
-              child: UserNetworkImage(url: profileUrl, width: 42, height: 42),
+              child: UserNetworkImage(
+                  url: widget.comment.writerProfileUrl, width: 42, height: 42),
             ),
           ),
           Column(
@@ -90,15 +95,18 @@ class ReactionCommentListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Body4(value: userName, fontWeight: FontWeight.w600),
+                  Body4(
+                      value: widget.comment.writerName,
+                      fontWeight: FontWeight.w600),
                   const SizedBox(width: 6),
-                  if (isFeedWriter) const Caption(value: '작성자'),
+                  if (widget.comment.writerId.toString() == widget.feedWriterId)
+                    const Caption(value: '작성자'),
                 ],
               ),
               const SizedBox(height: 2),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 120,
-                child: Body3(value: comment),
+                child: Body3(value: widget.comment.content),
               )
             ],
           ),

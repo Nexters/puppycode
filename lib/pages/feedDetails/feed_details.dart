@@ -142,6 +142,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                       comments: feed!.comments,
                       reactions: feed!.reactions,
                       walkLogId: feed!.id.toString(),
+                      feedWriterId: feed!.writerId.toString(),
                     ),
                   ],
                 ),
@@ -166,12 +167,14 @@ class FeedReactionButton extends StatelessWidget {
   final List<Reaction> reactions;
   final Function refetch;
   final String walkLogId;
+  final String feedWriterId;
 
   const FeedReactionButton({
     required this.refetch,
     required this.comments,
     required this.reactions,
     required this.walkLogId,
+    required this.feedWriterId,
     super.key,
   });
 
@@ -187,6 +190,7 @@ class FeedReactionButton extends StatelessWidget {
               reactions: reactions,
               refetch: refetch,
               walkLogId: walkLogId,
+              feedWriterId: feedWriterId,
             ),
             null,
             height: 640);
