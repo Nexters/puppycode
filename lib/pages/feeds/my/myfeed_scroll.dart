@@ -72,7 +72,7 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
             noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
             itemBuilder: (context, monthly, index) => Column(
               children: isLoaded &&
-                      _pagingController.itemList?.first.items.isEmpty == false
+                      _pagingController.itemList?.first.items.isEmpty == true
                   ? [const FeedEmpty()]
                   : [
                       Container(
