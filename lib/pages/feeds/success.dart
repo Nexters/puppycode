@@ -24,8 +24,8 @@ class FeedCreateSuccessPage extends StatelessWidget {
             const Column(children: [
               Padding(
                   padding: EdgeInsets.only(bottom: 4),
-                  child: Head1(value: '오늘도 산책 완료')),
-              Body1(value: '귀찮음을 이겨냈으니 100점 반려인이네요')
+                  child: Head1(value: '오늘도 산책 완료!')),
+              Body1(value: '귀찮음을 이겨냈으니 100점 반려인이네요.')
             ]),
             Container(
               margin: const EdgeInsets.only(top: 96),
