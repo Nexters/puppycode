@@ -97,7 +97,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
       setState(() {
         isLoading = false;
       });
-      isLoading = false;
       if (result['success'] == true) {
         await userController.refreshData();
         Get.offAndToNamed('/create/success',
@@ -106,18 +105,15 @@ class _FeedWritePageState extends State<FeedWritePage> {
         isError = true;
       }
     } catch (err) {
-      isLoading = false;
-      isError = true;
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Body2(
-        value: '로딩중',
-      );
-    }
     return Scaffold(
         appBar: SharedAppBar(
           leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
@@ -171,8 +167,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
               onPressed: () => {_createFeed()},
-              text: '기록 남기기',
-              disabled: titleController.text.isEmpty,
+              text: isLoading ? '기록 저장중...' : '기록 남기기',
+              disabled: titleController.text.isEmpty || isLoading,
             ),
           ),
         ));
