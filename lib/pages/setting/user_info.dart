@@ -58,6 +58,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
   //프로필 변경
   void _editProfile() async {
     try {
+      if (_editingController.text.isEmpty) {
+        _editingController.text = '포포';
+      }
       await HttpService.patch('users/nickname',
           params: {'nickname': _editingController.text},
           onPatch: () => userController.refreshData());
@@ -107,13 +110,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
     }
   }
 
-  void _shareCode(code) async {
-    await Share.share(code, subject: 'Pawpaw');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: SharedAppBar(
           leftOptions: AppBarLeft(iconType: LeftIconType.BACK),
           centerOptions: AppBarCenter(label: '내 프로필'),
@@ -198,7 +198,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     border: const OutlineInputBorder(),
                     hintText: '포포',
                     hintStyle:
-                        HeadTextStyle.getH3Style(color: ThemeColor.gray4),
+                        HeadTextStyle.getH3Style(color: ThemeColor.gray3),
                   ),
                   style: HeadTextStyle.getH3Style(),
                   textAlign: TextAlign.center,
@@ -244,16 +244,19 @@ class _UserInfoPageState extends State<UserInfoPage> {
             ),
             const SizedBox(height: 32),
             if (!_isEditing) ...[
-              SettingList(lists: [
-                SettingListItem(
-                  title: '산책일지',
-                  onTab: () => Get.toNamed('/', arguments: {'tab': NavTab.my}),
-                ),
-                const SettingListItem(
-                  destination: '/calendar',
-                  title: '산책 캘린더',
-                )
-              ], title: ''),
+              SingleChildScrollView(
+                child: SettingList(lists: [
+                  SettingListItem(
+                    title: '산책일지',
+                    onTab: () =>
+                        Get.toNamed('/', arguments: {'tab': NavTab.my}),
+                  ),
+                  const SettingListItem(
+                    destination: '/calendar',
+                    title: '산책 캘린더',
+                  )
+                ], title: ''),
+              ),
               Expanded(child: Container()),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +280,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   const SizedBox(height: 57),
                 ],
               ),
-            ]
+            ],
           ],
         ),
       ),

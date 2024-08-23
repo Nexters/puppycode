@@ -219,8 +219,8 @@ class _CustomCupertinoSwitchState extends State<CustomCupertinoSwitch> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 52,
-      height: 30,
+      width: 56,
+      height: 32,
       child: FittedBox(
         fit: BoxFit.contain,
         child: CupertinoSwitch(
