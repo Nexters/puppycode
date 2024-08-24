@@ -57,7 +57,6 @@ class FeedListViewState extends State<FeedListView> {
         _pagingController.appendPage(feedItems, nextCursor);
       }
     } catch (error) {
-      print(error);
       _pagingController.error = error;
     }
   }
@@ -72,6 +71,9 @@ class FeedListViewState extends State<FeedListView> {
           shrinkWrap: true,
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Feed>(
+            firstPageErrorIndicatorBuilder: (context) => FeedError(
+              pagingController: _pagingController,
+            ),
             noItemsFoundIndicatorBuilder: (context) => const FeedEmpty(),
             itemBuilder: (context, item, index) => FeedItem(
               item: item,
