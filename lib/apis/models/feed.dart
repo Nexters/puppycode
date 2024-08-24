@@ -6,8 +6,8 @@ class Feed {
     id = logItem['id'];
     photoUrl = logItem['photoUrl'];
     title = logItem['title'];
-    episode = logItem['content'];
-    walkTime = logItem['walkTime'];
+    episode = logItem['content'] ?? '';
+    walkTime = logItem['walkTime'] ?? '';
     writerId = logItem['writerId']; //피드 작성자 아이디
     name = logItem['writerNickname'];
     profileUrl = logItem['writerProfileUrl'];
