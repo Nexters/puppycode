@@ -47,7 +47,7 @@ class DefaultTextButton extends TextButton {
               Body1(
                 value: text,
                 bold: true,
-                color: color,
+                color: disabled! ? ThemeColor.gray4 : null,
               ),
         );
 

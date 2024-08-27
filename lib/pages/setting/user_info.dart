@@ -296,12 +296,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   const SizedBox(width: 16),
                   GestureDetector(
                     onTap: () {
-                      sharedAlertDialog(
-                          context, '회원탈퇴', '정말 계정을 삭제하시겠습니까?', '취소', '확인', () {
-                        Get.back();
-                      }, () {
-                        Get.back();
-                      });
+                      Get.toNamed('/withdrawal');
                     },
                     child: Body4(
                       value: '회원탈퇴',
