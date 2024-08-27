@@ -6,6 +6,7 @@ import 'package:puppycode/apis/models/friends.dart';
 import 'package:puppycode/pages/feeds/feed_friends.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/banner.dart';
+import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -36,8 +37,6 @@ class _FriendsListPageState extends State<FriendsListPage> {
       setState(() {
         friendList = friends;
       });
-
-      //print(friendList![0].profileUrl);
     } catch (error) {
       print(error);
     }
@@ -49,6 +48,15 @@ class _FriendsListPageState extends State<FriendsListPage> {
       _fetchFriends();
     } catch (error) {
       print('delete friend error: $error');
+    }
+  }
+
+  Future<void> _reportFriend(reportUserId, reason) async {
+    try {
+      await HttpService.post('users/report',
+          body: {'reportedUserId': reportUserId, 'reason': reason});
+    } catch (err) {
+      print('report friend error: $err');
     }
   }
 
@@ -93,6 +101,9 @@ class _FriendsListPageState extends State<FriendsListPage> {
                           onDelete: () {
                             _deleteFriend(friend.id);
                           },
+                          onReport: () {
+                            _reportFriend(friend.id, '욕설');
+                          },
                         ),
                     ],
                   ),
@@ -131,6 +142,7 @@ class FriendItem extends StatelessWidget {
   final String userName;
   final String profileImageUrl;
   final VoidCallback onDelete;
+  final VoidCallback onReport;
   final bool hasWalked;
 
   const FriendItem({
@@ -139,6 +151,7 @@ class FriendItem extends StatelessWidget {
     required this.onDelete,
     required this.hasWalked,
     super.key,
+    required this.onReport,
   });
 
   void _showActionSheet(BuildContext context) {
@@ -149,6 +162,21 @@ class FriendItem extends StatelessWidget {
                 CupertinoActionSheetAction(
                   onPressed: () {
                     Get.back();
+                    sharedAlertDialog(
+                      context,
+                      '유저 신고',
+                      '유저를 신고합니다.',
+                      '취소',
+                      '신고',
+                      () {
+                        Get.back();
+                      },
+                      () {
+                        onReport();
+                        Get.back();
+                      },
+                      isDestructive: true,
+                    );
                   },
                   isDestructiveAction: true,
                   child: Body2(value: '신고하기', color: ThemeColor.error),

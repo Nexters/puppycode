@@ -43,7 +43,7 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
       await HttpService.post('users/report',
           body: {'reportedUserId': reportUserId, 'reason': reason});
     } catch (err) {
-      print('report walkLog error: $err');
+      print('report comment error: $err');
     }
   }
 
