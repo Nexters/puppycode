@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/comment.dart';
+import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
@@ -37,8 +38,13 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
     }
   }
 
-  void onReportComment() {
-    // TODO: 신고하기
+  Future<void> _reportComment(reportUserId, reason) async {
+    try {
+      await HttpService.post('users/report',
+          body: {'reportedUserId': reportUserId, 'reason': reason});
+    } catch (err) {
+      print('report walkLog error: $err');
+    }
   }
 
   void _showActionSheet(BuildContext context) {
@@ -50,8 +56,24 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
             onPressed: () {
               widget.comment.isWriter
                   ? _deleteComment(widget.comment.id)
-                  : onReportComment();
-              Get.back();
+                  : [
+                      Get.back(),
+                      sharedAlertDialog(
+                        context,
+                        '댓글 신고',
+                        '댓글을 신고합니다.',
+                        '취소',
+                        '신고',
+                        () {
+                          Get.back();
+                        },
+                        () {
+                          _reportComment(widget.comment.id, '욕설');
+                          Get.back();
+                        },
+                        isDestructive: true,
+                      )
+                    ];
             },
             child: Body2(
                 value: widget.comment.isWriter ? '삭제하기' : '신고하기',

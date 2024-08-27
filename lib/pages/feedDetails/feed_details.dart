@@ -14,7 +14,6 @@ import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
-import 'package:puppycode/shared/states/user.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -30,7 +29,6 @@ class FeedDetailPage extends StatefulWidget {
 class _FeedDetailPageState extends State<FeedDetailPage> {
   Feed? feed;
   static String? link;
-  final userController = Get.find<UserController>();
   String? feedId;
 
   @override
@@ -69,7 +67,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     }
   }
 
-  Future<void> _reportFeed(userId, walkLogId, reason) async {
+  Future<void> _reportFeed(walkLogId, reason) async {
     try {
       await HttpService.post('walk-logs/report',
           body: {'reportedWalkLogId': walkLogId, 'reason': reason});
@@ -126,8 +124,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                         Get.back();
                       },
                       () {
-                        _reportFeed(
-                            userController.user.value!.id, feedId, '욕설');
+                        _reportFeed(feedId, '욕설');
                         Get.back();
                       },
                       isDestructive: true,
