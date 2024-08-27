@@ -14,6 +14,7 @@ import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/states/user.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
@@ -29,15 +30,18 @@ class FeedDetailPage extends StatefulWidget {
 class _FeedDetailPageState extends State<FeedDetailPage> {
   Feed? feed;
   static String? link;
+  final userController = Get.find<UserController>();
+  String? feedId;
 
   @override
   void initState() {
     super.initState();
-    _fetchFeedDetails(Get.parameters['id']);
+    feedId = Get.parameters['id'];
+    _fetchFeedDetails(feedId);
   }
 
   void refetchData() {
-    _fetchFeedDetails(Get.parameters['id']).then((_) {
+    _fetchFeedDetails(feedId).then((_) {
       print('fetch 성공');
     });
   }
@@ -65,8 +69,13 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     }
   }
 
-  void onReportFeed() {
-    // TODO : 신고하기
+  Future<void> _reportFeed(userId, walkLogId, reason) async {
+    try {
+      await HttpService.post('walk-logs/report',
+          body: {'reportedWalkLogId': walkLogId, 'reason': reason});
+    } catch (err) {
+      print('report walkLog error: $err');
+    }
   }
 
   void _showActionSheet(BuildContext context) {
@@ -90,6 +99,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
+              Get.back();
               feed!.isWriter!
                   ? sharedAlertDialog(
                       context,
@@ -101,11 +111,27 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                         Get.back();
                       },
                       () {
-                        _deleteFeed(Get.parameters['id']);
+                        _deleteFeed(feedId);
+                        Get.back();
                       },
                       isDestructive: true,
                     )
-                  : onReportFeed();
+                  : sharedAlertDialog(
+                      context,
+                      '게시글 신고',
+                      '게시글을 신고합니다.',
+                      '취소',
+                      '신고',
+                      () {
+                        Get.back();
+                      },
+                      () {
+                        _reportFeed(
+                            userController.user.value!.id, feedId, '욕설');
+                        Get.back();
+                      },
+                      isDestructive: true,
+                    );
             },
             child: Body2(
                 value: feed!.isWriter! ? '삭제하기' : '신고하기',
