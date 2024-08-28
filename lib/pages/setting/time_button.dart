@@ -18,6 +18,7 @@ class SetWalkTimeButton extends StatefulWidget {
 class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
   String? time = '';
   GlobalKey buttonKey = GlobalKey();
+  int? minutes;
 
   @override
   void initState() {
@@ -28,13 +29,27 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
   Future<void> _fetchPushNotificationTime() async {
     try {
       final res = await HttpService.getOne('users/push-notification');
-      print(res['pushNotificationTime']);
+      final walkTime = res['pushNotificationTime'];
 
       setState(() {
-        time = _formatTime(_minutesToDateTime(res['pushNotificationTime']));
+        if (walkTime == null) {
+          time = '12:00 PM';
+        } else {
+          time = _formatTime(_minutesToDateTime(walkTime));
+        }
       });
     } catch (err) {
       print('산책 루틴 알림 fetch error: $err');
+    }
+  }
+
+  Future<void> _setWalkNotificationAlert(newWalkTime) async {
+    try {
+      await HttpService.patch('users/push-notification',
+          params: {'time': newWalkTime.toString()});
+      print('설정 완료');
+    } catch (err) {
+      print('산책 루틴 알림 set error2: $err');
     }
   }
 
@@ -44,6 +59,23 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
     final minutes = walkTimeInMinutes % 60;
 
     return DateTime(now.year, now.month, now.day, hours, minutes);
+  }
+
+  int _timeToMinutes(String time) {
+    final parts = time.split(' ');
+    final timePart = parts[0];
+    final amPm = parts[1];
+
+    final timeParts = timePart.split(':');
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+
+    if (amPm.toUpperCase() == 'PM' && hours != 12) {
+      hours += 12;
+    } else if (amPm.toUpperCase() == 'AM' && hours == 12) {
+      hours = 0;
+    }
+    return (hours * 60) + minutes;
   }
 
   static String _formatTime(DateTime dateTime) {
@@ -88,6 +120,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
                   onDateTimeChanged: (DateTime date) {
                     setState(() {
                       time = _formatTime(date);
+                      minutes = _timeToMinutes(time!);
                     });
                   },
                 ),
@@ -97,7 +130,11 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
         );
       },
       barrierDismissible: true,
-    );
+    ).then((_) {
+      if (minutes != null) {
+        _setWalkNotificationAlert(minutes);
+      }
+    });
   }
 
   @override

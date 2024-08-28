@@ -31,13 +31,24 @@ class _SettingPageState extends State<SettingPage> {
       'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4';
 
   void onWalkNotificationSwitched(bool value) {
-    // 이렇게 길어도 갠차나염 ..? 🥲
     setState(() {
       isWalkNotificationEnabled = value;
     });
 
     if (isWalkNotificationEnabled) {
-      //_setWalkNotificationAlert(time);
+      _setWalkNotificationAlert('720'); // 12:00PM으로 초기화
+    } else {
+      _setWalkNotificationAlert(null);
+    }
+  }
+
+  Future<void> _setWalkNotificationAlert(newWalkTime) async {
+    try {
+      await HttpService.patch('users/push-notification',
+          params: {'time': newWalkTime});
+      print('설정 완료');
+    } catch (err) {
+      print('산책 루틴 알림 set error1: $err');
     }
   }
 
@@ -45,15 +56,6 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       isPushNotificationEnabled = value;
     });
-  }
-
-  Future<void> _setWalkNotificationAlert(value) async {
-    try {
-      await HttpService.patch('users/push-notification',
-          params: {'time': value});
-    } catch (err) {
-      print('산책 루틴 알림 set error: $err');
-    }
   }
 
   Future<void> _launchUrl() async {
