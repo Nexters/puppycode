@@ -21,25 +21,10 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   bool isPushNotificationEnabled = false; // 찌르기 알림
-  int? time;
 
   @override
   void initState() {
     super.initState();
-    _fetchPushNotificationTime();
-  }
-
-  Future<void> _fetchPushNotificationTime() async {
-    try {
-      final res = await HttpService.getOne('users/push-notification');
-      print(res);
-
-      setState(() {
-        //time = res;
-      });
-    } catch (err) {
-      print('산책 루틴 알림 fetch error: $err');
-    }
   }
 
   static const String url =
@@ -105,9 +90,11 @@ class _SettingPageState extends State<SettingPage> {
                 SettingListItem(
                   title: '산책 시간 설정',
                   widget: SizedBox(
-                      height: 34,
-                      child: SetWalkTimeButton(
-                          notificationEnabled: isWalkNotificationEnabled)),
+                    height: 34,
+                    child: SetWalkTimeButton(
+                      notificationEnabled: isWalkNotificationEnabled,
+                    ),
+                  ),
                 ),
                 SettingListItem(
                     title: '산책 루틴 알림',

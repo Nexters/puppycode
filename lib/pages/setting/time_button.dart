@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 
 class SetWalkTimeButton extends StatefulWidget {
@@ -16,13 +16,41 @@ class SetWalkTimeButton extends StatefulWidget {
 }
 
 class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
-  String time = DateFormat.jm().format(DateTime.now());
+  String? time = '';
   GlobalKey buttonKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPushNotificationTime();
+  }
+
+  Future<void> _fetchPushNotificationTime() async {
+    try {
+      final res = await HttpService.getOne('users/push-notification');
+      print(res['pushNotificationTime']);
+
+      setState(() {
+        time = _formatTime(_minutesToDateTime(res['pushNotificationTime']));
+      });
+    } catch (err) {
+      print('산책 루틴 알림 fetch error: $err');
+    }
+  }
+
+  DateTime _minutesToDateTime(int walkTimeInMinutes) {
+    final now = DateTime.now();
+    final hours = walkTimeInMinutes ~/ 60;
+    final minutes = walkTimeInMinutes % 60;
+
+    return DateTime(now.year, now.month, now.day, hours, minutes);
+  }
 
   static String _formatTime(DateTime dateTime) {
     final hours = dateTime.hour % 12; // 12시간제
     final minutes = dateTime.minute.toString().padLeft(2, '0'); // 두 자리로 패딩
     final amPm = dateTime.hour >= 12 ? 'PM' : 'AM'; // AM/PM 구분
+
     return '${hours == 0 ? 12 : hours}:$minutes $amPm'; // 시간 포맷
   }
 
@@ -56,7 +84,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
                     color: ThemeColor.white),
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.time,
-                  initialDateTime: _parseTime(time),
+                  initialDateTime: _parseTime(time!),
                   onDateTimeChanged: (DateTime date) {
                     setState(() {
                       time = _formatTime(date);
@@ -88,7 +116,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
           ),
           backgroundColor: const Color.fromRGBO(120, 120, 128, 0.12)),
       child: Text(
-        time,
+        time ?? '',
         style: const TextStyle(
             color: Colors.blue, fontSize: 17, fontWeight: FontWeight.w500),
       ),
