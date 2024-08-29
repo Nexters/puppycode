@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/setting/time_button.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
@@ -19,22 +20,59 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
-  bool isPushNotificationEnabled = false; // 찌르기 알림
+  //bool isPushNotificationEnabled = false; // 찌르기 알림
+  String walkTime = '';
+  late Future<void> _fetchFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFuture = _fetchPushNotificationTime();
+  }
+
   static const String url =
       'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4';
 
   void onWalkNotificationSwitched(bool value) {
-    // 이렇게 길어도 갠차나염 ..? 🥲
     setState(() {
       isWalkNotificationEnabled = value;
     });
+
+    _setWalkNotificationAlert(walkTime); // 12:00PM으로 초기화
   }
 
-  void onPushNotificationSwitched(value) {
-    setState(() {
-      isPushNotificationEnabled = value;
-    });
+  Future<void> _fetchPushNotificationTime() async {
+    try {
+      final res = await HttpService.getOne('users/push-notification');
+
+      setState(() {
+        walkTime = res['pushNotificationTime'].toString();
+        isWalkNotificationEnabled = res['on'];
+      });
+      print(walkTime);
+      print(res['on']);
+    } catch (err) {
+      print('산책 루틴 알림 fetch error!: $err');
+    }
   }
+
+  Future<void> _setWalkNotificationAlert(newWalkTime) async {
+    try {
+      await HttpService.patch('users/push-notification', params: {
+        'time': newWalkTime,
+        'isOn': isWalkNotificationEnabled.toString()
+      });
+      print('설정 완료');
+    } catch (err) {
+      print('산책 루틴 알림 set error1: $err');
+    }
+  }
+
+  // void onPushNotificationSwitched(value) {
+  //   setState(() {
+  //     isPushNotificationEnabled = value;
+  //   });
+  // }
 
   Future<void> _launchUrl() async {
     final Uri uri = Uri.parse(url);
@@ -51,64 +89,80 @@ class _SettingPageState extends State<SettingPage> {
         leftOptions: AppBarLeft(),
         centerOptions: AppBarCenter(label: '설정'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            children: [
-              const SettingList(lists: [
-                SettingListItem(
-                  title: '내 프로필',
-                  destination: '/settings/userInfo',
+      body: FutureBuilder(
+        future: _fetchFuture,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: Column(
+                  children: [
+                    const SettingList(lists: [
+                      SettingListItem(
+                        title: '내 프로필',
+                        destination: '/settings/userInfo',
+                      ),
+                      SettingListItem(
+                        title: '친구 목록',
+                        destination: '/friends',
+                      ),
+                    ], title: '내 정보'),
+                    SettingList(lists: [
+                      SettingListItem(
+                        title: '산책 시간 설정',
+                        widget: SizedBox(
+                          height: 34,
+                          child: SetWalkTimeButton(
+                            walkTime: walkTime,
+                            notificationEnabled: isWalkNotificationEnabled,
+                          ),
+                        ),
+                      ),
+                      SettingListItem(
+                          title: '산책 루틴 알림',
+                          subTitle: '지정한 산책 시간에 알림을 받을 수 있어요',
+                          widget: CustomCupertinoSwitch(
+                            onPressed: onWalkNotificationSwitched,
+                            isNotificationEnabled: isWalkNotificationEnabled,
+                          )),
+                      // SettingListItem(
+                      //   title: '찌르기 알림',
+                      //   widget: CustomCupertinoSwitch(
+                      //     onPressed: onPushNotificationSwitched,
+                      //     isNotificationEnabled: isPushNotificationEnabled,
+                      //   ),
+                      // ),
+                    ], title: '알림'),
+                    SettingList(lists: [
+                      SettingListItem(
+                        title: '앱 정보',
+                        widget: Body3(
+                            value: '현재 버전 1.0.0', color: ThemeColor.gray4),
+                      ),
+                      const SettingListItem(
+                        title: '계정정보',
+                      ),
+                      const SettingListItem(
+                        title: '이용약관',
+                      ),
+                      SettingListItem(
+                          title: '개인정보 처리방침',
+                          onTab: () {
+                            _launchUrl();
+                          }),
+                    ], title: '도움말'),
+                  ],
                 ),
-                SettingListItem(
-                  title: '친구 목록',
-                  destination: '/friends',
-                ),
-              ], title: '내 정보'),
-              SettingList(lists: [
-                SettingListItem(
-                  title: '산책 시간 설정',
-                  widget: SizedBox(
-                      height: 34,
-                      child: SetWalkTimeButton(
-                          notificationEnabled: isWalkNotificationEnabled)),
-                ),
-                SettingListItem(
-                    title: '산책 루틴 알림',
-                    subTitle: '지정한 산책 시간에 알림을 받을 수 있어요',
-                    widget: CustomCupertinoSwitch(
-                      onPressed: onWalkNotificationSwitched,
-                      isNotificationEnabled: isWalkNotificationEnabled,
-                    )),
-                // SettingListItem(
-                //   title: '찌르기 알림',
-                //   widget: CustomCupertinoSwitch(
-                //     onPressed: onPushNotificationSwitched,
-                //     isNotificationEnabled: isPushNotificationEnabled,
-                //   ),
-                // ),
-              ], title: '알림'),
-              SettingList(lists: [
-                SettingListItem(
-                  title: '앱 정보',
-                  widget: Body3(value: '현재 버전 1.0.0', color: ThemeColor.gray4),
-                ),
-                const SettingListItem(
-                  title: '계정정보',
-                ),
-                const SettingListItem(
-                  title: '이용약관',
-                ),
-                SettingListItem(
-                    title: '개인정보 처리방침',
-                    onTab: () {
-                      _launchUrl();
-                    }),
-              ], title: '도움말'),
-            ],
-          ),
-        ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
