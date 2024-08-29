@@ -38,7 +38,7 @@ class _SettingPageState extends State<SettingPage> {
       isWalkNotificationEnabled = value;
     });
 
-    _setWalkNotificationAlert(walkTime); // 12:00PM으로 초기화
+    _setWalkNotificationAlert(walkTime);
   }
 
   Future<void> _fetchPushNotificationTime() async {
@@ -67,6 +67,7 @@ class _SettingPageState extends State<SettingPage> {
       print('산책 루틴 알림 set error1: $err');
     }
   }
+
 
   // void onPushNotificationSwitched(value) {
   //   setState(() {

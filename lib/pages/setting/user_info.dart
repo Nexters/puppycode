@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:puppycode/apis/models/user.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/shared/app_bar.dart';
+import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/image.dart';
@@ -273,7 +274,19 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => logout(),
+                    onTap: () {
+                      sharedAlertDialog(
+                          context,
+                          '로그아웃',
+                          "'pawpaw'와 잠시 멀어져도 괜찮아요\n다시 돌아오실거죠?",
+                          '취소',
+                          '로그아웃', () {
+                        Get.back();
+                      }, () {
+                        logout();
+                      });
+                    },
+                    // onTap: () => logout(),
                     child: Body4(
                       value: '로그아웃',
                       color: ThemeColor.gray4,
@@ -282,6 +295,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   ),
                   const SizedBox(width: 16),
                   GestureDetector(
+                    onTap: () {
+                      sharedAlertDialog(
+                          context, '회원탈퇴', '정말 계정을 삭제하시겠습니까?', '취소', '확인', () {
+                        Get.back();
+                      }, () {
+                        Get.back();
+                      });
+                    },
                     child: Body4(
                       value: '회원탈퇴',
                       color: ThemeColor.gray4,
