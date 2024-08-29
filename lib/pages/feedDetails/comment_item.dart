@@ -38,10 +38,10 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
     }
   }
 
-  Future<void> _reportComment(reportUserId, reason) async {
+  Future<void> _reportComment(reportedCommentId, reason) async {
     try {
-      await HttpService.post('users/report',
-          body: {'reportedUserId': reportUserId, 'reason': reason});
+      await HttpService.post('walk-logs/comments/report',
+          body: {'reportedCommentId': reportedCommentId, 'reason': reason});
     } catch (err) {
       print('report comment error: $err');
     }
