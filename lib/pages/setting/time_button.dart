@@ -6,47 +6,33 @@ import 'package:puppycode/shared/styles/color.dart';
 class SetWalkTimeButton extends StatefulWidget {
   const SetWalkTimeButton({
     super.key,
+    required this.walkTime,
     required this.notificationEnabled,
   });
 
   final bool notificationEnabled;
+  final String walkTime;
 
   @override
   State<SetWalkTimeButton> createState() => _SetWalkTimeButtonState();
 }
 
 class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
-  String? time = '';
+  String time = '';
   GlobalKey buttonKey = GlobalKey();
   int? minutes;
 
   @override
   void initState() {
     super.initState();
-    _fetchPushNotificationTime();
-  }
-
-  Future<void> _fetchPushNotificationTime() async {
-    try {
-      final res = await HttpService.getOne('users/push-notification');
-      final walkTime = res['pushNotificationTime'];
-
-      setState(() {
-        if (walkTime == null) {
-          time = '12:00 PM';
-        } else {
-          time = _formatTime(_minutesToDateTime(walkTime));
-        }
-      });
-    } catch (err) {
-      print('산책 루틴 알림 fetch error: $err');
-    }
+    time = _formatTime(_minutesToDateTime(int.parse(widget.walkTime)));
   }
 
   Future<void> _setWalkNotificationAlert(newWalkTime) async {
+    print(newWalkTime);
     try {
       await HttpService.patch('users/push-notification',
-          params: {'time': newWalkTime.toString()});
+          params: {'time': newWalkTime.toString(), 'isOn': 'true'});
       print('설정 완료');
     } catch (err) {
       print('산책 루틴 알림 set error2: $err');
@@ -116,11 +102,11 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
                     color: ThemeColor.white),
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.time,
-                  initialDateTime: _parseTime(time!),
+                  initialDateTime: _parseTime(time),
                   onDateTimeChanged: (DateTime date) {
                     setState(() {
                       time = _formatTime(date);
-                      minutes = _timeToMinutes(time!);
+                      minutes = _timeToMinutes(time);
                     });
                   },
                 ),
@@ -153,7 +139,7 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
           ),
           backgroundColor: const Color.fromRGBO(120, 120, 128, 0.12)),
       child: Text(
-        time ?? '',
+        time,
         style: const TextStyle(
             color: Colors.blue, fontSize: 17, fontWeight: FontWeight.w500),
       ),
