@@ -71,6 +71,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     try {
       await HttpService.post('walk-logs/report',
           body: {'reportedWalkLogId': walkLogId, 'reason': reason});
+      print('게시글 신고');
     } catch (err) {
       print('report walkLog error: $err');
     }
@@ -99,35 +100,19 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             onPressed: () {
               Get.back();
               feed!.isWriter!
-                  ? sharedAlertDialog(
+                  ? showSharedDialog(
                       context,
-                      '산책일지를 삭제하시겠어요?',
-                      '삭제 후 해당 날짜의 일지를 되돌릴 수 없어요.',
-                      '취소',
-                      '삭제',
-                      () {
-                        Get.back();
-                      },
+                      AlertDialogType.DELETE,
                       () {
                         _deleteFeed(feedId);
-                        Get.back();
                       },
-                      isDestructive: true,
                     )
-                  : sharedAlertDialog(
+                  : showSharedDialog(
                       context,
-                      '게시글 신고',
-                      '게시글을 신고합니다.',
-                      '취소',
-                      '신고',
-                      () {
-                        Get.back();
-                      },
+                      AlertDialogType.REPORT,
                       () {
                         _reportFeed(feedId, '욕설');
-                        Get.back();
                       },
-                      isDestructive: true,
                     );
             },
             child: Body2(

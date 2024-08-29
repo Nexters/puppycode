@@ -55,24 +55,15 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
           CupertinoActionSheetAction(
             onPressed: () {
               widget.comment.isWriter
-                  ? _deleteComment(widget.comment.id)
-                  : [
+                  ? [
+                      _deleteComment(widget.comment.id),
                       Get.back(),
-                      sharedAlertDialog(
-                        context,
-                        '댓글 신고',
-                        '댓글을 신고합니다.',
-                        '취소',
-                        '신고',
-                        () {
-                          Get.back();
-                        },
-                        () {
-                          _reportComment(widget.comment.id, '욕설');
-                          Get.back();
-                        },
-                        isDestructive: true,
-                      )
+                      //TODO: toast 내 댓글 삭제
+                    ]
+                  : [
+                      _reportComment(widget.comment.id, '욕설'),
+                      Get.back(),
+                      //TODO: toast 친구 댓글 신고
                     ];
             },
             child: Body2(

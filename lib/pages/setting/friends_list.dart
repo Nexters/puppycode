@@ -55,6 +55,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
     try {
       await HttpService.post('users/report',
           body: {'reportedUserId': reportUserId, 'reason': reason});
+      print('유저 신고 완료');
     } catch (err) {
       print('report friend error: $err');
     }
@@ -162,29 +163,22 @@ class FriendItem extends StatelessWidget {
                 CupertinoActionSheetAction(
                   onPressed: () {
                     Get.back();
-                    sharedAlertDialog(
-                      context,
-                      '유저 신고',
-                      '유저를 신고합니다.',
-                      '취소',
-                      '신고',
-                      () {
-                        Get.back();
-                      },
-                      () {
-                        onReport();
-                        Get.back();
-                      },
-                      isDestructive: true,
-                    );
+                    onReport();
+                    // TODO: toast 유저 신고
                   },
                   isDestructiveAction: true,
                   child: Body2(value: '신고하기', color: ThemeColor.error),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () {
-                    onDelete();
                     Get.back();
+                    showSharedDialog(
+                      context,
+                      AlertDialogType.DELFRIEND,
+                      () {
+                        onDelete();
+                      },
+                    );
                   },
                   isDestructiveAction: true,
                   child: Body2(value: '친구끊기', color: ThemeColor.error),
