@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/function/sharedAlertDialog.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -16,6 +18,7 @@ class WithdrawalScreen extends StatefulWidget {
 }
 
 class _WithdrawalScreenState extends State<WithdrawalScreen> {
+  static const storage = FlutterSecureStorage();
   List<bool> selectedReasons = [false, false, false, false];
 
   void _onSelectedReason(int idx, bool isSelected) {
@@ -26,6 +29,22 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
 
   bool _isAnyReasonSelected() {
     return selectedReasons.any((selected) => selected);
+  }
+
+  void logout() async {
+    await storage.delete(key: 'authToken');
+    Get.offNamed('/login');
+  }
+
+  Future<void> _deleteUser() async {
+    try {
+      await HttpService.delete('users').then((_) => {
+            logout(),
+          });
+      print('회원 탈퇴 완료');
+    } catch (err) {
+      print('deleteUser error: $err');
+    }
   }
 
   @override
@@ -99,12 +118,14 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   child: DefaultTextButton(
                     text: '탈퇴하기',
                     onPressed: () {
-                      sharedAlertDialog(
-                          context, '회원탈퇴', '정말 계정을 삭제하시겠습니까?', '취소', '확인', () {
-                        Get.back();
-                      }, () {
-                        Get.back();
-                      });
+                      showSharedDialog(
+                        context,
+                        AlertDialogType.WITHDRAWAL,
+                        () {
+                          _deleteUser();
+                          Get.back();
+                        },
+                      );
                     },
                     disabled: !_isAnyReasonSelected(),
                   ),
@@ -138,7 +159,9 @@ class WithdrawalReasonItem extends StatelessWidget {
         onTap: () => onSelected(!isSelected),
         behavior: HitTestBehavior.opaque,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Body1(value: reason, color: ThemeColor.gray5),
             SvgPicture.asset(
               'assets/icons/direction.svg',
               width: 24,
@@ -153,8 +176,6 @@ class WithdrawalReasonItem extends StatelessWidget {
                       BlendMode.srcIn,
                     ),
             ),
-            const SizedBox(width: 8),
-            Body1(value: reason, color: ThemeColor.gray5),
           ],
         ),
       ),
