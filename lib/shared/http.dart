@@ -117,7 +117,7 @@ class HttpService {
     http.Response res = await http.patch(
       url,
       headers: {
-        if (params != null) 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         if (token.isNotEmpty) 'Authorization': token,
       },
     );
