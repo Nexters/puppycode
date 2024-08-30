@@ -83,13 +83,17 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
       context: ancestorContext,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
-          // if (feed!.isWriter!)
-          //   CupertinoActionSheetAction(
-          //     onPressed: () {
-          //       Get.back();
-          //     },
-          //     child: Body2(value: '수정하기', color: ThemeColor.blue),
-          //   ),
+          if (feed!.isWriter!)
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Get.back();
+                Get.toNamed('/create', arguments: {
+                  'from': 'details',
+                  'id': feedId,
+                });
+              },
+              child: Body2(value: '수정하기', color: ThemeColor.blue),
+            ),
           CupertinoActionSheetAction(
             onPressed: () {
               Share.share(link!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?

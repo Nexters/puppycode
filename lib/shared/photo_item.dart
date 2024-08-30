@@ -5,17 +5,20 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/head.dart';
 
 class PhotoItem extends StatefulWidget {
-  const PhotoItem(
-      {super.key,
-      required this.photoPath,
-      required this.name,
-      required this.titleController,
-      required this.onChange});
+  const PhotoItem({
+    super.key,
+    required this.photoPath,
+    required this.name,
+    required this.titleController,
+    required this.onChange,
+    this.isEditing = false,
+  });
 
   final String photoPath;
   final String name;
   final TextEditingController titleController;
   final VoidCallback onChange;
+  final bool? isEditing;
 
   @override
   State<PhotoItem> createState() => _PhotoItemState();
@@ -29,9 +32,12 @@ class _PhotoItemState extends State<PhotoItem> {
   void initState() {
     super.initState();
     focusNode = FocusNode();
+
     focusNode.addListener(() {
       _changeOverlayColor(focusNode.hasFocus);
     });
+    print(widget.titleController.text);
+    print(widget.photoPath);
   }
 
   @override
@@ -56,7 +62,9 @@ class _PhotoItemState extends State<PhotoItem> {
       decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: FileImage(File(widget.photoPath)),
+            image: widget.isEditing == false
+                ? FileImage(File(widget.photoPath))
+                : NetworkImage(widget.photoPath),
             colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.4), BlendMode.srcOver),
           ),

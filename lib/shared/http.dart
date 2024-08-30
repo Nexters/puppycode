@@ -160,6 +160,43 @@ class HttpService {
     }
   }
 
+  static Future<Map<String, dynamic>> patchMultipartForm(
+    String endPoint, {
+    required Map<String, dynamic> body,
+    required String imagePath,
+    Map<String, dynamic>? headers,
+  }) async {
+    if (token.isEmpty) await setToken();
+
+    try {
+      final url = Uri.http(baseUrl, '/api/$endPoint');
+      print('>?');
+      var request = http.MultipartRequest('PATCH', url);
+
+      //final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
+      //request.files.add(httpImage);
+
+      request.fields['request'] = jsonEncode(body);
+
+      request.headers.addAll({'Authorization': token});
+      // 요청 보내기
+      var response = await request.send();
+
+      // 응답 처리
+      if (response.statusCode == 200) {
+        var responseData = await http.Response.fromStream(response);
+        return {
+          'success': true,
+          'data': json.decode(utf8.decode(responseData.bodyBytes))
+        };
+      }
+      throw 'patch failed';
+    } catch (err) {
+      print('patchMultipartfForm err: $err');
+      return {'success': false};
+    }
+  }
+
   static Future<Map<String, dynamic>> getOne(String endPoint,
       {Map<String, dynamic>? params, bool shouldSkipLogin = true}) async {
     if (token.isEmpty) {
