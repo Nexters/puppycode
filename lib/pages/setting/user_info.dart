@@ -275,16 +275,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      sharedAlertDialog(
-                          context,
-                          '로그아웃',
-                          "'pawpaw'와 잠시 멀어져도 괜찮아요\n다시 돌아오실거죠?",
-                          '취소',
-                          '로그아웃', () {
-                        Get.back();
-                      }, () {
-                        logout();
-                      });
+                      showSharedDialog(
+                        context,
+                        AlertDialogType.LOGOUT,
+                        () {
+                          logout();
+                        },
+                      );
                     },
                     // onTap: () => logout(),
                     child: Body4(
@@ -296,12 +293,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   const SizedBox(width: 16),
                   GestureDetector(
                     onTap: () {
-                      sharedAlertDialog(
-                          context, '회원탈퇴', '정말 계정을 삭제하시겠습니까?', '취소', '확인', () {
-                        Get.back();
-                      }, () {
-                        Get.back();
-                      });
+                      showSharedDialog(
+                        context,
+                        AlertDialogType.WITHDRAWAL,
+                        () {
+                          Get.back();
+                        },
+                      );
                     },
                     child: Body4(
                       value: '회원탈퇴',

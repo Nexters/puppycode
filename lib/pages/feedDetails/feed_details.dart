@@ -15,6 +15,7 @@ import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:share_plus/share_plus.dart';
@@ -29,15 +30,17 @@ class FeedDetailPage extends StatefulWidget {
 class _FeedDetailPageState extends State<FeedDetailPage> {
   Feed? feed;
   static String? link;
+  String? feedId;
 
   @override
   void initState() {
     super.initState();
-    _fetchFeedDetails(Get.parameters['id']);
+    feedId = Get.parameters['id'];
+    _fetchFeedDetails(feedId);
   }
 
   void refetchData() {
-    _fetchFeedDetails(Get.parameters['id']).then((_) {
+    _fetchFeedDetails(feedId).then((_) {
       print('fetch 성공');
     });
   }
@@ -56,7 +59,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     }
   }
 
-  Future<void> _deleteFeed(id) async {
+  Future<void> _deleteFeed(context, id) async {
     try {
       await HttpService.delete('walk-logs/$id',
           onDelete: () => Get.offAndToNamed('/'));
@@ -65,13 +68,19 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
     }
   }
 
-  void onReportFeed() {
-    // TODO : 신고하기
+  Future<void> _reportFeed(walkLogId, reason) async {
+    try {
+      await HttpService.post('walk-logs/report',
+          body: {'reportedWalkLogId': walkLogId, 'reason': reason});
+      print('게시글 신고');
+    } catch (err) {
+      print('report walkLog error: $err');
+    }
   }
 
-  void _showActionSheet(BuildContext context) {
+  void _showActionSheet(BuildContext ancestorContext) {
     showCupertinoModalPopup(
-      context: context,
+      context: ancestorContext,
       builder: (BuildContext context) => CupertinoActionSheet(
         actions: <CupertinoActionSheetAction>[
           // if (feed!.isWriter!)
@@ -90,22 +99,26 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
+              Get.back();
               feed!.isWriter!
-                  ? sharedAlertDialog(
+                  ? showSharedDialog(
                       context,
-                      '산책일지를 삭제하시겠어요?',
-                      '삭제 후 해당 날짜의 일지를 되돌릴 수 없어요.',
-                      '취소',
-                      '삭제',
+                      AlertDialogType.DELETE,
                       () {
-                        Get.back();
+                        _deleteFeed(context, feedId);
                       },
-                      () {
-                        _deleteFeed(Get.parameters['id']);
-                      },
-                      isDestructive: true,
                     )
-                  : onReportFeed();
+                  : showSharedDialog(
+                      context,
+                      AlertDialogType.REPORT,
+                      () {
+                        _reportFeed(feedId, '욕설').then(
+                          (_) => {
+                            Toast.show(ancestorContext, '신고를 완료했어요'),
+                          },
+                        );
+                      },
+                    );
             },
             child: Body2(
                 value: feed!.isWriter! ? '삭제하기' : '신고하기',

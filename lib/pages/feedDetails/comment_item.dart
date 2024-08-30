@@ -5,6 +5,7 @@ import 'package:puppycode/apis/models/comment.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
@@ -26,19 +27,33 @@ class ReactionCommentListItem extends StatefulWidget {
 }
 
 class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
-  Future<void> _deleteComment(id) async {
+  Future<void> _deleteComment(context, id) async {
     try {
       await HttpService.delete(
         'walk-logs/comments/$id',
         onDelete: () => {widget.refetch(), Get.back()},
+      ).then(
+        (_) => {
+          Toast.show(context, '삭제를 완료했어요'),
+        },
       );
     } catch (error) {
       print('delete comment erorr: $error');
     }
   }
 
-  void onReportComment() {
-    // TODO: 신고하기
+  Future<void> _reportComment(context, reportedCommentId, reason) async {
+    try {
+      await HttpService.post('walk-logs/comments/report',
+              body: {'reportedCommentId': reportedCommentId, 'reason': reason})
+          .then(
+        (_) => {
+          Toast.show(context, '신고를 완료했어요'),
+        },
+      );
+    } catch (err) {
+      print('report comment error: $err');
+    }
   }
 
   void _showActionSheet(BuildContext context) {
@@ -49,9 +64,14 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
           CupertinoActionSheetAction(
             onPressed: () {
               widget.comment.isWriter
-                  ? _deleteComment(widget.comment.id)
-                  : onReportComment();
-              Get.back();
+                  ? [
+                      _deleteComment(context, widget.comment.id),
+                      Get.back(),
+                    ]
+                  : [
+                      _reportComment(context, widget.comment.id, '욕설'),
+                      Get.back(),
+                    ];
             },
             child: Body2(
                 value: widget.comment.isWriter ? '삭제하기' : '신고하기',
