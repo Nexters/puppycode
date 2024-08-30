@@ -11,6 +11,7 @@ import 'package:puppycode/pages/setting/user_info.dart';
 import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/login.dart';
 import 'package:puppycode/pages/feeds/write.dart';
+import 'package:puppycode/pages/withdrawal/index.dart';
 import 'package:puppycode/shared/nav_bar.dart';
 
 class AppRoutes {
@@ -30,5 +31,6 @@ class AppRoutes {
     GetPage(name: '/feed/:id', page: () => const FeedDetailPage()),
     GetPage(name: '/calendar', page: () => const CalendarPage()),
     GetPage(name: '/my', page: () => const MyFeedScreen()),
+    GetPage(name: '/withdrawal', page: () => const WithdrawalScreen()),
   ];
 }

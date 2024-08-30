@@ -293,13 +293,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                   const SizedBox(width: 16),
                   GestureDetector(
                     onTap: () {
-                      showSharedDialog(
-                        context,
-                        AlertDialogType.WITHDRAWAL,
-                        () {
-                          Get.back();
-                        },
-                      );
+                      Get.toNamed('/withdrawal');
                     },
                     child: Body4(
                       value: '회원탈퇴',
