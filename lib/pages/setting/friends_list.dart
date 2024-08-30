@@ -10,6 +10,7 @@ import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 
 class FriendsListPage extends StatefulWidget {
@@ -51,10 +52,12 @@ class _FriendsListPageState extends State<FriendsListPage> {
     }
   }
 
-  Future<void> _reportFriend(reportUserId, reason) async {
+  Future<void> _reportFriend(context, reportUserId, reason) async {
     try {
       await HttpService.post('users/report',
-          body: {'reportedUserId': reportUserId, 'reason': reason});
+              body: {'reportedUserId': reportUserId, 'reason': reason})
+          .then((_) => {Toast.show(context, '신고를 완료했어요')});
+      print('유저 신고 완료');
     } catch (err) {
       print('report friend error: $err');
     }
@@ -102,7 +105,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
                             _deleteFriend(friend.id);
                           },
                           onReport: () {
-                            _reportFriend(friend.id, '욕설');
+                            _reportFriend(context, friend.id, '욕설');
                           },
                         ),
                     ],
@@ -162,29 +165,22 @@ class FriendItem extends StatelessWidget {
                 CupertinoActionSheetAction(
                   onPressed: () {
                     Get.back();
-                    sharedAlertDialog(
-                      context,
-                      '유저 신고',
-                      '유저를 신고합니다.',
-                      '취소',
-                      '신고',
-                      () {
-                        Get.back();
-                      },
-                      () {
-                        onReport();
-                        Get.back();
-                      },
-                      isDestructive: true,
-                    );
+                    onReport();
+                    // TODO: toast 유저 신고
                   },
                   isDestructiveAction: true,
                   child: Body2(value: '신고하기', color: ThemeColor.error),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () {
-                    onDelete();
                     Get.back();
+                    showSharedDialog(
+                      context,
+                      AlertDialogType.DELFRIEND,
+                      () {
+                        onDelete();
+                      },
+                    );
                   },
                   isDestructiveAction: true,
                   child: Body2(value: '친구끊기', color: ThemeColor.error),

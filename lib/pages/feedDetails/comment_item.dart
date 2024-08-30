@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/apis/models/comment.dart';
-import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 
@@ -27,21 +27,30 @@ class ReactionCommentListItem extends StatefulWidget {
 }
 
 class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
-  Future<void> _deleteComment(id) async {
+  Future<void> _deleteComment(context, id) async {
     try {
       await HttpService.delete(
         'walk-logs/comments/$id',
         onDelete: () => {widget.refetch(), Get.back()},
+      ).then(
+        (_) => {
+          Toast.show(context, '삭제를 완료했어요'),
+        },
       );
     } catch (error) {
       print('delete comment erorr: $error');
     }
   }
 
-  Future<void> _reportComment(reportUserId, reason) async {
+  Future<void> _reportComment(context, reportedCommentId, reason) async {
     try {
-      await HttpService.post('users/report',
-          body: {'reportedUserId': reportUserId, 'reason': reason});
+      await HttpService.post('walk-logs/comments/report',
+              body: {'reportedCommentId': reportedCommentId, 'reason': reason})
+          .then(
+        (_) => {
+          Toast.show(context, '신고를 완료했어요'),
+        },
+      );
     } catch (err) {
       print('report comment error: $err');
     }
@@ -55,24 +64,13 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
           CupertinoActionSheetAction(
             onPressed: () {
               widget.comment.isWriter
-                  ? _deleteComment(widget.comment.id)
-                  : [
+                  ? [
+                      _deleteComment(context, widget.comment.id),
                       Get.back(),
-                      sharedAlertDialog(
-                        context,
-                        '댓글 신고',
-                        '댓글을 신고합니다.',
-                        '취소',
-                        '신고',
-                        () {
-                          Get.back();
-                        },
-                        () {
-                          _reportComment(widget.comment.id, '욕설');
-                          Get.back();
-                        },
-                        isDestructive: true,
-                      )
+                    ]
+                  : [
+                      _reportComment(context, widget.comment.id, '욕설'),
+                      Get.back(),
                     ];
             },
             child: Body2(

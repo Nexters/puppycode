@@ -275,16 +275,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      sharedAlertDialog(
-                          context,
-                          '로그아웃',
-                          "'pawpaw'와 잠시 멀어져도 괜찮아요\n다시 돌아오실거죠?",
-                          '취소',
-                          '로그아웃', () {
-                        Get.back();
-                      }, () {
-                        logout();
-                      });
+                      showSharedDialog(
+                        context,
+                        AlertDialogType.LOGOUT,
+                        () {
+                          logout();
+                        },
+                      );
                     },
                     // onTap: () => logout(),
                     child: Body4(
