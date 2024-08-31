@@ -43,31 +43,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
   final _globalKey = GlobalKey();
   String? widgetImagePath;
 
-  // void sendWidgetPhoto() async {
-  //   try {
-  //     var path = await HomeWidget.renderFlutterWidget(
-  //       PhotoItem(
-  //         photoPath: photoPath,
-  //         name: userController.user.value!.nickname,
-  //         titleController: titleController,
-  //       ),
-  //       key: 'filename',
-  //       logicalSize: _globalKey.currentContext!.size!,
-  //       pixelRatio: MediaQuery.of(_globalKey.currentContext!).devicePixelRatio,
-  //     );
-
-  //     setState(() {
-  //       widgetImagePath = path.toString();
-  //       print(widgetImagePath);
-  //     });
-
-  //     HomeWidget.saveWidgetData('filename', photoPath);
-  //     HomeWidget.updateWidget(iOSName: 'pawpawWidget');
-  //   } catch (err) {
-  //     print('sendWidgetPhoto err: $err');
-  //   }
-  // }
-
   Future sendWidgetPhoto() async {
     try {
       return Future.wait([
