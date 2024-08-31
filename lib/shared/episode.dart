@@ -49,7 +49,7 @@ class Episode extends StatelessWidget {
                     controller: controller,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(0),
-                      hintText: Episode._inputHintText,
+                      hintText: _inputHintText,
                       labelStyle: BodyTextStyle.getBody3Style(),
                       hintStyle:
                           BodyTextStyle.getBody3Style(color: ThemeColor.gray4),

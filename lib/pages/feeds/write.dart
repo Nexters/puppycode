@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:puppycode/apis/models/feed.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/http.dart';
@@ -28,6 +29,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
   final userController = Get.find<UserController>();
   String photoPath = '';
   String from = '';
+  String content = '';
+  Feed? feed;
+  bool isFetching = true;
 
   bool isLoading = false;
   bool isError = false;
@@ -37,9 +41,12 @@ class _FeedWritePageState extends State<FeedWritePage> {
   @override
   void initState() {
     super.initState();
-    if (Get.arguments != null) {
+    if (Get.arguments['photoPath'] != null) {
       photoPath = Get.arguments['photoPath'];
       from = Get.arguments['from'];
+      isFetching = false;
+    } else if (Get.arguments['id'] != null) {
+      _fetchFeedDetails(Get.arguments['id']);
     }
 
     var options = [];
@@ -49,6 +56,22 @@ class _FeedWritePageState extends State<FeedWritePage> {
       } else {
         options.add('$_kInitialTime분~${_kInitialTime + _kInitialGap}');
       }
+    }
+  }
+
+  Future<void> _fetchFeedDetails(id) async {
+    try {
+      final item = await HttpService.getOne('walk-logs/$id');
+      setState(() {
+        feed = Feed(item);
+        photoPath = feed!.photoUrl;
+        selectedTime = feed!.walkTime;
+        titleController.text = feed!.title;
+        episodeController.text = feed!.episode;
+        isFetching = false;
+      });
+    } catch (error) {
+      print('error: $error');
     }
   }
 
@@ -99,8 +122,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       if (result['success'] == true) {
         await userController.refreshData();
+        print(result['data']);
         Get.offAndToNamed('/create/success',
-            arguments: {from: from, 'feedId': result['data']['id'] ?? ''});
+            arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
         isError = true;
       }
@@ -109,6 +133,37 @@ class _FeedWritePageState extends State<FeedWritePage> {
         isLoading = false;
         isError = true;
       });
+      print('createFeed err : $err');
+    }
+  }
+
+  Future<void> _patchFeed(id) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      var result = await HttpService.patchMultipartForm(
+        'walk-logs/$id',
+        body: {
+          'title': titleController.text,
+          'content': episodeController.text,
+          'walkTime': selectedTime,
+        },
+        //imagePath: photoPath
+      );
+      print(result);
+      setState(() {
+        isLoading = false;
+      });
+      if (result['success'] == true) {
+        await userController.refreshData();
+        Get.offAndToNamed('/feed/${feed!.id}',
+            arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
+      } else {
+        isError = true;
+      }
+    } catch (err) {
+      print('patchFeed err: $err');
     }
   }
 
@@ -119,46 +174,54 @@ class _FeedWritePageState extends State<FeedWritePage> {
           leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
           centerOptions: AppBarCenter(label: '산책 기록하기'),
         ),
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        PhotoItem(
-                          photoPath: photoPath,
-                          titleController: titleController,
-                          onChange: onTitleChange,
-                          name: userController.user.value!.nickname ?? '포포',
+        body: isFetching
+            ? const Center(child: CircularProgressIndicator())
+            : SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              PhotoItem(
+                                photoPath: photoPath,
+                                titleController: titleController,
+                                onChange: onTitleChange,
+                                name:
+                                    userController.user.value!.nickname ?? '포포',
+                                isEditing: feed != null ? true : false,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Body2(value: '산책한 시간', bold: true),
+                                  Container(
+                                      margin: const EdgeInsets.only(top: 8),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: _optionButtons(),
+                                        ),
+                                      ))
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Episode(
+                                isInput: true,
+                                controller: episodeController,
+                                content: content,
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            const Body2(value: '산책한 시간', bold: true),
-                            Container(
-                                margin: const EdgeInsets.only(top: 8),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: _optionButtons(),
-                                  ),
-                                ))
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Episode(isInput: true, controller: episodeController),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
         bottomNavigationBar: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(
@@ -166,7 +229,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 right: 20,
                 bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
-              onPressed: () => {_createFeed()},
+              onPressed: () =>
+                  {feed != null ? _patchFeed(feed!.id) : _createFeed()},
               text: isLoading ? '기록 저장중...' : '기록 남기기',
               disabled: titleController.text.isEmpty || isLoading,
             ),
