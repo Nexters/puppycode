@@ -14,6 +14,7 @@ import 'package:puppycode/shared/episode.dart';
 import 'package:puppycode/shared/function/sharedAlertDialog.dart';
 import 'package:puppycode/shared/function/sharedModalBottomSheet.dart';
 import 'package:puppycode/shared/http.dart';
+import 'package:puppycode/shared/states/user.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
@@ -28,6 +29,7 @@ class FeedDetailPage extends StatefulWidget {
 }
 
 class _FeedDetailPageState extends State<FeedDetailPage> {
+  final userController = Get.find<UserController>();
   Feed? feed;
   static String? link;
   String? feedId;
@@ -61,8 +63,10 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   Future<void> _deleteFeed(context, id) async {
     try {
-      await HttpService.delete('walk-logs/$id',
-          onDelete: () => Get.offAndToNamed('/'));
+      await HttpService.delete('walk-logs/$id', onDelete: () async {
+        await userController.refreshData();
+        Get.offAndToNamed('/');
+      });
     } catch (error) {
       print('delete Feed erorr: $error');
     }
