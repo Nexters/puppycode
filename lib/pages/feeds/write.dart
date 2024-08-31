@@ -122,8 +122,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       if (result['success'] == true) {
         await userController.refreshData();
+        print(result['data']);
         Get.offAndToNamed('/create/success',
-            arguments: {from: from, 'feedId': result['data']['id'] ?? ''});
+            arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
         isError = true;
       }
@@ -155,8 +156,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
       if (result['success'] == true) {
         await userController.refreshData();
         Get.offAndToNamed('/create/success',
-            arguments: {from: from, 'feedId': result['data']['id'] ?? ''});
-        print('성공');
+            arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
         isError = true;
       }
