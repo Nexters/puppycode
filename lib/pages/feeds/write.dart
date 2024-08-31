@@ -31,7 +31,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   String from = '';
   String content = '';
   Feed? feed;
-  bool fetchIsLoading = true;
+  bool isFetching = true;
 
   bool isLoading = false;
   bool isError = false;
@@ -44,7 +44,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
     if (Get.arguments['photoPath'] != null) {
       photoPath = Get.arguments['photoPath'];
       from = Get.arguments['from'];
-      fetchIsLoading = false;
+      isFetching = false;
     } else if (Get.arguments['id'] != null) {
       _fetchFeedDetails(Get.arguments['id']);
     }
@@ -68,7 +68,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
         selectedTime = feed!.walkTime;
         titleController.text = feed!.title;
         episodeController.text = feed!.episode;
-        fetchIsLoading = false;
+        isFetching = false;
       });
     } catch (error) {
       print('error: $error');
@@ -142,20 +142,22 @@ class _FeedWritePageState extends State<FeedWritePage> {
       setState(() {
         isLoading = true;
       });
-      var result = await HttpService.patchMultipartForm('walk-logs/$id',
-          body: {
-            'title': titleController.text,
-            'content': episodeController.text,
-            'walkTime': selectedTime,
-          },
-          imagePath: photoPath);
+      var result = await HttpService.patchMultipartForm(
+        'walk-logs/$id',
+        body: {
+          'title': titleController.text,
+          'content': episodeController.text,
+          'walkTime': selectedTime,
+        },
+        //imagePath: photoPath
+      );
       print(result);
       setState(() {
         isLoading = false;
       });
       if (result['success'] == true) {
         await userController.refreshData();
-        Get.offAndToNamed('/create/success',
+        Get.offAndToNamed('/feed/${feed!.id}',
             arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
         isError = true;
@@ -172,7 +174,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
           leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
           centerOptions: AppBarCenter(label: '산책 기록하기'),
         ),
-        body: fetchIsLoading
+        body: isFetching
             ? const Center(child: CircularProgressIndicator())
             : SafeArea(
                 child: Container(

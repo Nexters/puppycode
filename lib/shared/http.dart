@@ -163,7 +163,7 @@ class HttpService {
   static Future<Map<String, dynamic>> patchMultipartForm(
     String endPoint, {
     required Map<String, dynamic> body,
-    required String imagePath,
+    String? imagePath,
     Map<String, dynamic>? headers,
   }) async {
     if (token.isEmpty) await setToken();
@@ -173,10 +173,16 @@ class HttpService {
       //print('>?');
       var request = http.MultipartRequest('PATCH', url);
 
-      final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
-      request.files.add(httpImage);
+      if (imagePath != null) {
+        final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
+        request.files.add(httpImage);
+      }
 
-      request.fields['request'] = jsonEncode(body);
+      var jsonBody = http.MultipartFile.fromBytes(
+        'request',
+        utf8.encode(jsonEncode(body)),
+      );
+      request.files.add(jsonBody);
 
       request.headers.addAll({'Authorization': token});
       // 요청 보내기
