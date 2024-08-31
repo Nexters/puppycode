@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:puppycode/apis/models/feed.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
@@ -37,6 +39,80 @@ class _FeedWritePageState extends State<FeedWritePage> {
   bool isError = false;
 
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
+
+  final _globalKey = GlobalKey();
+  String? widgetImagePath;
+
+  // void sendWidgetPhoto() async {
+  //   try {
+  //     var path = await HomeWidget.renderFlutterWidget(
+  //       PhotoItem(
+  //         photoPath: photoPath,
+  //         name: userController.user.value!.nickname,
+  //         titleController: titleController,
+  //       ),
+  //       key: 'filename',
+  //       logicalSize: _globalKey.currentContext!.size!,
+  //       pixelRatio: MediaQuery.of(_globalKey.currentContext!).devicePixelRatio,
+  //     );
+
+  //     setState(() {
+  //       widgetImagePath = path.toString();
+  //       print(widgetImagePath);
+  //     });
+
+  //     HomeWidget.saveWidgetData('filename', photoPath);
+  //     HomeWidget.updateWidget(iOSName: 'pawpawWidget');
+  //   } catch (err) {
+  //     print('sendWidgetPhoto err: $err');
+  //   }
+  // }
+
+  Future sendWidgetPhoto() async {
+    try {
+      return Future.wait([
+        //HomeWidget.saveWidgetData<String>('title', photoPath),
+        HomeWidget.renderFlutterWidget(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.25),
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 160,
+                height: 160,
+                child: Image.network(
+                  photoPath,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          logicalSize: const Size(160, 160),
+          key: 'title',
+        ),
+      ]);
+    } on PlatformException catch (err) {
+      debugPrint('send data err: $err');
+    }
+  }
+
+  Future updateHomeWidget() async {
+    try {
+      return Future.wait([
+        HomeWidget.updateWidget(
+          name: 'pawpawWidget',
+          iOSName: 'pawpawWidget',
+        )
+      ]);
+    } on PlatformException catch (exception) {
+      debugPrint('Error Updating Widget. $exception');
+    }
+  }
+
+  Future<void> _sendAndUpdate() async {
+    await sendWidgetPhoto();
+    await updateHomeWidget();
+  }
 
   @override
   void initState() {
@@ -185,18 +261,26 @@ class _FeedWritePageState extends State<FeedWritePage> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              PhotoItem(
-                                photoPath: photoPath,
-                                titleController: titleController,
-                                onChange: onTitleChange,
-                                name:
-                                    userController.user.value!.nickname ?? '포포',
-                                isEditing: feed != null ? true : false,
+                              Container(
+                                key: _globalKey,
+                                child: PhotoItem(
+                                  photoPath: photoPath,
+                                  titleController: titleController,
+                                  onChange: onTitleChange,
+                                  name: userController.user.value!.nickname,
+                                  isEditing: feed != null ? true : false,
+                                ),
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      _sendAndUpdate();
+                                    },
+                                    child: const Text('홈 위젯'),
+                                  ),
                                   const Body2(value: '산책한 시간', bold: true),
                                   Container(
                                       margin: const EdgeInsets.only(top: 8),

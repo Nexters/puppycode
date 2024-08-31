@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 import 'package:puppycode/shared/states/user.dart';
 
@@ -31,6 +32,12 @@ void main() async {
 
   final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
+
+  HomeWidget.setAppGroupId('group.pawpaw');
+  HomeWidget.updateWidget(
+    name: 'pawpawWidget',
+    iOSName: 'pawpawWidget',
+  );
 
   Get.put(UserController());
   runApp(const MyApp());

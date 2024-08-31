@@ -15,11 +15,11 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		9D15C9642C83665900441878 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D2F31D62C8311CB0084F7CE /* Assets.xcassets */; };
 		9D2F31CE2C8311CA0084F7CE /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D2F31CD2C8311CA0084F7CE /* WidgetKit.framework */; };
 		9D2F31D02C8311CA0084F7CE /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D2F31CF2C8311CA0084F7CE /* SwiftUI.framework */; };
 		9D2F31D32C8311CA0084F7CE /* pawpawWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F31D22C8311CA0084F7CE /* pawpawWidgetBundle.swift */; };
 		9D2F31D52C8311CA0084F7CE /* pawpawWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2F31D42C8311CA0084F7CE /* pawpawWidget.swift */; };
-		9D2F31D72C8311CB0084F7CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D2F31D62C8311CB0084F7CE /* Assets.xcassets */; };
 		9D2F31DC2C8311CB0084F7CE /* pawpawWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9D2F31CC2C8311CA0084F7CE /* pawpawWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CE83CB2E2C7120D200094AF8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE83CB2D2C7120D200094AF8 /* GoogleService-Info.plist */; };
 		F956DEF9558DE7CA12B52DA5 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CCE48A67D24FB956EE564F /* Pods_Runner.framework */; };
@@ -359,7 +359,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D2F31D72C8311CB0084F7CE /* Assets.xcassets in Resources */,
+				9D15C9642C83665900441878 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
