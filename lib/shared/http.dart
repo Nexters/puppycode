@@ -170,11 +170,11 @@ class HttpService {
 
     try {
       final url = Uri.http(baseUrl, '/api/$endPoint');
-      print('>?');
+      //print('>?');
       var request = http.MultipartRequest('PATCH', url);
 
-      //final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
-      //request.files.add(httpImage);
+      final httpImage = await http.MultipartFile.fromPath('photo', imagePath);
+      request.files.add(httpImage);
 
       request.fields['request'] = jsonEncode(body);
 

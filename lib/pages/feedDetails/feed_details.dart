@@ -88,7 +88,6 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
               onPressed: () {
                 Get.back();
                 Get.toNamed('/create', arguments: {
-                  'from': 'details',
                   'id': feedId,
                 });
               },
@@ -96,7 +95,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
             ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Share.share(link!, subject: 'Pawpaw'); // 무엇을 공유하지요? => 링크 ?
+              Share.share(link!, subject: 'Pawpaw');
               Get.back();
             },
             child: Body2(value: '공유하기', color: ThemeColor.blue),

@@ -44,7 +44,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
     if (Get.arguments['photoPath'] != null) {
       photoPath = Get.arguments['photoPath'];
       from = Get.arguments['from'];
-    } else if (Get.arguments['from'] == 'details') {
+    } else if (Get.arguments['id'] != null) {
       _fetchFeedDetails(Get.arguments['id']);
     }
 
