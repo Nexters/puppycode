@@ -48,7 +48,29 @@ void main() async {
 Future sendWidgetPhoto() async {
   try {
     print('!');
-    return Future.wait([HomeWidget.saveWidgetData('title', 'title')]);
+    return Future.wait([
+      HomeWidget.saveWidgetData('title', 'widget_ready'),
+
+      // api 호출 뒤
+      // HomeWidget.renderFlutterWidget(
+      //   ClipRRect(
+      //     borderRadius: BorderRadius.circular(20.25),
+      //     child: Align(
+      //       alignment: Alignment.center,
+      //       child: SizedBox(
+      //         width: 160,
+      //         height: 160,
+      //         child: Image.file(
+      //           File('받은 사진 파일 경로'),
+      //           fit: BoxFit.cover,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   logicalSize: const Size(160, 160),
+      //   key: 'title',
+      // ),
+    ]);
   } on PlatformException catch (err) {
     debugPrint('send data err: $err');
   }

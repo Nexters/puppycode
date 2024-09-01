@@ -12,7 +12,7 @@ struct PawpawWidgetEntryView: View {
     
     var body: some View {
         VStack {
-            if entry.filename == "title" {
+            if entry.filename == "widget_ready" {
                 Image("widget_ready")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -41,8 +41,8 @@ struct pawpawWidget: Widget {
         StaticConfiguration(kind: kind, provider: PawpawTimelineProvider()) { entry in
             PawpawWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Pawpaw Widget")
-        .description("This widget displays an image of pawpaw.")
+        .configurationDisplayName("매일 산책")
+        .description("매일 우리집 강아지 산책을 완료하고 사진을 감상해 보세요.")
         .supportedFamilies([.systemSmall])
     }
 }
@@ -51,7 +51,7 @@ struct PawpawTimelineProvider: TimelineProvider {
     typealias Entry = SimpleEntry
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), widgetFamily: context.family, filename: "No screenshot available")
+        SimpleEntry(date: Date(), widgetFamily: context.family, filename: "widget_ready")
     }
     
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
@@ -60,7 +60,7 @@ struct PawpawTimelineProvider: TimelineProvider {
             entry = placeholder(in: context)
         } else {
             let userDefaults = UserDefaults(suiteName: "group.pawpaw")
-            let image = userDefaults?.string(forKey: "title") ?? "No screenshot available"
+            let image = userDefaults?.string(forKey: "title") ?? "widget_ready"
             entry = SimpleEntry(date: Date(), widgetFamily: context.family, filename: image)
         }
         
