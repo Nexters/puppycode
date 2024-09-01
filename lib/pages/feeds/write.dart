@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -40,13 +42,9 @@ class _FeedWritePageState extends State<FeedWritePage> {
 
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
 
-  final _globalKey = GlobalKey();
-  String? widgetImagePath;
-
   Future sendWidgetPhoto() async {
     try {
       return Future.wait([
-        //HomeWidget.saveWidgetData<String>('title', photoPath),
         HomeWidget.renderFlutterWidget(
           ClipRRect(
             borderRadius: BorderRadius.circular(20.25),
@@ -55,8 +53,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
               child: SizedBox(
                 width: 160,
                 height: 160,
-                child: Image.network(
-                  photoPath,
+                child: Image.file(
+                  File(photoPath),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -173,7 +171,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       if (result['success'] == true) {
         await userController.refreshData();
-        print(result['data']);
+        print("result['data'] ${result['data']}");
+        _sendAndUpdate();
         Get.offAndToNamed('/create/success',
             arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
@@ -236,26 +235,17 @@ class _FeedWritePageState extends State<FeedWritePage> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              Container(
-                                key: _globalKey,
-                                child: PhotoItem(
-                                  photoPath: photoPath,
-                                  titleController: titleController,
-                                  onChange: onTitleChange,
-                                  name: userController.user.value!.nickname,
-                                  isEditing: feed != null ? true : false,
-                                ),
+                              PhotoItem(
+                                photoPath: photoPath,
+                                titleController: titleController,
+                                onChange: onTitleChange,
+                                name: userController.user.value!.nickname,
+                                isEditing: feed != null ? true : false,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      _sendAndUpdate();
-                                    },
-                                    child: const Text('홈 위젯'),
-                                  ),
                                   const Body2(value: '산책한 시간', bold: true),
                                   Container(
                                       margin: const EdgeInsets.only(top: 8),
