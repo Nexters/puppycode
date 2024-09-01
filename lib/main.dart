@@ -34,6 +34,7 @@ void main() async {
   await settingsController.loadSettings();
 
   HomeWidget.setAppGroupId('group.pawpaw');
+  sendWidgetPhoto();
   HomeWidget.updateWidget(
     name: 'pawpawWidget',
     iOSName: 'pawpawWidget',
@@ -42,6 +43,15 @@ void main() async {
   Get.put(UserController());
   runApp(const MyApp());
   _initDeepLinkListener();
+}
+
+Future sendWidgetPhoto() async {
+  try {
+    print('!');
+    return Future.wait([HomeWidget.saveWidgetData('title', 'title')]);
+  } on PlatformException catch (err) {
+    debugPrint('send data err: $err');
+  }
 }
 
 Future<void> _initDeepLinkListener() async {
