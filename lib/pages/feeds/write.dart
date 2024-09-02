@@ -327,7 +327,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 onPressed: () =>
                     {feed != null ? _patchFeed(feed!.id) : _createFeed()},
                 text: isLoading
-                    ? '기록 저장중...'
+                    ? '기록 저장 중...'
                     : isEditing
                         ? '완료하기'
                         : '기록 남기기',
