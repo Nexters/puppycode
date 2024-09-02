@@ -8,7 +8,7 @@ import 'package:puppycode/config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class HttpService {
-  static const String baseUrl = '175.106.99.165';
+  static const String baseUrl = 'pawpaw-api.ddns.net';
   static String token = '';
   static const storage = FlutterSecureStorage();
 
