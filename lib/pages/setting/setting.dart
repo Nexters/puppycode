@@ -68,7 +68,6 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-
   // void onPushNotificationSwitched(value) {
   //   setState(() {
   //     isPushNotificationEnabled = value;
@@ -145,9 +144,6 @@ class _SettingPageState extends State<SettingPage> {
                         title: '앱 정보',
                         widget: Body3(
                             value: '현재 버전 1.0.0', color: ThemeColor.gray4),
-                      ),
-                      const SettingListItem(
-                        title: '계정정보',
                       ),
                       const SettingListItem(
                         title: '이용약관',
