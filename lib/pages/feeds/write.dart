@@ -41,6 +41,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   Feed? feed;
   bool isFetching = true;
   double? episodePositon;
+  bool isEditing = false;
 
   bool isLoading = false;
   bool isError = false;
@@ -102,6 +103,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
       isFetching = false;
     } else if (Get.arguments['id'] != null) {
       _fetchFeedDetails(Get.arguments['id']);
+      isEditing = true;
       if (Get.arguments['from'] == 'episode') {
         Future.delayed(const Duration(milliseconds: 100), () {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -321,7 +323,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
             child: DefaultElevatedButton(
               onPressed: () =>
                   {feed != null ? _patchFeed(feed!.id) : _createFeed()},
-              text: isLoading ? '기록 저장중...' : '기록 남기기',
+              text: isLoading
+                  ? '기록 저장중...'
+                  : isEditing
+                      ? '완료하기'
+                      : '기록 남기기',
               disabled: titleController.text.isEmpty || isLoading,
             ),
           ),

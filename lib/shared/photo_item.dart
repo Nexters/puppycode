@@ -32,10 +32,9 @@ class _PhotoItemState extends State<PhotoItem> {
   @override
   void initState() {
     super.initState();
-    // widget.focusNode.addListener(() {
-    //   _changeOverlayColor(widget.focusNode.hasFocus);
-    // });
-    print(widget.focusNode.hasFocus);
+    widget.focusNode.addListener(() {
+      _changeOverlayColor(widget.focusNode.hasFocus);
+    });
   }
 
   _changeOverlayColor(bool hasFocus) {

@@ -29,13 +29,26 @@ class Episode extends StatefulWidget {
 }
 
 class _EpisodeState extends State<Episode> {
+  late FocusNode _focusNode;
+  Color _iconColor = ThemeColor.gray4;
+  Color _borderColor = ThemeColor.gray2;
+
   @override
   void initState() {
     super.initState();
-    // if (widget.focusNode!.hasFocus) {
-    //   print(widget.focusNode!.hasFocus);
-    //   FocusScope.of(context).requestFocus(widget.focusNode);
-    // }
+    _focusNode = widget.focusNode ?? FocusNode();
+
+    _focusNode.addListener(() {
+      setState(() {
+        if (_focusNode.hasFocus) {
+          _iconColor = ThemeColor.primary;
+          _borderColor = ThemeColor.primary;
+        } else {
+          _iconColor = ThemeColor.gray4;
+          _borderColor = ThemeColor.gray2;
+        }
+      });
+    });
   }
 
   @override
@@ -44,7 +57,7 @@ class _EpisodeState extends State<Episode> {
       margin: const EdgeInsets.only(bottom: 18),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: ThemeColor.gray2, width: 1.2)),
+          border: Border.all(color: _borderColor, width: 1.2)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -60,11 +73,11 @@ class _EpisodeState extends State<Episode> {
                         'assets/icons/episode.svg',
                         width: 24,
                         colorFilter:
-                            ColorFilter.mode(ThemeColor.gray4, BlendMode.srcIn),
+                            ColorFilter.mode(_iconColor, BlendMode.srcIn),
                       ),
                       const SizedBox(width: 4),
                       Body2(
-                          value: widget.content.isEmpty
+                          value: widget.content.isEmpty && !widget.isInput
                               ? '오늘의 에피소드 추가하기'
                               : '오늘의 에피소드',
                           bold: true)
