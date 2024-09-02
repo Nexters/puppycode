@@ -221,11 +221,13 @@ class _CalendarTableState extends State<CalendarTable> {
             ]),
         Container(
           margin: const EdgeInsets.only(top: 40),
-          height: 170,
+          height: 160,
           decoration: const BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: AssetImage('assets/images/pawpaw_puppy.png'))),
+            image: DecorationImage(
+              fit: BoxFit.contain,
+              image: AssetImage('assets/images/pawpaw_puppy.png'),
+            ),
+          ),
         )
       ],
     );
