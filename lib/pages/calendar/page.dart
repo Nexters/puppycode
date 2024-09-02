@@ -21,6 +21,8 @@ class _CalendarPageState extends State<CalendarPage> {
   static const int maxMonth = 12;
   static const int minMonth = 1;
 
+  Map<String, Feed>? calendarItems;
+
   int year = DateTime.now().year;
   int month = DateTime.now().month;
   bool isThisMonth = true;
@@ -28,6 +30,30 @@ class _CalendarPageState extends State<CalendarPage> {
       DateTime.utc(DateTime.now().year, DateTime.now().month, 1);
   DateTime lastDayOfMonth =
       DateTime.utc(DateTime.now().year, DateTime.now().month + 1, 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCalendarData();
+  }
+
+  Future<void> _fetchCalendarData() async {
+    print('fetch 이전 호출 연도: $year, 호출 월: $month');
+
+    try {
+      final response = await HttpService.getOne('walk-logs/calendar',
+          params: {'year': year.toString(), 'month': month.toString()});
+      Map<String, dynamic> items = response['items'];
+      print('호출 연도: $year, 호출 월: $month');
+      print('items: $items');
+      setState(() {
+        calendarItems =
+            items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
+      });
+    } catch (error) {
+      //print(error);
+    }
+  }
 
   void changeMonth(bool next) {
     if (isThisMonth && next) return;
@@ -43,7 +69,10 @@ class _CalendarPageState extends State<CalendarPage> {
 
     setState(() {
       _updateDays(nextYear, nextMonth);
+      print('update 후 : month, year : $nextYear, $nextMonth');
+      _fetchCalendarData();
     });
+    print('isThisMonth: $isThisMonth');
   }
 
   void _updateDays(int nextYear, int nextMonth) {
@@ -80,6 +109,7 @@ class _CalendarPageState extends State<CalendarPage> {
               firstDayOfMonth: firstDayOfMonth,
               lastDayOfMonth: lastDayOfMonth,
               onMonthClick: changeMonth,
+              calendarItems: calendarItems,
             )
           ],
         ),
@@ -96,6 +126,7 @@ class CalendarTable extends StatefulWidget {
     required this.firstDayOfMonth,
     required this.lastDayOfMonth,
     required this.onMonthClick,
+    required this.calendarItems,
   });
 
   final int year;
@@ -103,6 +134,7 @@ class CalendarTable extends StatefulWidget {
   final DateTime firstDayOfMonth;
   final DateTime lastDayOfMonth;
   final void Function(bool) onMonthClick;
+  final Map<String, Feed>? calendarItems;
 
   static const List<String> daysText = ['월', '화', '수', '목', '금', '토', '일'];
   static const List<int> days = [0, 1, 2, 3, 4, 5, 6];
@@ -113,29 +145,30 @@ class CalendarTable extends StatefulWidget {
 }
 
 class _CalendarTableState extends State<CalendarTable> {
-  Map<String, Feed>? calendarItems;
-
   @override
   void initState() {
-    _fetchCalendarData();
     super.initState();
   }
 
-  Future<void> _fetchCalendarData() async {
-    try {
-      final response = await HttpService.getOne('walk-logs/calendar', params: {
-        'year': widget.year.toString(),
-        'month': widget.month.toString()
-      });
-      Map<String, dynamic> items = response['items'];
-      setState(() {
-        calendarItems =
-            items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
-      });
-    } catch (error) {
-      //print(error);
-    }
-  }
+  // Future<void> _fetchCalendarData() async {
+  //   print('fetch 이전 호출 연도: ${widget.year}, 호출 월: ${widget.month}');
+
+  //   try {
+  //     final response = await HttpService.getOne('walk-logs/calendar', params: {
+  //       'year': widget.year.toString(),
+  //       'month': widget.month.toString()
+  //     });
+  //     Map<String, dynamic> items = response['items'];
+  //     print('호출 연도: ${widget.year}, 호출 월: ${widget.month}');
+  //     print('items: $items');
+  //     setState(() {
+  //       calendarItems =
+  //           items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
+  //     });
+  //   } catch (error) {
+  //     //print(error);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +177,6 @@ class _CalendarTableState extends State<CalendarTable> {
     var showMaxWeek = 35 - widget.firstDayOfMonth.weekday + 1 <
         widget.lastDayOfMonth.day; // row 6개 보여야 할 때
     var isThisMonth = widget.month == DateTime.now().month;
-
     return Column(
       children: [
         Row(
@@ -156,11 +188,15 @@ class _CalendarTableState extends State<CalendarTable> {
             Row(
               children: [
                 GestureDetector(
-                    onTap: () => {widget.onMonthClick(false)},
+                    onTap: () => {
+                          widget.onMonthClick(false),
+                        },
                     child: SvgPicture.asset('assets/icons/calendar_prev.svg')),
                 const SizedBox(width: 8),
                 GestureDetector(
-                    onTap: () => {widget.onMonthClick(true)},
+                    onTap: () => {
+                          widget.onMonthClick(true),
+                        },
                     child: isThisMonth
                         ? Opacity(
                             opacity: 0.4,
@@ -185,7 +221,7 @@ class _CalendarTableState extends State<CalendarTable> {
             ]),
         Container(
           margin: const EdgeInsets.only(top: 40),
-          width: 180,
+          height: 170,
           decoration: const BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.contain,
@@ -222,8 +258,9 @@ class _CalendarTableState extends State<CalendarTable> {
       Color textColor = isToday
           ? ThemeColor.white
           : (isInFuture ? ThemeColor.gray3 : ThemeColor.gray5);
-      Feed? dateFeedItem =
-          calendarItems != null ? calendarItems!['$cellDate'] : null;
+      Feed? dateFeedItem = widget.calendarItems != null
+          ? widget.calendarItems!['$cellDate']
+          : null;
 
       if (dateFeedItem == null) {
         return Container(
@@ -251,13 +288,14 @@ class _CalendarTableState extends State<CalendarTable> {
           height: cellHeight,
           margin: const EdgeInsets.all(CalendarTable.cellPadding),
           decoration: BoxDecoration(
-              color: isToday ? ThemeColor.primary : ThemeColor.gray2,
-              borderRadius: BorderRadius.circular(20),
-              image: isToday
-                  ? null
-                  : DecorationImage(
-                      image: NetworkImage(dateFeedItem.photoUrl),
-                      fit: BoxFit.cover)),
+            color: isToday ? ThemeColor.primary : ThemeColor.gray2,
+            borderRadius: BorderRadius.circular(20),
+            image: isToday
+                ? null
+                : DecorationImage(
+                    image: NetworkImage(dateFeedItem.photoUrl),
+                    fit: BoxFit.cover),
+          ),
           child: Center(
             child: Body4(
               value: cellDate.toString(),
