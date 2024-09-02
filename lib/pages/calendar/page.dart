@@ -220,7 +220,7 @@ class _CalendarTableState extends State<CalendarTable> {
               if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
             ]),
         Container(
-          margin: const EdgeInsets.only(top: 40),
+          margin: const EdgeInsets.only(bottom: 60),
           height: 160,
           decoration: const BoxDecoration(
             image: DecorationImage(

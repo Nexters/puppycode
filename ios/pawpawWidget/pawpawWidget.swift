@@ -26,6 +26,7 @@ struct PawpawWidgetEntryView: View {
                     .frame(width: 160, height: 160)
                     .clipped()
             }
+            
         }
         .containerBackground(for: .widget) {
             Color(red: 54/255, green: 219/255, blue: 191/255)
