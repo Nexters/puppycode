@@ -210,7 +210,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       if (result['success'] == true) {
         await userController.refreshData();
-        print("result['data'] ${result['data']}");
         _sendAndUpdate();
         Get.offAndToNamed('/create/success',
             arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
@@ -266,7 +265,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
             centerOptions: AppBarCenter(label: '산책 기록하기'),
           ),
           body: isFetching
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(color: ThemeColor.primary))
               : SafeArea(
                   child: Container(
                     padding: const EdgeInsets.all(20),
