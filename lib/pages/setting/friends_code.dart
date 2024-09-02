@@ -19,6 +19,7 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
   String errorMessage = '';
+  bool isCodeComplete = false;
 
   void _handleInputChange(int index, String value) {
     if (value.length == 1) {
@@ -30,6 +31,8 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
     }
     setState(() {
       errorMessage = '';
+      isCodeComplete =
+          _controllers.every((controller) => controller.text.isNotEmpty);
     });
   }
 
@@ -74,56 +77,64 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SharedAppBar(
-        leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
-        centerOptions: AppBarCenter(label: '친구 코드 입력하기'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 42, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Head2(value: '친구의 코드를 입력하면\n피드 친구를 맺을 수 있어요.'),
-            const SizedBox(height: 8),
-            const Body2(value: '빈 칸을 더블 클릭해 코드 붙여넣기가 가능해요.'),
-            const SizedBox(height: 120),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(
-                6,
-                (index) => CodeTextField(
-                  controller: _controllers[index],
-                  onChanged: (value) {
-                    _handleInputChange(index, value);
-                  },
-                  onPaste: (value) {
-                    _handlePaste(value);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Center(
-              child: Body4(
-                  value: errorMessage,
-                  color: ThemeColor.error,
-                  fontWeight: FontWeight.w500),
-            ),
-          ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: SharedAppBar(
+          leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
+          centerOptions: AppBarCenter(label: '친구 코드 입력하기'),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 12,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 42, horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Head2(value: '친구의 코드를 입력하면\n피드 친구를 맺을 수 있어요.'),
+                const SizedBox(height: 8),
+                const Body2(value: '빈 칸을 더블 클릭해 코드 붙여넣기가 가능해요.'),
+                const SizedBox(height: 120),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    6,
+                    (index) => CodeTextField(
+                      controller: _controllers[index],
+                      onChanged: (value) {
+                        _handleInputChange(index, value);
+                      },
+                      onPaste: (value) {
+                        _handlePaste(value);
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: Body4(
+                      value: errorMessage,
+                      color: ThemeColor.error,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
           ),
-          child: Visibility(
-            visible: MediaQuery.of(context).viewInsets.bottom == 0,
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 12),
             child: DefaultElevatedButton(
-              onPressed: () => {_onSubmit()},
+              onPressed: isCodeComplete
+                  ? () {
+                      _onSubmit();
+                      FocusScope.of(context).unfocus();
+                    }
+                  : () {},
+              disabled: !isCodeComplete,
               text: '친구 추가하기 ',
             ),
           ),
@@ -169,6 +180,9 @@ class CodeTextField extends StatelessWidget {
           cursorHeight: 18,
           onChanged: (value) {
             onChanged(value);
+          },
+          onSubmitted: (value) {
+            FocusScope.of(context).unfocus();
           },
           decoration: InputDecoration(
             filled: true,
