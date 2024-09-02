@@ -30,12 +30,17 @@ class _FeedWritePageState extends State<FeedWritePage> {
   List<String> options = [];
   TextEditingController titleController = TextEditingController();
   TextEditingController episodeController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _titleFocusNode = FocusNode();
+  final FocusNode _episodeFocusNode = FocusNode();
+  final GlobalKey episodeKey = GlobalKey();
   final userController = Get.find<UserController>();
   String photoPath = '';
   String from = '';
   String content = '';
   Feed? feed;
   bool isFetching = true;
+  double? episodePositon;
 
   bool isLoading = false;
   bool isError = false;
@@ -87,15 +92,48 @@ class _FeedWritePageState extends State<FeedWritePage> {
     await updateHomeWidget();
   }
 
+  double _getEpisodePosition() {
+    final RenderBox renderBox =
+        episodeKey.currentContext!.findRenderObject() as RenderBox;
+    final position = renderBox.localToGlobal(Offset.zero);
+    print(position);
+    return position.dx;
+  }
+
   @override
   void initState() {
     super.initState();
+
     if (Get.arguments['photoPath'] != null) {
       photoPath = Get.arguments['photoPath'];
       from = Get.arguments['from'];
       isFetching = false;
     } else if (Get.arguments['id'] != null) {
       _fetchFeedDetails(Get.arguments['id']);
+      if (Get.arguments['from'] == 'episode') {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease);
+          }
+          print(_scrollController.hasClients);
+          FocusScope.of(context).requestFocus(_episodeFocusNode);
+          print('sdd');
+        });
+      } else {
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+                _scrollController.position.minScrollExtent,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease);
+          }
+          FocusScope.of(context).requestFocus(_titleFocusNode);
+          print('dfag');
+        });
+      }
     }
 
     var options = [];
@@ -106,6 +144,12 @@ class _FeedWritePageState extends State<FeedWritePage> {
         options.add('$_kInitialTime분~${_kInitialTime + _kInitialGap}');
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchFeedDetails(id) async {
@@ -233,11 +277,13 @@ class _FeedWritePageState extends State<FeedWritePage> {
                     children: [
                       Expanded(
                         child: SingleChildScrollView(
+                          controller: _scrollController,
                           child: Column(
                             children: [
                               PhotoItem(
                                 photoPath: photoPath,
                                 titleController: titleController,
+                                focusNode: _titleFocusNode,
                                 onChange: onTitleChange,
                                 name: userController.user.value!.nickname,
                                 isEditing: feed != null ? true : false,
@@ -259,9 +305,11 @@ class _FeedWritePageState extends State<FeedWritePage> {
                               ),
                               const SizedBox(height: 20),
                               Episode(
+                                key: episodeKey,
                                 isInput: true,
                                 controller: episodeController,
                                 content: content,
+                                focusNode: _episodeFocusNode,
                               ),
                             ],
                           ),
