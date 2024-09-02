@@ -185,7 +185,8 @@ class FeedUserStatus extends StatelessWidget {
                       right: 0,
                       child: GestureDetector(
                         onTap: () => {_onFriendClick(context)},
-                        child: FeedFriendIcon(hasWalked: hasWalked),
+                        child: FeedFriendIcon(
+                            hasWalked: hasWalked, isMine: isMine),
                       ))
               ],
             ),
@@ -207,9 +208,11 @@ class FeedFriendIcon extends StatelessWidget {
   const FeedFriendIcon({
     super.key,
     required this.hasWalked,
+    this.isMine = false,
   });
 
   final bool hasWalked;
+  final bool? isMine;
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +238,9 @@ class FeedFriendIcon extends StatelessWidget {
               'assets/icons/paw_small.svg',
               colorFilter: ColorFilter.mode(ThemeColor.white, BlendMode.srcIn),
             )
-          : SvgPicture.asset('assets/icons/push.svg', width: 16),
+          : isMine!
+              ? const SizedBox.shrink()
+              : SvgPicture.asset('assets/icons/push.svg', width: 16),
     );
   }
 }
