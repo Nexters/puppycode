@@ -148,7 +148,12 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (feed == null) return const Center(child: CircularProgressIndicator());
+    if (feed == null) {
+      return Center(
+          child: CircularProgressIndicator(
+        color: ThemeColor.primary,
+      ));
+    }
 
     return Scaffold(
       appBar: SharedAppBar(

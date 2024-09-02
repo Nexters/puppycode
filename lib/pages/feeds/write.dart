@@ -175,7 +175,8 @@ class _FeedWritePageState extends State<FeedWritePage> {
           centerOptions: AppBarCenter(label: '산책 기록하기'),
         ),
         body: isFetching
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: CircularProgressIndicator(color: ThemeColor.primary))
             : SafeArea(
                 child: Container(
                   padding: const EdgeInsets.all(20),

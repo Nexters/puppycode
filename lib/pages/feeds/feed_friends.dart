@@ -214,8 +214,8 @@ class FeedFriendIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: hasWalked ? 22 : 18,
-      height: hasWalked ? 22 : 18,
+      width: 22,
+      height: 22,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
           boxShadow: hasWalked
@@ -228,15 +228,14 @@ class FeedFriendIcon extends StatelessWidget {
                   )
                 ],
           shape: BoxShape.circle,
-          border:
-              hasWalked ? Border.all(color: ThemeColor.white, width: 2) : null,
+          border: Border.all(color: ThemeColor.white, width: hasWalked ? 2 : 1),
           color: hasWalked ? ThemeColor.primary : ThemeColor.white),
       child: hasWalked
           ? SvgPicture.asset(
               'assets/icons/paw_small.svg',
               colorFilter: ColorFilter.mode(ThemeColor.white, BlendMode.srcIn),
             )
-          : SvgPicture.asset('assets/icons/push.svg'),
+          : SvgPicture.asset('assets/icons/push.svg', width: 16),
     );
   }
 }
