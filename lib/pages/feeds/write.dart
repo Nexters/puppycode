@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:puppycode/apis/models/feed.dart';
 import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/episode.dart';
@@ -37,6 +41,51 @@ class _FeedWritePageState extends State<FeedWritePage> {
   bool isError = false;
 
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
+
+  Future sendWidgetPhoto() async {
+    try {
+      return Future.wait([
+        HomeWidget.renderFlutterWidget(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.25),
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 160,
+                height: 160,
+                child: Image.file(
+                  File(photoPath),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          logicalSize: const Size(160, 160),
+          key: 'title',
+        ),
+      ]);
+    } on PlatformException catch (err) {
+      debugPrint('send data err: $err');
+    }
+  }
+
+  Future updateHomeWidget() async {
+    try {
+      return Future.wait([
+        HomeWidget.updateWidget(
+          name: 'pawpawWidget',
+          iOSName: 'pawpawWidget',
+        )
+      ]);
+    } on PlatformException catch (exception) {
+      debugPrint('Error Updating Widget. $exception');
+    }
+  }
+
+  Future<void> _sendAndUpdate() async {
+    await sendWidgetPhoto();
+    await updateHomeWidget();
+  }
 
   @override
   void initState() {
@@ -122,7 +171,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
       });
       if (result['success'] == true) {
         await userController.refreshData();
-        print(result['data']);
+        _sendAndUpdate();
         Get.offAndToNamed('/create/success',
             arguments: {'from': from, 'feedId': result['data']['id'] ?? ''});
       } else {
@@ -189,8 +238,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
                                 photoPath: photoPath,
                                 titleController: titleController,
                                 onChange: onTitleChange,
-                                name:
-                                    userController.user.value!.nickname ?? '포포',
+                                name: userController.user.value!.nickname,
                                 isEditing: feed != null ? true : false,
                               ),
                               Column(

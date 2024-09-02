@@ -10,14 +10,14 @@ class PhotoItem extends StatefulWidget {
     required this.photoPath,
     required this.name,
     required this.titleController,
-    required this.onChange,
+    this.onChange,
     this.isEditing = false,
   });
 
   final String photoPath;
   final String name;
   final TextEditingController titleController;
-  final VoidCallback onChange;
+  final VoidCallback? onChange;
   final bool? isEditing;
 
   @override
@@ -77,7 +77,7 @@ class _PhotoItemState extends State<PhotoItem> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
-                    onChanged: (text) => {widget.onChange()},
+                    onChanged: (text) => {widget.onChange!()},
                     controller: widget.titleController,
                     focusNode: focusNode,
                     decoration: InputDecoration(
