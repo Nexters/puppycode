@@ -179,13 +179,14 @@ class FeedUserStatus extends StatelessWidget {
                           ),
                         )),
                   ),
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () => {_onFriendClick(context)},
-                      child: FeedFriendIcon(hasWalked: hasWalked),
-                    ))
+                if (!isMine || hasWalked)
+                  Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () => {_onFriendClick(context)},
+                        child: FeedFriendIcon(hasWalked: hasWalked),
+                      ))
               ],
             ),
             const SizedBox(height: 4),
