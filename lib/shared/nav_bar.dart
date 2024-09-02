@@ -116,7 +116,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
       ),
       body: _pages[_currentTab],
       floatingActionButton:
-          _currentTab == NavTab.feed ? const WriteFloatingButton() : null,
+          _currentTab == NavTab.home ? null : const WriteFloatingButton(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.horizontal(
@@ -174,7 +174,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
       if (!showTooltip) {
         setState(() {
           showTooltip = true;
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(const Duration(seconds: 1), () {
             showTooltip = false;
             setState(() {});
           });
@@ -192,28 +192,29 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
         Theme.of(context).floatingActionButtonTheme.backgroundColor;
 
     return Container(
-      margin: EdgeInsets.only(right: 4),
+      margin: const EdgeInsets.only(right: 4),
       width: 155,
       height: 117,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        boxShadow: [
-          BoxShadow(
-            color: ThemeColor.black.withOpacity(0.13),
-            blurRadius: 30,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: const BoxDecoration(),
       child: Stack(
         fit: StackFit.loose,
         children: [
           Positioned(
             right: 0,
             bottom: 0,
-            child: SizedBox(
+            child: Container(
               width: 64,
               height: 64,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                      color: ThemeColor.black.withOpacity(0.13),
+                      blurRadius: 30,
+                      offset: const Offset(0, 2),
+                      spreadRadius: 0),
+                ],
+              ),
               child: FloatingActionButton(
                 elevation: 0,
                 onPressed: () => {_onButtonClick(hasWritten)},

@@ -188,6 +188,8 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
                 if (feed?.episode.isNotEmpty == true || feed?.isWriter == true)
                   Episode(
                     content: feed!.episode,
+                    isWriter: feed!.isWriter!,
+                    id: feedId,
                   )
               ],
             ),
