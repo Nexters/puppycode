@@ -10,40 +10,31 @@ class PhotoItem extends StatefulWidget {
     required this.photoPath,
     required this.name,
     required this.titleController,
-    required this.onChange,
+    this.onChange,
     this.isEditing = false,
+    required this.focusNode,
   });
 
   final String photoPath;
   final String name;
   final TextEditingController titleController;
-  final VoidCallback onChange;
+  final VoidCallback? onChange;
   final bool? isEditing;
+  final FocusNode focusNode;
 
   @override
   State<PhotoItem> createState() => _PhotoItemState();
 }
 
 class _PhotoItemState extends State<PhotoItem> {
-  late FocusNode focusNode;
   Color overlayColor = Colors.grey;
 
   @override
   void initState() {
     super.initState();
-    focusNode = FocusNode();
-
-    focusNode.addListener(() {
-      _changeOverlayColor(focusNode.hasFocus);
+    widget.focusNode.addListener(() {
+      _changeOverlayColor(widget.focusNode.hasFocus);
     });
-    print(widget.titleController.text);
-    print(widget.photoPath);
-  }
-
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
   }
 
   _changeOverlayColor(bool hasFocus) {
@@ -77,9 +68,9 @@ class _PhotoItemState extends State<PhotoItem> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
-                    onChanged: (text) => {widget.onChange()},
+                    onChanged: (text) => {widget.onChange!()},
                     controller: widget.titleController,
-                    focusNode: focusNode,
+                    focusNode: widget.focusNode,
                     decoration: InputDecoration(
                         hintText: '${widget.name}야 오늘 산책은 어땠어?',
                         hintStyle: TextStyle(

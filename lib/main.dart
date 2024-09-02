@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 import 'package:puppycode/shared/states/user.dart';
 
@@ -32,9 +33,47 @@ void main() async {
   final settingsController = SettingsController(SettingsService());
   await settingsController.loadSettings();
 
+  HomeWidget.setAppGroupId('group.pawpaw');
+  sendWidgetPhoto();
+  HomeWidget.updateWidget(
+    name: 'pawpawWidget',
+    iOSName: 'pawpawWidget',
+  );
+
   Get.put(UserController());
   runApp(const MyApp());
   _initDeepLinkListener();
+}
+
+Future sendWidgetPhoto() async {
+  try {
+    print('!');
+    return Future.wait([
+      HomeWidget.saveWidgetData('title', 'widget_ready'),
+
+      // api 호출 뒤
+      // HomeWidget.renderFlutterWidget(
+      //   ClipRRect(
+      //     borderRadius: BorderRadius.circular(20.25),
+      //     child: Align(
+      //       alignment: Alignment.center,
+      //       child: SizedBox(
+      //         width: 160,
+      //         height: 160,
+      //         child: Image.file(
+      //           File('받은 사진 파일 경로'),
+      //           fit: BoxFit.cover,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   logicalSize: const Size(160, 160),
+      //   key: 'title',
+      // ),
+    ]);
+  } on PlatformException catch (err) {
+    debugPrint('send data err: $err');
+  }
 }
 
 Future<void> _initDeepLinkListener() async {
