@@ -20,14 +20,15 @@ class TextButtonColor extends WidgetStateColor {
 class TextButtonStyle extends ButtonStyle {
   static ButtonStyle getStyle({bool? disabled, Color? backgroundColor}) {
     return TextButton.styleFrom(
-      elevation: 0,
-      fixedSize: const Size.fromHeight(56),
-      backgroundColor: disabled == true
-          ? ThemeColor.gray2
-          : backgroundColor ?? TextButtonColor(),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-    );
+        elevation: 0,
+        fixedSize: const Size.fromHeight(56),
+        backgroundColor: disabled == true
+            ? ThemeColor.gray2
+            : backgroundColor ?? TextButtonColor(),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        overlayColor:
+            disabled! ? Colors.transparent : ThemeColor.primaryPressed);
   }
 }
 
