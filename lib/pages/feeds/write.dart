@@ -92,14 +92,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
     await updateHomeWidget();
   }
 
-  double _getEpisodePosition() {
-    final RenderBox renderBox =
-        episodeKey.currentContext!.findRenderObject() as RenderBox;
-    final position = renderBox.localToGlobal(Offset.zero);
-    print(position);
-    return position.dx;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -112,26 +104,27 @@ class _FeedWritePageState extends State<FeedWritePage> {
       _fetchFeedDetails(Get.arguments['id']);
       if (Get.arguments['from'] == 'episode') {
         Future.delayed(const Duration(milliseconds: 100), () {
-          if (_scrollController.hasClients) {
-            _scrollController.animateTo(
-                _scrollController.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease);
-          }
-          print(_scrollController.hasClients);
-          FocusScope.of(context).requestFocus(_episodeFocusNode);
-          print('sdd');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
+            }
+            FocusScope.of(context).requestFocus(_episodeFocusNode);
+          });
         });
       } else {
         Future.delayed(const Duration(milliseconds: 100), () {
-          if (_scrollController.hasClients) {
-            _scrollController.animateTo(
-                _scrollController.position.minScrollExtent,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease);
-          }
-          FocusScope.of(context).requestFocus(_titleFocusNode);
-          print('dfag');
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                  _scrollController.position.minScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
+            }
+            FocusScope.of(context).requestFocus(_titleFocusNode);
+          });
         });
       }
     }
