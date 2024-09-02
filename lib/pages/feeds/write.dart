@@ -258,80 +258,84 @@ class _FeedWritePageState extends State<FeedWritePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: SharedAppBar(
-          leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
-          centerOptions: AppBarCenter(label: '산책 기록하기'),
-        ),
-        body: isFetching
-            ? const Center(child: CircularProgressIndicator())
-            : SafeArea(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          controller: _scrollController,
-                          child: Column(
-                            children: [
-                              PhotoItem(
-                                photoPath: photoPath,
-                                titleController: titleController,
-                                focusNode: _titleFocusNode,
-                                onChange: onTitleChange,
-                                name: userController.user.value!.nickname,
-                                isEditing: feed != null ? true : false,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Body2(value: '산책한 시간', bold: true),
-                                  Container(
-                                      margin: const EdgeInsets.only(top: 8),
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: _optionButtons(),
-                                        ),
-                                      ))
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              Episode(
-                                key: episodeKey,
-                                isInput: true,
-                                controller: episodeController,
-                                content: content,
-                                focusNode: _episodeFocusNode,
-                              ),
-                            ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          appBar: SharedAppBar(
+            leftOptions: AppBarLeft(iconType: LeftIconType.CLOSE),
+            centerOptions: AppBarCenter(label: '산책 기록하기'),
+          ),
+          body: isFetching
+              ? const Center(child: CircularProgressIndicator())
+              : SafeArea(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: _scrollController,
+                            child: Column(
+                              children: [
+                                PhotoItem(
+                                  photoPath: photoPath,
+                                  titleController: titleController,
+                                  focusNode: _titleFocusNode,
+                                  onChange: onTitleChange,
+                                  name: userController.user.value!.nickname,
+                                  isEditing: feed != null ? true : false,
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    const Body2(value: '산책한 시간', bold: true),
+                                    Container(
+                                        margin: const EdgeInsets.only(top: 8),
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: _optionButtons(),
+                                          ),
+                                        ))
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Episode(
+                                  key: episodeKey,
+                                  isInput: true,
+                                  controller: episodeController,
+                                  content: content,
+                                  focusNode: _episodeFocusNode,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 12),
+              child: DefaultElevatedButton(
+                onPressed: () =>
+                    {feed != null ? _patchFeed(feed!.id) : _createFeed()},
+                text: isLoading
+                    ? '기록 저장중...'
+                    : isEditing
+                        ? '완료하기'
+                        : '기록 남기기',
+                disabled: titleController.text.isEmpty || isLoading,
               ),
-        bottomNavigationBar: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 12),
-            child: DefaultElevatedButton(
-              onPressed: () =>
-                  {feed != null ? _patchFeed(feed!.id) : _createFeed()},
-              text: isLoading
-                  ? '기록 저장중...'
-                  : isEditing
-                      ? '완료하기'
-                      : '기록 남기기',
-              disabled: titleController.text.isEmpty || isLoading,
             ),
-          ),
-        ));
+          )),
+    );
   }
 }
 
