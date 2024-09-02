@@ -185,7 +185,7 @@ class _CalendarTableState extends State<CalendarTable> {
             ]),
         Container(
           margin: const EdgeInsets.only(top: 40),
-          height: 170,
+          width: 180,
           decoration: const BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.contain,

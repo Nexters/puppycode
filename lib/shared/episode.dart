@@ -41,10 +41,10 @@ class Episode extends StatelessWidget {
                 const Body2(value: '오늘의 에피소드', bold: true)
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             isInput
                 ? TextField(
-                    cursorHeight: 23,
+                    cursorHeight: 18,
                     maxLines: null,
                     controller: controller,
                     decoration: InputDecoration(

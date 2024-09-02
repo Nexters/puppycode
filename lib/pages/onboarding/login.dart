@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   SvgPicture.asset('assets/icons/logo.svg', width: 200),
                   const SizedBox(height: 10),
-                  const Body2(value: '친구와 나누는 우리 강아지 산책 기록', bold: true),
+                  const Body2(value: '친구와 공유하는 반려견 산책 일지', bold: true),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 80, horizontal: 60),
