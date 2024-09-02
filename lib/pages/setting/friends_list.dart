@@ -218,7 +218,9 @@ class FriendItem extends StatelessWidget {
                     const Positioned(
                         bottom: 0,
                         right: 0,
-                        child: FeedFriendIcon(hasWalked: true)),
+                        child: FeedFriendIcon(
+                          hasWalked: true,
+                        )),
                 ],
               ),
               const SizedBox(

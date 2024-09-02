@@ -73,6 +73,20 @@ class UserNetworkImage extends StatelessWidget {
             width: width,
             colorBlendMode: BlendMode.colorDodge,
             color: isDimmed ? ThemeColor.white.withOpacity(0.4) : null,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                  width: width,
+                  height: height,
+                  child: CircularProgressIndicator(
+                    color: ThemeColor.primary,
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ));
+            },
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
               return defaultImage;
