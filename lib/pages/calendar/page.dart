@@ -113,11 +113,12 @@ class CalendarTable extends StatefulWidget {
 }
 
 class _CalendarTableState extends State<CalendarTable> {
+  ValueNotifier<int> monthNotifier = ValueNotifier<int>(0);
   Map<String, Feed>? calendarItems;
 
   @override
   void initState() {
-    _fetchCalendarData();
+    monthNotifier.value = widget.month;
     super.initState();
   }
 
@@ -145,53 +146,61 @@ class _CalendarTableState extends State<CalendarTable> {
         widget.lastDayOfMonth.day; // row 6개 보여야 할 때
     var isThisMonth = widget.month == DateTime.now().month;
 
-    return Column(
-      children: [
-        Row(
+    return ValueListenableBuilder<int>(
+      valueListenable: monthNotifier,
+      builder: (context, value, child) {
+        _fetchCalendarData();
+        return Column(
           children: [
-            Expanded(
-                child: Head4(
-              value: '${widget.month}월',
-            )),
             Row(
               children: [
-                GestureDetector(
-                    onTap: () => {widget.onMonthClick(false)},
-                    child: SvgPicture.asset('assets/icons/calendar_prev.svg')),
-                const SizedBox(width: 8),
-                GestureDetector(
-                    onTap: () => {widget.onMonthClick(true)},
-                    child: isThisMonth
-                        ? Opacity(
-                            opacity: 0.4,
-                            child: SvgPicture.asset(
+                Expanded(
+                    child: Head4(
+                  value: '${widget.month}월',
+                )),
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () => {widget.onMonthClick(false)},
+                        child:
+                            SvgPicture.asset('assets/icons/calendar_prev.svg')),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                        onTap: () => {widget.onMonthClick(true)},
+                        child: isThisMonth
+                            ? Opacity(
+                                opacity: 0.4,
+                                child: SvgPicture.asset(
+                                    'assets/icons/calendar_next.svg'))
+                            : SvgPicture.asset(
                                 'assets/icons/calendar_next.svg'))
-                        : SvgPicture.asset('assets/icons/calendar_next.svg'))
+                  ],
+                )
               ],
+            ),
+            const SizedBox(height: 20),
+            Table(
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  getWeekDaysTextRow(),
+                  getWeekRow(0, cellHeight, isThisMonth),
+                  getWeekRow(1, cellHeight, isThisMonth),
+                  getWeekRow(2, cellHeight, isThisMonth),
+                  getWeekRow(3, cellHeight, isThisMonth),
+                  getWeekRow(4, cellHeight, isThisMonth),
+                  if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
+                ]),
+            Container(
+              margin: const EdgeInsets.only(top: 40),
+              width: 180,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage('assets/images/pawpaw_puppy.png'))),
             )
           ],
-        ),
-        const SizedBox(height: 20),
-        Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: [
-              getWeekDaysTextRow(),
-              getWeekRow(0, cellHeight, isThisMonth),
-              getWeekRow(1, cellHeight, isThisMonth),
-              getWeekRow(2, cellHeight, isThisMonth),
-              getWeekRow(3, cellHeight, isThisMonth),
-              getWeekRow(4, cellHeight, isThisMonth),
-              if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
-            ]),
-        Container(
-          margin: const EdgeInsets.only(top: 40),
-          width: 180,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: AssetImage('assets/images/pawpaw_puppy.png'))),
-        )
-      ],
+        );
+      },
     );
   }
 
