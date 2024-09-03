@@ -120,7 +120,7 @@ class HomeContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset('assets/icons/paw_small.svg',
+                    SvgPicture.asset('assets/icons/paw.svg',
                         width: 20,
                         colorFilter: ColorFilter.mode(
                             hasWalkDone ? ThemeColor.gray4 : ThemeColor.gray6,
