@@ -63,30 +63,32 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        child: Column(
-          children: [
-            SharedBanner(
-              onClick: () => {
-                Get.toNamed('/', arguments: {'tab': NavTab.feed})
-              },
-              mainText: '친구의 산책 소식이 도착했어요',
-              subText: '오늘은 어떤 산책이었을지 확인해볼까요?',
-              iconName: 'news',
-            ),
-            const SizedBox(height: 30),
-            CalendarTable(
-              year: year,
-              month: month,
-              firstDayOfMonth: firstDayOfMonth,
-              lastDayOfMonth: lastDayOfMonth,
-              onMonthClick: changeMonth,
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 60),
-              width: 160,
-              child: Image.asset('assets/images/pawpaw_puppy.png'),
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SharedBanner(
+                onClick: () => {
+                  Get.toNamed('/', arguments: {'tab': NavTab.feed})
+                },
+                mainText: '친구의 산책 소식이 도착했어요',
+                subText: '오늘은 어떤 산책이었을지 확인해볼까요?',
+                iconName: 'news',
+              ),
+              const SizedBox(height: 30),
+              CalendarTable(
+                year: year,
+                month: month,
+                firstDayOfMonth: firstDayOfMonth,
+                lastDayOfMonth: lastDayOfMonth,
+                onMonthClick: changeMonth,
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 45),
+                width: 160,
+                child: Image.asset('assets/images/pawpaw_puppy.png'),
+              )
+            ],
+          ),
         ),
       ),
     );
