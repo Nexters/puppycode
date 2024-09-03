@@ -47,7 +47,6 @@ void main() async {
 
 Future sendWidgetPhoto() async {
   try {
-    print('!');
     return Future.wait([
       HomeWidget.saveWidgetData('title', 'widget_ready'),
 
@@ -71,9 +70,7 @@ Future sendWidgetPhoto() async {
       //   key: 'title',
       // ),
     ]);
-  } on PlatformException catch (err) {
-    debugPrint('send data err: $err');
-  }
+  } on PlatformException catch (err) {}
 }
 
 Future<void> _initDeepLinkListener() async {
@@ -82,12 +79,9 @@ Future<void> _initDeepLinkListener() async {
   appLinks = AppLinks();
 
   linkSubscription = appLinks.uriLinkStream.listen((uri) {
-    debugPrint('onAppLink: $uri');
     String id = uri.toString().split('/').last;
     Get.toNamed('/feed/$id');
-  }, onError: (err) {
-    print('딥링크 에러 $err');
-  });
+  }, onError: (err) {});
 }
 
 Future<String?> initializeNotification() async {

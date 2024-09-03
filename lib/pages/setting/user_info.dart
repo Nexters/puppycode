@@ -74,9 +74,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             'users/profile-image', File(_image!.path),
             onPatch: () => userController.refreshData());
       }
-    } catch (err) {
-      print('edit Error: $err');
-    }
+    } catch (err) {}
   }
 
   bool validateName(name) {
@@ -114,9 +112,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
         _editingController.text = user.nickname;
         profileImageUrl = user.profileImageUrl;
       });
-    } catch (error) {
-      print('fetchUser Error: $error');
-    }
+    } catch (error) {}
   }
 
   @override

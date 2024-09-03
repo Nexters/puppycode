@@ -53,7 +53,6 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
         Get.back(result: true);
       });
     } catch (error) {
-      print('createFriend error: $error');
       setState(() {
         errorMessage = '잘못된 코드입니다';
       });

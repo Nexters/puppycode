@@ -32,7 +32,6 @@ class HttpService {
       Get.offNamed('/login');
     }
     var message = json.decode(utf8.decode(res.bodyBytes))['message'];
-    print(message);
     throw res.statusCode;
   }
 
@@ -170,7 +169,6 @@ class HttpService {
 
     try {
       final url = Uri.http(baseUrl, '/api/$endPoint');
-      //print('>?');
       var request = http.MultipartRequest('PATCH', url);
 
       if (imagePath != null) {
@@ -198,7 +196,6 @@ class HttpService {
       }
       throw 'patch failed';
     } catch (err) {
-      print('patchMultipartfForm err: $err');
       return {'success': false};
     }
   }

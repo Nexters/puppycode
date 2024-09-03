@@ -42,9 +42,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
   }
 
   void refetchData() {
-    _fetchFeedDetails(feedId).then((_) {
-      print('fetch 성공');
-    });
+    _fetchFeedDetails(feedId);
   }
 
   Future<void> _fetchFeedDetails(id) async {
@@ -55,10 +53,7 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
         feed = Feed(item);
         link = 'Pawpaw://feed/$id';
       });
-      // print(feedItems);
-    } catch (error) {
-      print('error: $error');
-    }
+    } catch (error) {}
   }
 
   Future<void> _deleteFeed(context, id) async {
@@ -67,19 +62,14 @@ class _FeedDetailPageState extends State<FeedDetailPage> {
         await userController.refreshData();
         Get.offAndToNamed('/');
       });
-    } catch (error) {
-      print('delete Feed erorr: $error');
-    }
+    } catch (error) {}
   }
 
   Future<void> _reportFeed(walkLogId, reason) async {
     try {
       await HttpService.post('walk-logs/report',
           body: {'reportedWalkLogId': walkLogId, 'reason': reason});
-      print('게시글 신고');
-    } catch (err) {
-      print('report walkLog error: $err');
-    }
+    } catch (err) {}
   }
 
   void _showActionSheet(BuildContext ancestorContext) {

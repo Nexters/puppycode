@@ -133,9 +133,7 @@ class _CalendarTableState extends State<CalendarTable> {
         calendarItems =
             items.map((key, item) => MapEntry(key.split('-').last, Feed(item)));
       });
-    } catch (error) {
-      //print(error);
-    }
+    } catch (error) {}
   }
 
   @override

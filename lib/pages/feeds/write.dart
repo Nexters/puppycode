@@ -70,9 +70,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
           key: 'title',
         ),
       ]);
-    } on PlatformException catch (err) {
-      debugPrint('send data err: $err');
-    }
+    } on PlatformException catch (err) {}
   }
 
   Future updateHomeWidget() async {
@@ -83,9 +81,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
           iOSName: 'pawpawWidget',
         )
       ]);
-    } on PlatformException catch (exception) {
-      debugPrint('Error Updating Widget. $exception');
-    }
+    } on PlatformException catch (exception) {}
   }
 
   Future<void> _sendAndUpdate() async {
@@ -158,9 +154,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
         episodeController.text = feed!.episode;
         isFetching = false;
       });
-    } catch (error) {
-      print('error: $error');
-    }
+    } catch (error) {}
   }
 
   List<Widget> _optionButtons() {
@@ -221,7 +215,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
         isLoading = false;
         isError = true;
       });
-      print('createFeed err : $err');
     }
   }
 
@@ -239,7 +232,6 @@ class _FeedWritePageState extends State<FeedWritePage> {
         },
         //imagePath: photoPath
       );
-      print(result);
       setState(() {
         isLoading = false;
       });
@@ -250,9 +242,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
       } else {
         isError = true;
       }
-    } catch (err) {
-      print('patchFeed err: $err');
-    }
+    } catch (err) {}
   }
 
   @override
