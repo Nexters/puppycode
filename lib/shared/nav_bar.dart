@@ -156,7 +156,7 @@ class WriteFloatingButton extends StatefulWidget {
 class _WriteFloatingButtonState extends State<WriteFloatingButton> {
   final userController = Get.find<UserController>();
   final ImagePicker picker = ImagePicker();
-  late bool showTooltip = false;
+  late bool showTooltip = true;
 
   Future getImage(ImageSource imageSource) async {
     final XFile? pickedFile = await picker.pickImage(source: imageSource);
@@ -237,6 +237,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
             Positioned(
                 right: 0,
                 child: Container(
+                  height: 38,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   decoration: BoxDecoration(
