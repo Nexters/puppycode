@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
+import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/states/user.dart';
 
 import 'src/app.dart';
@@ -34,43 +35,35 @@ void main() async {
   await settingsController.loadSettings();
 
   HomeWidget.setAppGroupId('group.pawpaw');
-  sendWidgetPhoto();
-  HomeWidget.updateWidget(
-    name: 'pawpawWidget',
-    iOSName: 'pawpawWidget',
-  );
 
   Get.put(UserController());
   runApp(const MyApp());
+  _fetchTodayLog();
   _initDeepLinkListener();
 }
 
-Future sendWidgetPhoto() async {
+Future _fetchTodayLog() async {
   try {
-    return Future.wait([
-      HomeWidget.saveWidgetData('title', 'widget_ready'),
+    final item = await HttpService.getOne('walk-logs/me/today');
+    sendWidgetPhoto(item['photoUrl']).then(
+      (_) => HomeWidget.updateWidget(
+        name: 'pawpawWidget',
+        iOSName: 'pawpawWidget',
+      ),
+    );
+  } catch (error) {
+    print('error: $error');
+  }
+}
 
-      // api 호출 뒤
-      // HomeWidget.renderFlutterWidget(
-      //   ClipRRect(
-      //     borderRadius: BorderRadius.circular(20.25),
-      //     child: Align(
-      //       alignment: Alignment.center,
-      //       child: SizedBox(
-      //         width: 160,
-      //         height: 160,
-      //         child: Image.file(
-      //           File('받은 사진 파일 경로'),
-      //           fit: BoxFit.cover,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      //   logicalSize: const Size(160, 160),
-      //   key: 'title',
-      // ),
-    ]);
-  } on PlatformException catch (err) {}
+Future sendWidgetPhoto(photoUrl) async {
+  try {
+    if (photoUrl == null) {
+      HomeWidget.saveWidgetData('title', 'widget_ready');
+    }
+  } on PlatformException catch (err) {
+    debugPrint('send data err: $err');
+  }
 }
 
 Future<void> _initDeepLinkListener() async {
