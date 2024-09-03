@@ -217,6 +217,8 @@ class HttpService {
     if (res.statusCode == 200) {
       Map<String, dynamic> body = json.decode(utf8.decode(res.bodyBytes));
       return body; // 단일 객체
+    } else if (res.statusCode == 204) {
+      return {};
     } else {
       _handleError(res);
       throw 'err';

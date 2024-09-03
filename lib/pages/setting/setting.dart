@@ -147,9 +147,6 @@ class _SettingPageState extends State<SettingPage> {
                             value: '현재 버전 1.0.0', color: ThemeColor.gray4),
                       ),
                       const SettingListItem(
-                        title: '계정정보',
-                      ),
-                      const SettingListItem(
                         title: '이용약관',
                       ),
                       SettingListItem(

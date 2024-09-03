@@ -25,7 +25,6 @@ struct PawpawWidgetEntryView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 160, height: 160)
                     .clipped()
-
             }
         }
         .containerBackground(for: .widget) {
@@ -63,6 +62,7 @@ struct PawpawTimelineProvider: TimelineProvider {
             let image = userDefaults?.string(forKey: "title") ?? "widget_ready"
             entry = SimpleEntry(date: Date(), widgetFamily: context.family, filename: image)
         }
+        
         
         completion(entry)
     }
