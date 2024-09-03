@@ -189,8 +189,8 @@ class _CalendarTableState extends State<CalendarTable> {
                   if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
                 ]),
             Container(
-              margin: const EdgeInsets.only(top: 40),
-              width: 180,
+              margin: const EdgeInsets.only(bottom: 60),
+              width: 160,
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.contain,
