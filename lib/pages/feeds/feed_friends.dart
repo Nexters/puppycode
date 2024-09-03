@@ -212,26 +212,21 @@ class FeedFriendIcon extends StatelessWidget {
     return Container(
       width: 22,
       height: 22,
-      padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-          boxShadow: hasWalked
-              ? null
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.13),
-                    blurRadius: 9,
-                    offset: const Offset(0, 1.13),
-                  )
-                ],
-          shape: BoxShape.circle,
-          border: Border.all(color: ThemeColor.white, width: hasWalked ? 2 : 1),
-          color: hasWalked ? ThemeColor.primary : ThemeColor.white),
-      child: hasWalked
-          ? SvgPicture.asset(
-              'assets/icons/paw_small.svg',
-              colorFilter: ColorFilter.mode(ThemeColor.white, BlendMode.srcIn),
-            )
-          : SvgPicture.asset('assets/icons/push.svg', width: 16),
+        boxShadow: hasWalked
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.13),
+                  blurRadius: 9,
+                  offset: const Offset(0, 1.13),
+                )
+              ],
+        shape: BoxShape.circle,
+      ),
+      child: SvgPicture.asset(
+          hasWalked ? 'assets/icons/paw_small.svg' : 'assets/icons/push.svg',
+          width: 22),
     );
   }
 }
