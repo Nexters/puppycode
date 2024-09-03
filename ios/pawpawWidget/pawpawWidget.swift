@@ -61,7 +61,6 @@ struct PawpawTimelineProvider: TimelineProvider {
             let userDefaults = UserDefaults(suiteName: "group.pawpaw")
             let image = userDefaults?.string(forKey: "title") ?? "widget_ready"
             entry = SimpleEntry(date: Date(), widgetFamily: context.family, filename: image)
-            print(image)
         }
         
         
