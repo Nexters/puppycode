@@ -38,18 +38,14 @@ class _FriendsListPageState extends State<FriendsListPage> {
       setState(() {
         friendList = friends;
       });
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   Future<void> _deleteFriend(int friendUserId) async {
     try {
       await HttpService.delete('friends/$friendUserId');
       _fetchFriends();
-    } catch (error) {
-      print('delete friend error: $error');
-    }
+    } catch (error) {}
   }
 
   Future<void> _reportFriend(context, reportUserId, reason) async {
@@ -57,10 +53,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
       await HttpService.post('users/report',
               body: {'reportedUserId': reportUserId, 'reason': reason})
           .then((_) => {Toast.show(context, '신고를 완료했어요')});
-      print('유저 신고 완료');
-    } catch (err) {
-      print('report friend error: $err');
-    }
+    } catch (err) {}
   }
 
   @override

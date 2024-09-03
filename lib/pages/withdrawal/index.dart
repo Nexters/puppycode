@@ -41,10 +41,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
       await HttpService.delete('users').then((_) => {
             logout(),
           });
-      print('회원 탈퇴 완료');
-    } catch (err) {
-      print('deleteUser error: $err');
-    }
+    } catch (err) {}
   }
 
   @override

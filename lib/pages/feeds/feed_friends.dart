@@ -44,9 +44,7 @@ class _FeedFriendsState extends State<FeedFriends> {
       setState(() {
         friendList = friends;
       });
-    } catch (error) {
-      print(error);
-    }
+    } catch (error) {}
   }
 
   @override
@@ -129,9 +127,7 @@ class FeedUserStatus extends StatelessWidget {
       HttpService.post('push/users/$id', body: {});
     } on FormatException {
       // ignore
-    } catch (error) {
-      print('push api erorr: $error');
-    }
+    } catch (error) {}
   }
 
   @override

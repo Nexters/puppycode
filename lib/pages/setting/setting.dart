@@ -49,11 +49,7 @@ class _SettingPageState extends State<SettingPage> {
         walkTime = res['pushNotificationTime'].toString();
         isWalkNotificationEnabled = res['on'];
       });
-      print(walkTime);
-      print(res['on']);
-    } catch (err) {
-      print('산책 루틴 알림 fetch error!: $err');
-    }
+    } catch (err) {}
   }
 
   Future<void> _setWalkNotificationAlert(newWalkTime) async {
@@ -62,10 +58,7 @@ class _SettingPageState extends State<SettingPage> {
         'time': newWalkTime,
         'isOn': isWalkNotificationEnabled.toString()
       });
-      print('설정 완료');
-    } catch (err) {
-      print('산책 루틴 알림 set error1: $err');
-    }
+    } catch (err) {}
   }
 
   // void onPushNotificationSwitched(value) {

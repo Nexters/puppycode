@@ -37,9 +37,7 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
           Toast.show(context, '삭제를 완료했어요'),
         },
       );
-    } catch (error) {
-      print('delete comment erorr: $error');
-    }
+    } catch (error) {}
   }
 
   Future<void> _reportComment(context, reportedCommentId, reason) async {
@@ -51,9 +49,7 @@ class _ReactionCommentListItemState extends State<ReactionCommentListItem> {
           Toast.show(context, '신고를 완료했어요'),
         },
       );
-    } catch (err) {
-      print('report comment error: $err');
-    }
+    } catch (err) {}
   }
 
   void _showActionSheet(BuildContext context) {

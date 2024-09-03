@@ -29,14 +29,10 @@ class _SetWalkTimeButtonState extends State<SetWalkTimeButton> {
   }
 
   Future<void> _setWalkNotificationAlert(newWalkTime) async {
-    print(newWalkTime);
     try {
       await HttpService.patch('users/push-notification',
           params: {'time': newWalkTime.toString(), 'isOn': 'true'});
-      print('설정 완료');
-    } catch (err) {
-      print('산책 루틴 알림 set error2: $err');
-    }
+    } catch (err) {}
   }
 
   DateTime _minutesToDateTime(int walkTimeInMinutes) {

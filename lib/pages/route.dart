@@ -8,17 +8,17 @@ import 'package:puppycode/pages/setting/friends_code.dart';
 import 'package:puppycode/pages/setting/friends_list.dart';
 import 'package:puppycode/pages/setting/setting.dart';
 import 'package:puppycode/pages/setting/user_info.dart';
-import 'package:puppycode/pages/onboarding/index.dart';
 import 'package:puppycode/pages/onboarding/login.dart';
 import 'package:puppycode/pages/feeds/write.dart';
 import 'package:puppycode/pages/withdrawal/index.dart';
 import 'package:puppycode/shared/nav_bar.dart';
+import 'package:puppycode/pages/onboarding/register.dart';
 
 class AppRoutes {
   static final routes = [
     GetPage(name: '/', page: () => const ScreenWithNavBar()),
     GetPage(name: '/login', page: () => const LoginPage()),
-    GetPage(name: '/signup', page: () => const OnboardingPage()),
+    GetPage(name: '/signup', page: () => const RegistrationPage()),
     GetPage(name: '/start', page: () => const StartPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
     GetPage(name: '/create/success', page: () => const FeedCreateSuccessPage()),

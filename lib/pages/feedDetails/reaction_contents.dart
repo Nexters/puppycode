@@ -69,9 +69,7 @@ class _ReactionContentsState extends State<ReactionContents> {
         });
         widget.refetch();
       }
-    } catch (error) {
-      print('create comment error: $error');
-    }
+    } catch (error) {}
   }
 
   Future<void> _createEmoji(String emoji) async {
@@ -98,9 +96,7 @@ class _ReactionContentsState extends State<ReactionContents> {
       }
 
       widget.refetch();
-    } catch (error) {
-      print('create Emoji error: $error');
-    }
+    } catch (error) {}
   }
 
   @override

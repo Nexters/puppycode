@@ -72,12 +72,9 @@ Future<void> _initDeepLinkListener() async {
   appLinks = AppLinks();
 
   linkSubscription = appLinks.uriLinkStream.listen((uri) {
-    debugPrint('onAppLink: $uri');
     String id = uri.toString().split('/').last;
     Get.toNamed('/feed/$id');
-  }, onError: (err) {
-    print('딥링크 에러 $err');
-  });
+  }, onError: (err) {});
 }
 
 Future<String?> initializeNotification() async {
