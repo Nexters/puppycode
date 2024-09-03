@@ -80,6 +80,11 @@ class _CalendarPageState extends State<CalendarPage> {
               firstDayOfMonth: firstDayOfMonth,
               lastDayOfMonth: lastDayOfMonth,
               onMonthClick: changeMonth,
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 60),
+              width: 160,
+              child: Image.asset('assets/images/pawpaw_puppy.png'),
             )
           ],
         ),
@@ -188,14 +193,6 @@ class _CalendarTableState extends State<CalendarTable> {
                   getWeekRow(4, cellHeight, isThisMonth),
                   if (showMaxWeek) getWeekRow(5, cellHeight, isThisMonth),
                 ]),
-            Container(
-              margin: const EdgeInsets.only(bottom: 60),
-              width: 160,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.contain,
-                      image: AssetImage('assets/images/pawpaw_puppy.png'))),
-            )
           ],
         );
       },
