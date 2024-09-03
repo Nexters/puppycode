@@ -81,14 +81,9 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
             ),
             itemBuilder: (context, monthly, index) => Column(
               children: isLoaded &&
+                      _pagingController.itemList?.length == 1 &&
                       _pagingController.itemList?.first.items.isEmpty == true
                   ? [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 80),
-                        child: FeedEmpty(),
-                      )
-                    ]
-                  : [
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.symmetric(
@@ -102,22 +97,43 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
                           bold: true,
                         ),
                       ),
-                      GridView(
-                        physics: const ScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 170 / 270,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 16,
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 80),
+                        child: FeedEmpty(),
+                      )
+                    ]
+                  : [
+                      if (monthly.count > 0)
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 6),
+                          decoration: BoxDecoration(
+                              color: ThemeColor.gray2,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Body3(
+                            value: '${monthly.month}월 · ${monthly.count}개의 일지',
+                            color: ThemeColor.gray5,
+                            bold: true,
+                          ),
                         ),
-                        children: monthly.items
-                            .map((item) =>
-                                FeedItem(item: item, isListView: false))
-                            .toList(),
-                      ),
+                      if (monthly.count > 0)
+                        GridView(
+                          physics: const ScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 170 / 270,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 16,
+                          ),
+                          children: monthly.items
+                              .map((item) =>
+                                  FeedItem(item: item, isListView: false))
+                              .toList(),
+                        ),
                       const SizedBox(height: 14)
                     ],
             ),

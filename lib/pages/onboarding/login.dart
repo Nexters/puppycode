@@ -160,13 +160,13 @@ class SignupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - 40;
+    var width = MediaQuery.of(context).size.width * 0.9;
 
     return GestureDetector(
       onTap: () => {_login()},
       child: SizedBox(
         width: width,
-        height: width * 0.12,
+        height: width * 0.16,
         child: SvgPicture.asset(
             type == SignupType.kakao
                 ? 'assets/icons/kakao_login.svg'

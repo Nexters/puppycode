@@ -237,6 +237,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
             Positioned(
                 right: 0,
                 child: Container(
+                  height: 38,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   decoration: BoxDecoration(
