@@ -84,6 +84,19 @@ class MyFeedGridViewState extends State<MyFeedGridView> {
                       _pagingController.itemList?.length == 1 &&
                       _pagingController.itemList?.first.items.isEmpty == true
                   ? [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 6),
+                        decoration: BoxDecoration(
+                            color: ThemeColor.gray2,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Body3(
+                          value: '${monthly.month}월 · ${monthly.count}개의 일지',
+                          color: ThemeColor.gray5,
+                          bold: true,
+                        ),
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 80),
                         child: FeedEmpty(),
