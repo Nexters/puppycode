@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_user.dart';
 import 'package:puppycode/config.dart';
 import 'package:get/get.dart';
@@ -140,7 +141,11 @@ class SignupButton extends StatelessWidget {
 
   void _kakaoLogin() async {
     try {
-      await UserApi.instance.loginWithKakaoTalk();
+      if (await isKakaoTalkInstalled()) {
+        await UserApi.instance.loginWithKakaoTalk();
+      } else {
+        await UserApi.instance.loginWithKakaoAccount();
+      }
       var me = await UserApi.instance.me();
       _checkUserRegistration(me.id.toString(), 'KAKAO', additionalInfo: {
         'profileUrl': me.kakaoAccount?.profile?.profileImageUrl ?? '',
