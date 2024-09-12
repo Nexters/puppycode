@@ -28,7 +28,7 @@ class TextButtonStyle extends ButtonStyle {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
         overlayColor:
-            disabled! ? Colors.transparent : ThemeColor.primaryPressed);
+            disabled == true ? Colors.transparent : ThemeColor.primaryPressed);
   }
 }
 
@@ -48,7 +48,7 @@ class DefaultTextButton extends TextButton {
               Body1(
                 value: text,
                 bold: true,
-                color: disabled! ? ThemeColor.gray4 : null,
+                color: disabled == true ? ThemeColor.gray4 : null,
               ),
         );
 

@@ -117,14 +117,16 @@ class SignupButton extends StatelessWidget {
         'deviceToken': Config.FIREBASE_TOKEN
       });
       String token = loginResult['token'] ?? '';
-      if (token.isNotEmpty) onLogin(token);
-    } catch (err) {
-      Get.toNamed('/signup', arguments: {
-        'oAauthToken': oauthIdentifier,
-        'provider': provider,
-        ...?additionalInfo,
-      });
-    }
+      if (token.isNotEmpty) {
+        onLogin(token);
+        return;
+      }
+    } catch (err) {}
+    Get.toNamed('/signup', arguments: {
+      'oAauthToken': oauthIdentifier,
+      'provider': provider,
+      ...?additionalInfo,
+    });
   }
 
   void _appleLogin() async {
@@ -146,10 +148,12 @@ class SignupButton extends StatelessWidget {
         await UserApi.instance.loginWithKakaoAccount();
       }
       var me = await UserApi.instance.me();
+      print(me);
       _checkUserRegistration(me.id.toString(), 'KAKAO', additionalInfo: {
         'profileUrl': me.kakaoAccount?.profile?.profileImageUrl ?? '',
       });
     } catch (err) {
+      print(err);
       //
     }
   }
