@@ -314,8 +314,14 @@ class _FeedWritePageState extends State<FeedWritePage> {
                   right: 20,
                   bottom: MediaQuery.of(context).viewInsets.bottom + 12),
               child: DefaultElevatedButton(
-                onPressed: () =>
-                    {feed != null ? _patchFeed(feed!.id) : _createFeed()},
+                onPressed: () {
+                  if (titleController.text.isEmpty || isLoading) return;
+                  if (feed == null) {
+                    _createFeed();
+                  } else {
+                    _patchFeed(feed!.id);
+                  }
+                },
                 text: isLoading
                     ? '기록 저장 중...'
                     : isEditing
