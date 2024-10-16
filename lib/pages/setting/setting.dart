@@ -137,7 +137,7 @@ class _SettingPageState extends State<SettingPage> {
                       SettingListItem(
                         title: '앱 정보',
                         widget: Body3(
-                            value: '현재 버전 1.0.0', color: ThemeColor.gray4),
+                            value: '현재 버전 1.0.1', color: ThemeColor.gray4),
                       ),
                       const SettingListItem(
                         title: '이용약관',
