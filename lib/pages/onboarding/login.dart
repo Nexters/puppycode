@@ -8,6 +8,7 @@ import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/states/user.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
 enum SignupType { kakao, apple }
 
 class SignupButton extends StatelessWidget {
-  const SignupButton({
+  SignupButton({
     required this.text,
     required this.type,
     required this.onLogin,
@@ -108,6 +109,7 @@ class SignupButton extends StatelessWidget {
   final String text;
   final SignupType type;
   final void Function(String) onLogin;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   void _checkUserRegistration(String oauthIdentifier, String provider,
       {Map<String, String>? additionalInfo}) async {
@@ -159,6 +161,7 @@ class SignupButton extends StatelessWidget {
   }
 
   void _login() async {
+    analytics.logEvent(name: 'login');
     if (type == SignupType.apple) {
       _appleLogin();
     } else {

@@ -15,6 +15,7 @@ import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:puppycode/shared/states/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 bool isToday(DateTime date) {
   DateTime today = DateTime.now();
@@ -67,12 +68,13 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomeContent extends StatelessWidget {
-  const HomeContent({
+  HomeContent({
     super.key,
     this.user,
   });
 
   final User? user;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future getImage(ImageSource imageSource) async {
     final ImagePicker picker = ImagePicker();
@@ -133,7 +135,8 @@ class HomeContent extends StatelessWidget {
                     )
                   ],
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  analytics.logEvent(name: 'verifyHome');
                   if (hasWalkDone) return;
                   getImage(ImageSource.camera);
                 }))

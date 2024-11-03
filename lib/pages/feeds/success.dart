@@ -4,10 +4,12 @@ import 'package:puppycode/shared/nav_bar.dart';
 import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 // 피드 생성인 경우에만 이동하는 페이지 (수정인 경우 오지 않음)
 class FeedCreateSuccessPage extends StatelessWidget {
-  const FeedCreateSuccessPage({super.key});
+  FeedCreateSuccessPage({super.key});
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +47,23 @@ class FeedCreateSuccessPage extends StatelessWidget {
             children: [
               Expanded(
                   flex: 2,
-                  child: DefaultCloseButton(
-                      onPressed: () => {
-                            Get.toNamed('/', arguments: {
-                              'tab': isFromFeed ? NavTab.feed : NavTab.home
-                            })
-                          })),
+                  child: DefaultCloseButton(onPressed: () {
+                    analytics.logEvent(name: 'closeRecord');
+                    Get.toNamed('/', arguments: {
+                      'tab': isFromFeed ? NavTab.feed : NavTab.home
+                    });
+                  })),
               const SizedBox(width: 12),
               Expanded(
                   flex: 3,
                   child: DefaultTextButton(
                       text: '산책일지 보러가기',
-                      onPressed: () => {
-                            feedId != null
-                                ? Get.toNamed('/feed/$feedId')
-                                : Get.offAndToNamed('/')
-                          })),
+                      onPressed: () {
+                        analytics.logEvent(name: 'closeRecordDiary');
+                        feedId != null
+                            ? Get.toNamed('/feed/$feedId')
+                            : Get.offAndToNamed('/');
+                      })),
             ],
           ),
         ),

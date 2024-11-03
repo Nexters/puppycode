@@ -20,6 +20,7 @@ import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FeedDetailPage extends StatefulWidget {
   const FeedDetailPage({super.key});
@@ -201,8 +202,9 @@ class FeedReactionButton extends StatelessWidget {
   final Function refetch;
   final String walkLogId;
   final String feedWriterId;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-  const FeedReactionButton({
+  FeedReactionButton({
     required this.refetch,
     required this.comments,
     required this.reactions,
@@ -216,6 +218,7 @@ class FeedReactionButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
+        analytics.logEvent(name: 'reaction-add');
         sharedModalBottomSheet(
             context,
             ReactionContents(

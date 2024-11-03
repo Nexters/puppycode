@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class Episode extends StatefulWidget {
   const Episode({
@@ -32,6 +33,7 @@ class _EpisodeState extends State<Episode> {
   late FocusNode _focusNode;
   Color _iconColor = ThemeColor.gray4;
   Color _borderColor = ThemeColor.gray2;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -113,6 +115,7 @@ class _EpisodeState extends State<Episode> {
             if (widget.content.isEmpty && !widget.isInput)
               GestureDetector(
                 onTap: () {
+                  analytics.logEvent(name: 'AddEpisode-any');
                   Get.toNamed(
                     '/create',
                     arguments: {

@@ -10,6 +10,7 @@ import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -19,6 +20,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   bool isWalkNotificationEnabled = true; // 산책 루틴 알림
   //bool isPushNotificationEnabled = false; // 찌르기 알림
   String walkTime = '';
@@ -34,6 +36,9 @@ class _SettingPageState extends State<SettingPage> {
       'https://talented-volleyball-aaf.notion.site/539274c7d2884431a4321454cac2e39b?pvs=4';
 
   void onWalkNotificationSwitched(bool value) {
+    analytics.logEvent(
+        name: 'toggle-routine-push',
+        parameters: {'status': value ? 'on' : 'off'});
     setState(() {
       isWalkNotificationEnabled = value;
     });

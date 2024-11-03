@@ -6,6 +6,7 @@ import 'package:puppycode/apis/models/reaction.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/caption.dart';
 import 'package:puppycode/shared/states/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ReactionEmojiList extends StatefulWidget {
   final List<Reaction> reactions;
@@ -27,6 +28,7 @@ class ReactionEmojiList extends StatefulWidget {
 
 class _ReactionEmojiListState extends State<ReactionEmojiList> {
   bool hasMyEmoji = false;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final List<String> emojis = [
     'like',
     'congratulation',
@@ -139,6 +141,7 @@ class _ReactionEmojiListState extends State<ReactionEmojiList> {
                     GestureDetector(
                       key: emojiKey,
                       onTap: () {
+                        analytics.logEvent(name: 'reaction-select-emoji');
                         onSetEmoji(context, emojiKey);
                       },
                       child: Column(

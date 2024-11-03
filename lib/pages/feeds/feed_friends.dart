@@ -10,6 +10,7 @@ import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/http.dart';
 import 'package:puppycode/shared/states/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FeedFriends extends StatefulWidget {
   const FeedFriends({
@@ -27,6 +28,7 @@ class FeedFriends extends StatefulWidget {
 
 class _FeedFriendsState extends State<FeedFriends> {
   List<Friend> friendList = [];
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -66,7 +68,10 @@ class _FeedFriendsState extends State<FeedFriends> {
                   mainText: '친구를 찾아 떠나볼까요?',
                   subText: '친구와 함께 강아지의 일상을 공유해 보아요!',
                   iconName: 'friends',
-                  onClick: () => {Get.toNamed('/friends/code')}),
+                  onClick: () {
+                    analytics.logEvent(name: 'exploreFriends');
+                    Get.toNamed('/friends/code');
+                  }),
             ),
           SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -200,12 +205,13 @@ class FeedUserStatus extends StatelessWidget {
 }
 
 class FeedFriendIcon extends StatelessWidget {
-  const FeedFriendIcon({
+  FeedFriendIcon({
     super.key,
     required this.hasWalked,
   });
 
   final bool hasWalked;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +230,16 @@ class FeedFriendIcon extends StatelessWidget {
               ],
         shape: BoxShape.circle,
       ),
-      child: SvgPicture.asset(
-          hasWalked ? 'assets/icons/paw_small.svg' : 'assets/icons/push.svg',
-          width: 22),
+      child: GestureDetector(
+        child: SvgPicture.asset(
+            hasWalked ? 'assets/icons/paw_small.svg' : 'assets/icons/push.svg',
+            width: 22),
+        onTap: () {
+          if (!hasWalked) {
+            analytics.logEvent(name: 'send-push');
+          }
+        },
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FriendsCodePage extends StatefulWidget {
   const FriendsCodePage({super.key});
@@ -18,6 +19,7 @@ class FriendsCodePage extends StatefulWidget {
 class _FriendsCodePageState extends State<FriendsCodePage> {
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   String errorMessage = '';
   bool isCodeComplete = false;
 
@@ -129,6 +131,8 @@ class _FriendsCodePageState extends State<FriendsCodePage> {
             child: DefaultElevatedButton(
               onPressed: isCodeComplete
                   ? () {
+                      analytics.logEvent(
+                          name: 'AddFriends', parameters: {'reason': 'code'});
                       _onSubmit();
                       FocusScope.of(context).unfocus();
                     }

@@ -13,6 +13,7 @@ import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/states/user.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FeedWritePage extends StatefulWidget {
   const FeedWritePage({super.key});
@@ -47,6 +48,7 @@ class _FeedWritePageState extends State<FeedWritePage> {
   bool isError = false;
 
   final List<String> timeOptions = ['20분 내외', '20분~40분', '40분~1시간'];
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future sendWidgetPhoto() async {
     try {
@@ -317,8 +319,10 @@ class _FeedWritePageState extends State<FeedWritePage> {
                 onPressed: () {
                   if (titleController.text.isEmpty || isLoading) return;
                   if (feed == null) {
+                    analytics.logEvent(name: 'completeRecord');
                     _createFeed();
                   } else {
+                    analytics.logEvent(name: 'AddEpisode-complete');
                     _patchFeed(feed!.id);
                   }
                 },

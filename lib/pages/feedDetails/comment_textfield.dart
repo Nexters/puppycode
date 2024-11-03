@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class CommentTextField extends StatefulWidget {
   const CommentTextField({
@@ -23,6 +24,7 @@ class CommentTextField extends StatefulWidget {
 
 class _CommentTextFieldState extends State<CommentTextField> {
   final FocusNode _focusNode = FocusNode();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   bool _isFocused = false;
 
   @override
@@ -78,6 +80,7 @@ class _CommentTextFieldState extends State<CommentTextField> {
                 if (_isFocused &&
                     widget._commentController.text.isNotEmpty) // 댓글 입력하고 보내기
                   {
+                    analytics.logEvent(name: 'reaction-send'),
                     widget.onSubmitted(),
                     widget._commentController.clear(),
                     _focusNode.unfocus()

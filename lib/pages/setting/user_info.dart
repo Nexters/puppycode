@@ -17,6 +17,7 @@ import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
 import 'package:puppycode/shared/states/user.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({super.key});
@@ -35,6 +36,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   late final TextEditingController _editingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final userController = Get.find<UserController>();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   XFile? _image;
   final ImagePicker picker = ImagePicker();
@@ -275,6 +277,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                         context,
                         AlertDialogType.LOGOUT,
                         () {
+                          analytics.logEvent(name: 'logout');
                           logout();
                         },
                       );

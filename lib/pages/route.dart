@@ -21,7 +21,7 @@ class AppRoutes {
     GetPage(name: '/signup', page: () => const RegistrationPage()),
     GetPage(name: '/start', page: () => const StartPage()),
     GetPage(name: '/create', page: () => const FeedWritePage()),
-    GetPage(name: '/create/success', page: () => const FeedCreateSuccessPage()),
+    GetPage(name: '/create/success', page: () => FeedCreateSuccessPage()),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/settings', page: () => const SettingPage()),
     GetPage(name: '/settings/userInfo', page: () => const UserInfoPage()),

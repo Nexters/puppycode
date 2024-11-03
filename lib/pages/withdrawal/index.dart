@@ -9,6 +9,7 @@ import 'package:puppycode/shared/styles/button.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/typography/body.dart';
 import 'package:puppycode/shared/typography/head.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class WithdrawalScreen extends StatefulWidget {
   const WithdrawalScreen({super.key});
@@ -19,6 +20,7 @@ class WithdrawalScreen extends StatefulWidget {
 
 class _WithdrawalScreenState extends State<WithdrawalScreen> {
   static const storage = FlutterSecureStorage();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   List<bool> selectedReasons = [false, false, false, false];
 
   void _onSelectedReason(int idx, bool isSelected) {
@@ -73,6 +75,8 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   reason: '강아지 산책 기록을 하고 싶지 않아서',
                   isSelected: selectedReasons[0],
                   onSelected: (isSelected) {
+                    analytics.logEvent(
+                        name: 'withdrawal', parameters: {'reason': 'norecord'});
                     _onSelectedReason(0, isSelected);
                   },
                 ),
@@ -80,6 +84,8 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   reason: '알림 기능을 선호하지 않아서',
                   isSelected: selectedReasons[1],
                   onSelected: (isSelected) {
+                    analytics.logEvent(
+                        name: 'withdrawal', parameters: {'reason': 'noalarm'});
                     _onSelectedReason(1, isSelected);
                   },
                 ),
@@ -87,6 +93,9 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   reason: '서비스 이용이 볼편해서',
                   isSelected: selectedReasons[2],
                   onSelected: (isSelected) {
+                    analytics.logEvent(
+                        name: 'withdrawal',
+                        parameters: {'reason': 'uncomfortable'});
                     _onSelectedReason(2, isSelected);
                   },
                 ),
@@ -94,6 +103,8 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   reason: '자주 사용하지 않아서',
                   isSelected: selectedReasons[3],
                   onSelected: (isSelected) {
+                    analytics.logEvent(
+                        name: 'withdrawal', parameters: {'reason': 'notuse'});
                     _onSelectedReason(3, isSelected);
                   },
                 ),
@@ -119,6 +130,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                         context,
                         AlertDialogType.WITHDRAWAL,
                         () {
+                          analytics.logEvent(name: 'withdrawal-complete');
                           _deleteUser();
                           Get.back();
                         },

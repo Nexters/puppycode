@@ -13,6 +13,7 @@ import 'package:puppycode/shared/app_bar.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/states/user.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ScreenWithNavBar extends StatefulWidget {
   const ScreenWithNavBar({super.key});
@@ -40,6 +41,7 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
 
   final bool showTooltip = false;
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static const storage = FlutterSecureStorage();
 
   @override
@@ -106,11 +108,15 @@ class _ScreenWithNavBarState extends State<ScreenWithNavBar>
         rightOptions: AppBarRight(icons: [
           RightIcon(
               name: _currentTab == NavTab.feed ? 'friend' : 'calendar',
-              onTap: () => {
-                    Get.toNamed(_currentTab == NavTab.feed
-                        ? '/friends/code'
-                        : '/calendar')
-                  }),
+              onTap: () {
+                if (_currentTab == NavTab.feed) {
+                  analytics.logEvent(name: 'AddFriends');
+                  Get.toNamed('/friends/code');
+                }
+                else {
+                  Get.toNamed( '/calendar');
+                }
+              }),
           RightIcon(name: 'setting', onTap: () => {Get.toNamed('/settings')})
         ]),
       ),
@@ -156,6 +162,8 @@ class WriteFloatingButton extends StatefulWidget {
 class _WriteFloatingButtonState extends State<WriteFloatingButton> {
   final userController = Get.find<UserController>();
   final ImagePicker picker = ImagePicker();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   late bool showTooltip = false;
 
   Future getImage(ImageSource imageSource) async {
@@ -170,6 +178,7 @@ class _WriteFloatingButtonState extends State<WriteFloatingButton> {
   }
 
   _onButtonClick(bool hasWritten) {
+    analytics.logEvent(name: 'FloatingAddBtn');
     if (hasWritten) {
       if (!showTooltip) {
         setState(() {

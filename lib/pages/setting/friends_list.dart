@@ -12,6 +12,7 @@ import 'package:puppycode/shared/image.dart';
 import 'package:puppycode/shared/styles/color.dart';
 import 'package:puppycode/shared/toast.dart';
 import 'package:puppycode/shared/typography/body.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FriendsListPage extends StatefulWidget {
   const FriendsListPage({super.key});
@@ -22,6 +23,7 @@ class FriendsListPage extends StatefulWidget {
 
 class _FriendsListPageState extends State<FriendsListPage> {
   List<Friend>? friendList;
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   void initState() {
@@ -75,6 +77,8 @@ class _FriendsListPageState extends State<FriendsListPage> {
                   subText: '함께 산책 공유할 친구를 추가해 보세요',
                   iconName: 'code',
                   onClick: () async {
+                    analytics.logEvent(
+                        name: 'AddFriends', parameters: {'reason': 'banner'});
                     final result = await Get.toNamed('/friends/code');
                     if (result == true) {
                       _fetchFriends();
@@ -208,7 +212,7 @@ class FriendItem extends StatelessWidget {
                     ),
                   ),
                   if (hasWalked)
-                    const Positioned(
+                    Positioned(
                         bottom: 0,
                         right: 0,
                         child: FeedFriendIcon(
