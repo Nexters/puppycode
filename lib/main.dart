@@ -19,6 +19,7 @@ import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import './config.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ void main() async {
   HomeWidget.setAppGroupId('group.pawpaw');
 
   Get.put(UserController());
-  runApp(const MyApp());
+  runApp(MyApp());
   _fetchTodayLog();
   _initDeepLinkListener();
 }
@@ -79,7 +80,8 @@ Future<void> _initDeepLinkListener() async {
 
 Future<String?> initializeNotification() async {
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
 
     await Future.delayed(const Duration(seconds: 1));
 

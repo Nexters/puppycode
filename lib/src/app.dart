@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puppycode/pages/route.dart';
 import 'package:puppycode/shared/styles/color.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
           )),
       initialRoute: '/',
       getPages: AppRoutes.routes,
+      navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
     );
   }
 }
